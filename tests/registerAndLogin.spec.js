@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const user = require('../fixtures/user.json');
+const userData = require('../fixtures/userData.json');
 
 test.describe('Register and Login successfully', () => {
   test.beforeEach('Visit Home Page', async ({ page }) => {
