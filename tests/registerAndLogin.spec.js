@@ -3,13 +3,13 @@ const userData = require('../fixtures/userData');
 const { RegisterPage } = require('../POM/ui/registerPage');
 const { LoginPage } = require('../POM/ui/loginPage');
 
+test.describe.configure({ mode: 'serial' });
 test.describe('Register and Login successfully', () => {
   const validUsername = `aleksa${Math.floor(Math.random() * 100000) + 1}`;
   const validEmail = `aleksa+${
     Math.floor(Math.random() * 100000) + 1
   }@gmail.com`;
   const validPassword = 'test123';
-
   test.beforeEach('Visit Home Page', async ({ page }) => {
     await page.goto('https://automaticityacademy.ngrok.app/');
   });
