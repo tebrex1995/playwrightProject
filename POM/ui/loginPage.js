@@ -1,7 +1,7 @@
 const { test } = require('@playwright/test');
-const { BaseHomePage } = require('./baseHomePage');
+const { Header } = require('./header');
 
-exports.LoginPage = class LoginPage extends BaseHomePage {
+exports.LoginPage = class LoginPage extends Header {
   constructor(page) {
     super(page);
   }

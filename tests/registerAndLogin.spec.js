@@ -15,8 +15,8 @@ test.describe('Register and Login successfully', () => {
   });
 
   test('Register Successfully', async ({ page }) => {
-    const onRegisterPage = new RegisterPage(page);
-    await onRegisterPage.registerValidUser(
+    const registerPage = new RegisterPage(page);
+    await registerPage.registerValidUser(
       validUsername,
       validEmail,
       validPassword
@@ -34,8 +34,8 @@ test.describe('Register and Login successfully', () => {
   });
 
   test('Login Successfull', async ({ page }) => {
-    const onLoginPage = new LoginPage(page);
-    await onLoginPage.loginValidUser(validEmail, validPassword);
+    const loginPage = new LoginPage(page);
+    await loginPage.loginValidUser(validEmail, validPassword);
 
     await expect(
       page.locator('span', { hasText: 'Buy some stuff bruh' })
