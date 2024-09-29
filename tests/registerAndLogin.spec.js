@@ -5,22 +5,15 @@ const { LoginPage } = require('../POM/ui/loginPage');
 
 test.describe.configure({ mode: 'serial' });
 test.describe('Register and Login successfully', () => {
-  const validUsername = `aleksa${Math.floor(Math.random() * 100000) + 1}`;
-  const validEmail = `aleksa+${
-    Math.floor(Math.random() * 100000) + 1
-  }@gmail.com`;
-  const validPassword = 'test123';
+  //Get user data
+  const { username, email, password } = userData.validUser();
   test.beforeEach('Visit Home Page', async ({ page }) => {
     await page.goto('https://automaticityacademy.ngrok.app/');
   });
 
   test('Register Successfully', async ({ page }) => {
     const registerPage = new RegisterPage(page);
-    await registerPage.registerValidUser(
-      validUsername,
-      validEmail,
-      validPassword
-    );
+    await registerPage.registerValidUser(username, email, password);
     await expect(page.locator('label', { hasText: 'Username' })).toBeVisible();
     await expect(
       page.locator('span', { hasText: 'Already have an account?' })
@@ -35,7 +28,7 @@ test.describe('Register and Login successfully', () => {
 
   test('Login Successfull', async ({ page }) => {
     const loginPage = new LoginPage(page);
-    await loginPage.loginValidUser(validEmail, validPassword);
+    await loginPage.loginValidUser(email, password);
 
     await expect(
       page.locator('span', { hasText: 'Buy some stuff bruh' })
