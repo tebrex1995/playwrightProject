@@ -68,7 +68,7 @@
 //     await expect(page.locator('h1')).toHaveText('Welcome Back! 👋🏻');
 //   });
 
-//   test('Get by - Label', async ({ page }) => {
+//   test.only('Get by - Label', async ({ page }) => {
 //     await page.getByRole('link', { name: 'Log in' }).click();
 //     await expect(page.locator('h1')).toHaveText('Welcome Back! 👋🏻');
 

@@ -1,5 +1,6 @@
 {
   "name": "playwrightproject",
+  "type": "module",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {},
@@ -9,6 +10,7 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.47.2",
-    "@types/node": "^22.7.3"
+    "@types/node": "^22.7.3",
+    "eslint-plugin-playwright": "^1.6.2"
   }
 }
