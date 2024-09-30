@@ -1,14 +1,14 @@
-const { test, expect } = require('@playwright/test');
-const userData = require('../fixtures/userData');
-const { RegisterPage } = require('../POM/ui/registerPage');
-const { LoginPage } = require('../POM/ui/loginPage');
+import { test, expect } from '@playwright/test';
+import { generateUserCredentials } from '../fixtures/userData';
+import { RegisterPage } from '../POM/modules/ui/registerPage';
+import { LoginPage } from '../POM/modules/ui/loginPage';
 
 test.describe.configure({ mode: 'serial' });
 test.describe('Register and Login successfully', () => {
   //Get user data
-  const { username, email, password } = userData.validUser();
+  const { username, email, password } = generateUserCredentials(5);
   test.beforeEach('Visit Home Page', async ({ page }) => {
-    await page.goto('https://automaticityacademy.ngrok.app/');
+    await page.goto('/');
   });
 
   test('Register Successfully', async ({ page }) => {

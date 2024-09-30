@@ -1,9 +1,9 @@
-const { test } = require('@playwright/test');
+import { test } from '@playwright/test';
 
-exports.Header = class Header {
+export class Header {
   constructor(page) {
     this.page = page;
     this.logInButton = page.locator('#loginBtn');
     this.registerButton = page.getByText('Register');
   }
-};
+}

@@ -1,3 +1,5 @@
+import { generateRandomString } from './utils';
+
 export function validUser() {
   const validUsername = `aleksa${Math.floor(Math.random() * 1000000) + 1}`;
   const validEmail = `aleksa+${
@@ -10,3 +12,12 @@ export function validUser() {
     password: validPassword,
   });
 }
+
+export const generateUserCredentials = length => {
+  const baseString = generateRandomString(length);
+  const username = baseString;
+  const email = `aleksa+${baseString}@email.com`;
+  const password = `${baseString}123`;
+
+  return { username, email, password };
+};
