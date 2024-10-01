@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import { Header } from './header';
-import { HEADINGS, ERRORS } from '../../../fixtures';
+import { HEADINGS, ERRORS, utils, URLS } from '../../../fixtures';
 
 export class RegisterPage {
   constructor(page) {
@@ -23,13 +23,23 @@ export class RegisterPage {
     this.usernameLabel = page.locator('label', {
       hasText: 'Username',
     });
+    this.invalidEmailFormat = page.locator(
+      `.mb-3 .text-center p:has-text("${ERRORS['INVALID_EMAIL_FORMAT']}")`
+    );
     this.usernameInput = this.page.locator('#username');
     this.emailInput = this.page.locator('#email');
     this.passwordInput = this.page.locator('#password');
     this.submitButton = this.page.getByRole('button', { name: 'Register' });
+    this.registerInputs = ['#username', '#email', '#password'];
+    this.emptyInputFields = ['', '', ''];
+    this.invalidEmailInInputField = [
+      utils.generateRandomString(5),
+      'invalid@email',
+      utils.generateRandomString(8),
+    ];
   }
 
-  async registerValidUser(page, username = '', email = '', password = '') {
+  async registerValidUser(page, username, email, password) {
     //initiate header class
     const header = new Header(page);
     await header.registerButton.click();
@@ -37,5 +47,9 @@ export class RegisterPage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.submitButton.click();
+  }
+  async invalidRegister(page, inputData) {
+    await page.goto(URLS['REGISTER']);
+    await utils.fillAndSubmitForm(page, this.registerInputs, inputData);
   }
 }

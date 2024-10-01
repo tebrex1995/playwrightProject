@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { generateUserCredentials, HEADINGS, URLS, ERRORS } from '../fixtures';
+import { generateUserCredentials } from '../fixtures';
 import { RegisterPage } from '../POM/modules/ui/registerPage.js';
 import { LoginPage } from '../POM/modules/ui/loginPage.js';
 //Declare reusable variables
@@ -16,12 +16,26 @@ test.describe('Register and Login successfully', () => {
   test('NE - Register with all  input fields empty', async ({ page }) => {
     //Instantiate register class
     const registerPage = new RegisterPage(page);
-    //Register user with valid credentials
-    await registerPage.registerValidUser(page);
+    //Register user with all empty input fields
+    await registerPage.invalidRegister(page, registerPage.emptyInputFields);
     //Assert
     await expect(registerPage.missingUsername).toBeVisible();
     await expect(registerPage.missingEmail).toBeVisible();
     await expect(registerPage.missingPassword).toBeVisible();
+    await expect(registerPage.successRegisterMessage).toBeHidden();
+  });
+
+  test('NE - Register with invalid email format', async ({ page }) => {
+    //Instantiate register class
+    const registerPage = new RegisterPage(page);
+    //Register user with an empty email input field
+    await registerPage.invalidRegister(
+      page,
+      registerPage.invalidEmailInInputField
+    );
+    //Assert
+    await expect(registerPage.invalidEmailFormat).toBeVisible();
+    await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
   test('Register Successfully', async ({ page }) => {
