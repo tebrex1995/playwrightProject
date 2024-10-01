@@ -33,7 +33,7 @@ test.describe('Register and Login successfully', () => {
       page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
     ).toBeVisible();
     const frame = page.frameLocator('iframe');
-    expect(frame.locator('h4', { hasText: HEADINGS['IFRAME'] })).toBeVisible();
+    await expect(frame.locator('h4', { hasText: HEADINGS['IFRAME'] })).toBeVisible();
   });
 
   test('Login Successfull', async ({ page }) => {
@@ -48,7 +48,7 @@ test.describe('Register and Login successfully', () => {
       page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
     ).toBeVisible();
     const frame = page.frameLocator('iframe');
-    expect(frame.locator('h4', { hasText: HEADINGS['IFRAME'] })).toBeVisible();
+    await expect(frame.locator('h4', { hasText: HEADINGS['IFRAME'] })).toBeVisible();
   });
 
   test.afterEach('Logout', async ({ page }) => {
