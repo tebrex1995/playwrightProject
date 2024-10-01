@@ -1,13 +1,15 @@
 import { test } from '@playwright/test';
 import { Header } from './header';
+import { HEADINGS } from '../../../fixtures';
 
 export class RegisterPage {
   constructor(page) {
     this.page = page;
-    // this.heading = page.locator('h1');
-    this.successRegisterMessage = page.getByText('Successfully registered!');
+    this.successRegisterMessage = page.getByText(
+      HEADINGS['SUCCESSFULL_REGISTER_MESSAGE']
+    );
     this.loginRedirectLink = page.locator('span', {
-      hasText: 'Already have an account?',
+      hasText: HEADINGS['HAVE_ACCOUNT'],
     });
     this.usernameLabel = page.locator('label', { hasText: 'Username' });
     this.usernameInput = this.page.locator('#username');
@@ -20,7 +22,7 @@ export class RegisterPage {
     //initiate header class
     const header = new Header(page);
     await header.registerButton.click();
-    await await this.usernameInput.fill(username);
+    await this.usernameInput.fill(username);
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.submitButton.click();

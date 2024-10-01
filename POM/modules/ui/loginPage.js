@@ -4,7 +4,6 @@ import { Header } from './header';
 export class LoginPage {
   constructor(page) {
     this.page = page;
-    // this.heading = page.locator('h1');
     this.emailInput = page.locator('#email');
     this.passwordInput = page.locator('#password');
     this.submitButton = page.locator('button');

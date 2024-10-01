@@ -19,7 +19,7 @@ test.describe('Register and Login successfully', () => {
     const { username, email, password } = generateUserCredentials(10);
     loginEmail = email;
     loginPassword = password;
-    //Initiate register class
+    //Instantiate register class
     const registerPage = new RegisterPage(page);
     //Register user with valid credentials
     await registerPage.registerValidUser(page, username, email, password);
@@ -37,13 +37,13 @@ test.describe('Register and Login successfully', () => {
   });
 
   test('Login Successfull', async ({ page }) => {
-    //initiate login class
+    //Instantiate login class
     const loginPage = new LoginPage(page);
     //Login user
     await loginPage.loginValidUser(page, loginEmail, loginPassword);
-    //Login user assertations
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);
+    //Login assertions
     await expect(
       page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
     ).toBeVisible();
@@ -52,7 +52,7 @@ test.describe('Register and Login successfully', () => {
   });
 
   test.afterEach('Logout', async ({ page }) => {
-    //initiate login class
+    //Instantiate login class
     const loginPage = new LoginPage(page);
     //Logout user
     await loginPage.logoutUser(page);
