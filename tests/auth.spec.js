@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { generateUserCredentials } from '../fixtures';
+import { generateUserCredentials, URLS, HEADINGS } from '../fixtures';
 import { RegisterPage } from '../POM/modules/ui/registerPage.js';
 import { LoginPage } from '../POM/modules/ui/loginPage.js';
 //Declare reusable variables
-let loginEmail, loginPassword;
+let loginEmail, loginPassword, loginUsername;
 
 //Set serial execution
 test.describe.configure({ mode: 'serial' });
@@ -38,11 +38,23 @@ test.describe('Register and Login successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
+  test('NE - Register with short password', async ({ page }) => {
+    //Instantiate register class
+    const registerPage = new RegisterPage(page);
+    //Register user with an empty email input field
+    await registerPage.invalidRegister(page, registerPage.shortPasswordInput);
+    //Assert
+    await expect(registerPage.shortPassword).toBeVisible();
+    await expect(registerPage.successRegisterMessage).toBeHidden();
+  });
+
   test('Register Successfully', async ({ page }) => {
     //Generate user data
     const { username, email, password } = generateUserCredentials(10);
     loginEmail = email;
     loginPassword = password;
+    loginUsername = username;
+
     //Instantiate register class
     const registerPage = new RegisterPage(page);
     //Register user with valid credentials
@@ -62,6 +74,21 @@ test.describe('Register and Login successfully', () => {
     ).toBeVisible();
   });
 
+  test('NE - Register with taken email & username', async ({ page }) => {
+    //Instantiate register class
+    const registerPage = new RegisterPage(page);
+    //Register user with an empty email input field
+    await registerPage.invalidRegister(page, [
+      loginUsername,
+      loginEmail,
+      loginPassword,
+    ]);
+    //Assert
+    await expect(registerPage.takenEmail).toBeVisible();
+    await expect(registerPage.takenUsername).toBeVisible();
+    await expect(registerPage.successRegisterMessage).toBeHidden();
+  });
+
   test('Login Successfull', async ({ page }) => {
     //Instantiate login class
     const loginPage = new LoginPage(page);
@@ -79,10 +106,10 @@ test.describe('Register and Login successfully', () => {
     ).toBeVisible();
   });
 
-  // test.afterEach('Logout', async ({ page }) => {
-  //   //Instantiate login class
-  //   const loginPage = new LoginPage(page);
-  //   //Logout user
-  //   await loginPage.logoutUser(page);
-  // });
+  test.afterEach('Logout', async ({ page }) => {
+    //Instantiate login class
+    const loginPage = new LoginPage(page);
+    //Logout user
+    await loginPage.logoutUser(page);
+  });
 });

@@ -6,11 +6,14 @@ export class LoginPage {
     this.page = page;
     this.emailInput = page.locator('#email');
     this.passwordInput = page.locator('#password');
+    this.loginInputs = ['#email', '#password'];
     this.submitButton = page.locator('button');
   }
 
   async loginValidUser(page, email, password) {
+    //Instantiate class
     const header = new Header(page);
+    //Page locators
     await header.logInButton.click();
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
@@ -19,7 +22,14 @@ export class LoginPage {
 
   async logoutUser(page) {
     const header = new Header(page);
-    await header.burgerMenu.click();
-    await header.logoutButton.click();
+    if (await header.burgerMenu.isVisible()) {
+      await header.burgerMenu.click();
+      await header.logoutButton.click();
+    }
+  }
+
+  async invalidLogin(page, inputData) {
+    await page.goto(URLS['LOGIN']);
+    await utils.fillAndSubmitForm(page, this.loginInputs, inputData);
   }
 }

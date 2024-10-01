@@ -1,3 +1,5 @@
+import { ERRORS } from './pageTextValues';
+
 const generateRandomString = length => {
   const characters =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -16,4 +18,19 @@ const fillAndSubmitForm = async (page, fields, values) => {
   await page.locator('button').click();
 };
 
-export { generateRandomString, fillAndSubmitForm };
+const locatorPrefix = {
+  usernameEmailPass: '.mb-3 .text-center p:has-text',
+  shortPassword: '.mb-6 .text-center p:has-text',
+};
+
+const formInputLocators = {
+  missingUsername: `${locatorPrefix.usernameEmailPass}("${ERRORS['MISSING_USERNAME']}")`,
+  missingEmail: `${locatorPrefix.usernameEmailPass}("${ERRORS['MISSING_EMAIL']}")`,
+  missingPassword: `${locatorPrefix.usernameEmailPass}("${ERRORS['MISSING_PASSWORD']}")`,
+  shortPassword: `${locatorPrefix.shortPassword}("${ERRORS['SHORT_PASSWORD']}")`,
+  invalidEmailFormat: `${locatorPrefix.usernameEmailPass}("${ERRORS['INVALID_EMAIL_FORMAT']}")`,
+  takenEmail: `${locatorPrefix.usernameEmailPass}("${ERRORS['TAKEN_EMAIL']}")`,
+  takenUsername: `${locatorPrefix.usernameEmailPass}("${ERRORS['TAKEN_USERNAME']}")`,
+};
+
+export { generateRandomString, fillAndSubmitForm, formInputLocators };

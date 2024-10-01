@@ -7,6 +7,7 @@ export const HEADINGS = {
   HAVE_ACCOUNT: 'Already have an account?',
 };
 export const ERRORS = {
+  //Register error messages
   MISSING_USERNAME: 'The username field is required.',
   TAKEN_USERNAME: 'The username has already been taken.',
   MISSING_EMAIL: 'The username field is required.',
@@ -14,4 +15,5 @@ export const ERRORS = {
   TAKEN_EMAIL: 'The email has already been taken.',
   MISSING_PASSWORD: 'The username field is required.',
   SHORT_PASSWORD: 'The password field must be at least 6 characters.',
+  //Login error messages
 };
