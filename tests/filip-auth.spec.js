@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { generateUserCredentials, utils, HEADINGS, URLS } from '../fixtures/';
+import { generateUserCredentials, utils, HEADINGS, URLS } from '../fixtures';
 import { LoginPage } from '../POM/modules/ui/loginPage';
 import { RegisterPage } from '../POM/modules/ui/registerPage';
 

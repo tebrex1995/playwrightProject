@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { generateUserCredentials } from '../fixtures/userData';
+import { generateUserCredentials, HEADINGS } from '../fixtures';
 import { RegisterPage } from '../POM/modules/ui/registerPage';
 import { LoginPage } from '../POM/modules/ui/loginPage';
 
@@ -12,33 +12,39 @@ test.describe('Register and Login successfully', () => {
   });
 
   test('Register Successfully', async ({ page }) => {
+    //Initiate register class
     const registerPage = new RegisterPage(page);
+    //Register user with valid credentials
     await registerPage.registerValidUser(username, email, password);
-    await expect(page.locator('label', { hasText: 'Username' })).toBeVisible();
+    //Register Assertations
+    await expect(registerPage.usernameLabel).toBeVisible();
+    await expect(registerPage.loginRedirectLink).toBeVisible();
+    await expect(registerPage.successRegisterMessage).toBeVisible();
     await expect(
-      page.locator('span', { hasText: 'Already have an account?' })
-    ).toBeVisible();
-    await expect(page.getByText('Successfully registered!')).toBeVisible();
-    await expect(
-      page.locator('span', { hasText: 'Buy some stuff bruh' })
+      page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
     ).toBeVisible();
     const frame = page.frameLocator('iframe');
-    expect(frame.locator('h4', { hasText: 'Today deals:' })).toBeVisible();
+    expect(frame.locator('h4', { hasText: HEADINGS['IFRAME'] })).toBeVisible();
   });
 
   test('Login Successfull', async ({ page }) => {
+    //initiate login class
     const loginPage = new LoginPage(page);
+    //Login user
     await loginPage.loginValidUser(email, password);
-
+    //Login user assertations
     await expect(
-      page.locator('span', { hasText: 'Buy some stuff bruh' })
+      page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
     ).toBeVisible();
-    const frame = page.frameLocator('iframe');
-    expect(frame.locator('h4', { hasText: 'Today deals:' })).toBeVisible();
+    expect(
+      page.frameLocator('iframe', { hasText: HEADINGS['IFRAME'] })
+    ).toBeVisible();
   });
 
   test.afterEach('Logout', async ({ page }) => {
-    await page.locator('.relative > div > span > .inline-flex').click();
-    await page.getByText('Log Out').click();
+    //initiate login class
+    const loginPage = new LoginPage(page);
+    //Logout user
+    await loginPage.logoutUser();
   });
 });
