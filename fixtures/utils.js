@@ -19,18 +19,19 @@ const fillAndSubmitForm = async (page, fields, values) => {
 };
 
 const locatorPrefix = {
-  usernameEmailPass: '.mb-3 .text-center p:has-text',
-  shortPassword: '.mb-6 .text-center p:has-text',
+  mb3Class: '.mb-3 .text-center p:has-text',
+  mb6Class: '.mb-6 .text-center p:has-text',
 };
 
 const formInputLocators = {
-  missingUsername: `${locatorPrefix.usernameEmailPass}("${ERRORS['MISSING_USERNAME']}")`,
-  missingEmail: `${locatorPrefix.usernameEmailPass}("${ERRORS['MISSING_EMAIL']}")`,
-  missingPassword: `${locatorPrefix.usernameEmailPass}("${ERRORS['MISSING_PASSWORD']}")`,
-  shortPassword: `${locatorPrefix.shortPassword}("${ERRORS['SHORT_PASSWORD']}")`,
-  invalidEmailFormat: `${locatorPrefix.usernameEmailPass}("${ERRORS['INVALID_EMAIL_FORMAT']}")`,
-  takenEmail: `${locatorPrefix.usernameEmailPass}("${ERRORS['TAKEN_EMAIL']}")`,
-  takenUsername: `${locatorPrefix.usernameEmailPass}("${ERRORS['TAKEN_USERNAME']}")`,
+  missingUsername: `${locatorPrefix.mb3Class}("${ERRORS['MISSING_USERNAME']}")`,
+  missingEmail: `${locatorPrefix.mb3Class}("${ERRORS['MISSING_EMAIL']}")`,
+  missingPassword: `${locatorPrefix.mb6Class}("${ERRORS['MISSING_PASSWORD']}")`,
+  loginMissingPassword: `${locatorPrefix.mb3Class}("${ERRORS['MISSING_PASSWORD']}")`,
+  shortPassword: `${locatorPrefix.mb6Class}("${ERRORS['SHORT_PASSWORD']}")`,
+  invalidEmailFormat: `${locatorPrefix.mb3Class}("${ERRORS['INVALID_EMAIL_FORMAT']}")`,
+  takenEmail: `${locatorPrefix.mb3Class}("${ERRORS['TAKEN_EMAIL']}")`,
+  takenUsername: `${locatorPrefix.mb3Class}("${ERRORS['TAKEN_USERNAME']}")`,
 };
 
 export { generateRandomString, fillAndSubmitForm, formInputLocators };

@@ -48,6 +48,16 @@ test.describe('Register and Login successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
+  test('NE - Login with empty input fields', async ({ page }) => {
+    //Instantiate  classes
+    const loginPage = new LoginPage(page);
+    const registerPage = new RegisterPage(page);
+    //Try login with empty input fields
+    await loginPage.invalidLogin(page, loginPage.emptyInputFields);
+    //Assert
+    await expect(registerPage.missingEmail).toBeVisible();
+    await expect(loginPage.missingPassword).toBeVisible();
+  });
   test('Register Successfully', async ({ page }) => {
     //Generate user data
     const { username, email, password } = generateUserCredentials(10);

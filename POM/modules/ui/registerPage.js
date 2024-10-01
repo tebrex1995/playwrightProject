@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import { Header } from './header';
-import { HEADINGS, ERRORS, utils, URLS } from '../../../fixtures';
+import { HEADINGS, utils, URLS } from '../../../fixtures';
 
 export class RegisterPage {
   constructor(page) {
@@ -38,14 +38,13 @@ export class RegisterPage {
     this.submitButton = this.page.getByRole('button', { name: 'Register' });
     this.registerInputs = ['#username', '#email', '#password'];
 
-    //Data
+    //Test Data
     this.emptyInputFields = ['', '', ''];
     this.invalidEmailInInputField = [
       utils.generateRandomString(5),
       'invalid@email',
       utils.generateRandomString(8),
     ];
-
     this.shortPasswordInput = [
       utils.generateRandomString(5),
       `${utils.generateRandomString(5)}@email.com`,

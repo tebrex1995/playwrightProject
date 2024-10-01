@@ -10,10 +10,10 @@ export const ERRORS = {
   //Register error messages
   MISSING_USERNAME: 'The username field is required.',
   TAKEN_USERNAME: 'The username has already been taken.',
-  MISSING_EMAIL: 'The username field is required.',
+  MISSING_EMAIL: 'The email field is required.',
   INVALID_EMAIL_FORMAT: 'The email field format is invalid.',
   TAKEN_EMAIL: 'The email has already been taken.',
-  MISSING_PASSWORD: 'The username field is required.',
+  MISSING_PASSWORD: 'The password field is required.',
   SHORT_PASSWORD: 'The password field must be at least 6 characters.',
   //Login error messages
 };

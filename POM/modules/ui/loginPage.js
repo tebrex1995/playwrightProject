@@ -1,13 +1,21 @@
 import { test } from '@playwright/test';
 import { Header } from './header';
+import { URLS, utils } from '../../../fixtures';
 
 export class LoginPage {
   constructor(page) {
     this.page = page;
+    //Error message locator
+    this.missingPassword = page.locator(
+      utils.formInputLocators.loginMissingPassword
+    );
+    //Page inputs
     this.emailInput = page.locator('#email');
     this.passwordInput = page.locator('#password');
-    this.loginInputs = ['#email', '#password'];
     this.submitButton = page.locator('button');
+    this.loginInputs = ['#email', '#password'];
+    //Test Data
+    this.emptyInputFields = ['', ''];
   }
 
   async loginValidUser(page, email, password) {
