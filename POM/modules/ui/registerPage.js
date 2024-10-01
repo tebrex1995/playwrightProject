@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import { Header } from './header';
-import { HEADINGS } from '../../../fixtures';
+import { HEADINGS, ERRORS } from '../../../fixtures';
 
 export class RegisterPage {
   constructor(page) {
@@ -11,14 +11,25 @@ export class RegisterPage {
     this.loginRedirectLink = page.locator('span', {
       hasText: HEADINGS['HAVE_ACCOUNT'],
     });
-    this.usernameLabel = page.locator('label', { hasText: 'Username' });
+    this.missingUsername = page.locator(
+      `.mb-3 .text-center p:has-text("${ERRORS['MISSING_USERNAME']}")`
+    );
+    this.missingEmail = page.locator(
+      `.mb-3 .text-center p:has-text("${ERRORS['MISSING_EMAIL']}")`
+    );
+    this.missingPassword = page.locator(
+      `.mb-3 .text-center p:has-text("${ERRORS['MISSING_PASSWORD']}")`
+    );
+    this.usernameLabel = page.locator('label', {
+      hasText: 'Username',
+    });
     this.usernameInput = this.page.locator('#username');
     this.emailInput = this.page.locator('#email');
     this.passwordInput = this.page.locator('#password');
     this.submitButton = this.page.getByRole('button', { name: 'Register' });
   }
 
-  async registerValidUser(page, username, email, password) {
+  async registerValidUser(page, username = '', email = '', password = '') {
     //initiate header class
     const header = new Header(page);
     await header.registerButton.click();
