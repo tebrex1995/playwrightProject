@@ -16,4 +16,6 @@ export const ERRORS = {
   MISSING_PASSWORD: 'The password field is required.',
   SHORT_PASSWORD: 'The password field must be at least 6 characters.',
   //Login error messages
+  WRONG_EMAIL_OR_PASSWORD:
+    'The email address or password you entered is invalid',
 };

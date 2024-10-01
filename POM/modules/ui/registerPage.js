@@ -29,6 +29,7 @@ export class RegisterPage {
     });
 
     //Page locators
+    this.heading = page.locator('h1');
     this.loginRedirectLink = page.locator('span', {
       hasText: HEADINGS['HAVE_ACCOUNT'],
     });

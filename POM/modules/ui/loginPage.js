@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import { Header } from './header';
-import { URLS, utils } from '../../../fixtures';
+import { ERRORS, URLS, utils } from '../../../fixtures';
 
 export class LoginPage {
   constructor(page) {
@@ -9,13 +9,21 @@ export class LoginPage {
     this.missingPassword = page.locator(
       utils.formInputLocators.loginMissingPassword
     );
-    //Page inputs
+    this.wrongEmailOrPasswod = page.getByText(
+      `${ERRORS['WRONG_EMAIL_OR_PASSWORD']}`
+    );
+    //Page locators
+    this.heading = page.locator('h1');
     this.emailInput = page.locator('#email');
     this.passwordInput = page.locator('#password');
     this.submitButton = page.locator('button');
     this.loginInputs = ['#email', '#password'];
     //Test Data
     this.emptyInputFields = ['', ''];
+    this.wrongEmailAndPassword = [
+      `${utils.generateRandomString(4)}@test.com`,
+      utils.generateRandomString(7),
+    ];
   }
 
   async loginValidUser(page, email, password) {

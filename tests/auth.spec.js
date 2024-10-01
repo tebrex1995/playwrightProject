@@ -58,6 +58,17 @@ test.describe('Register and Login successfully', () => {
     await expect(registerPage.missingEmail).toBeVisible();
     await expect(loginPage.missingPassword).toBeVisible();
   });
+  test('NE - Login with non-existing email', async ({ page }) => {
+    //Instantiate  classes
+    const loginPage = new LoginPage(page);
+    const registerPage = new RegisterPage(page);
+    //Try login with empty input fields
+    await loginPage.invalidLogin(page, loginPage.wrongEmailAndPassword);
+    //Assert
+    await expect(loginPage.wrongEmailOrPasswod).toBeVisible();
+    await expect(loginPage.heading).toHaveText(HEADINGS['LOGIN']);
+  });
+
   test('Register Successfully', async ({ page }) => {
     //Generate user data
     const { username, email, password } = generateUserCredentials(10);
