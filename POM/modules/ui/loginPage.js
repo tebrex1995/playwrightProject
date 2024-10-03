@@ -7,17 +7,19 @@ export class LoginPage {
     this.page = page;
     //Error message locator
     this.missingPassword = page.locator(
-      utils.formInputLocators.loginMissingPassword
+      `.mb-3 .text-center p:has-text("${ERRORS['MISSING_PASSWORD']}")`
     );
     this.wrongEmailOrPasswod = page.getByText(
       `${ERRORS['WRONG_EMAIL_OR_PASSWORD']}`
     );
     //Page locators
+
     this.heading = page.locator('h1');
     this.emailInput = page.locator('#email');
     this.passwordInput = page.locator('#password');
     this.submitButton = page.locator('button');
     this.loginInputs = ['#email', '#password'];
+
     //Test Data
     this.emptyInputFields = [
       utils.generateRandomString(0),

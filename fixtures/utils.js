@@ -18,20 +18,4 @@ const fillAndSubmitForm = async (page, fields, values) => {
   await page.locator('button').click();
 };
 
-const locatorPrefix = {
-  mb3Class: '.mb-3 .text-center p:has-text',
-  mb6Class: '.mb-6 .text-center p:has-text',
-};
-
-const formInputLocators = {
-  missingUsername: `${locatorPrefix.mb3Class}("${ERRORS['MISSING_USERNAME']}")`,
-  missingEmail: `${locatorPrefix.mb3Class}("${ERRORS['MISSING_EMAIL']}")`,
-  missingPassword: `${locatorPrefix.mb6Class}("${ERRORS['MISSING_PASSWORD']}")`,
-  loginMissingPassword: `${locatorPrefix.mb3Class}("${ERRORS['MISSING_PASSWORD']}")`,
-  shortPassword: `${locatorPrefix.mb6Class}("${ERRORS['SHORT_PASSWORD']}")`,
-  invalidEmailFormat: `${locatorPrefix.mb3Class}("${ERRORS['INVALID_EMAIL_FORMAT']}")`,
-  takenEmail: `${locatorPrefix.mb3Class}("${ERRORS['TAKEN_EMAIL']}")`,
-  takenUsername: `${locatorPrefix.mb3Class}("${ERRORS['TAKEN_USERNAME']}")`,
-};
-
-export { generateRandomString, fillAndSubmitForm, formInputLocators };
+export { generateRandomString, fillAndSubmitForm };
