@@ -22,14 +22,17 @@ export class RegisterApi {
   }
 
   async registerViaApi(username, email, password) {
-    let response = await this.page.request.post(this.registerEndpoint, {
-      headers: { Accept: 'application/json' },
-      data: {
-        username: username,
-        email: email,
-        password: password,
-      },
-    });
+    let response = await this.page.request.post(
+      'https://automaticityacademy.ngrok.app/api/v1/auth/register',
+      {
+        headers: { Accept: 'application/json' },
+        data: {
+          username: username,
+          email: email,
+          password: password,
+        },
+      }
+    );
     let responseJson = response.json();
     return responseJson;
   }

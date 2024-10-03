@@ -5,5 +5,5 @@ export const URLS = {
 };
 
 export const BASE_API = {
-  BASE_API: '/api/v1/auth',
+  BASE_API: 'https://automaticityacademy.ngrok.app/api/v1/auth',
 };

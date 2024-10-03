@@ -17,13 +17,16 @@ export class LoginApi {
   }
 
   async loginViaBE(email, password) {
-    let response = await this.page.request.post(this.loginEndpoint, {
-      headers: { Accept: 'application/json' },
-      data: {
-        email: email,
-        password: password,
-      },
-    });
+    let response = await this.page.request.post(
+      'https://automaticityacademy.ngrok.app/api/v1/auth/login',
+      {
+        headers: { Accept: 'application/json' },
+        data: {
+          email: email,
+          password: password,
+        },
+      }
+    );
     let responseJson = await response.json();
 
     return responseJson;

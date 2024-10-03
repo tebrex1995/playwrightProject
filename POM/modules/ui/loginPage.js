@@ -7,10 +7,10 @@ export class LoginPage {
     this.page = page;
     //Error message locator
     this.missingPassword = page.locator(
-      `.mb-3 .text-center p:has-text("${ERRORS['MISSING_PASSWORD']}")`
+      `.mb-3 .text-center p:has-text("${ERRORS['LOGIN']['MISSING_PASSWORD']}")`
     );
     this.wrongEmailOrPasswod = page.getByText(
-      `${ERRORS['WRONG_EMAIL_OR_PASSWORD']}`
+      `${ERRORS['LOGIN']['WRONG_EMAIL_OR_PASSWORD']}`
     );
     //Page locators
 

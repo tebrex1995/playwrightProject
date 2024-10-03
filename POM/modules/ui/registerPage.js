@@ -15,13 +15,13 @@ export class RegisterPage {
       mb6Class: '.mb-6 .text-center p:has-text',
     };
     this.formInputLocators = {
-      missingUsername: `${this.locatorPrefix.mb3Class}("${ERRORS['MISSING_USERNAME']}")`,
-      missingEmail: `${this.locatorPrefix.mb3Class}("${ERRORS['MISSING_EMAIL']}")`,
-      missingPassword: `${this.locatorPrefix.mb6Class}("${ERRORS['MISSING_PASSWORD']}")`,
-      shortPassword: `${this.locatorPrefix.mb6Class}("${ERRORS['SHORT_PASSWORD']}")`,
-      invalidEmailFormat: `${this.locatorPrefix.mb3Class}("${ERRORS['INVALID_EMAIL_FORMAT']}")`,
-      takenEmail: `${this.locatorPrefix.mb3Class}("${ERRORS['TAKEN_EMAIL']}")`,
-      takenUsername: `${this.locatorPrefix.mb3Class}("${ERRORS['TAKEN_USERNAME']}")`,
+      missingUsername: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['MISSING_USERNAME']}")`,
+      missingEmail: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['MISSING_EMAIL']}")`,
+      missingPassword: `${this.locatorPrefix.mb6Class}("${ERRORS['REGISTER']['MISSING_PASSWORD']}")`,
+      shortPassword: `${this.locatorPrefix.mb6Class}("${ERRORS['REGISTER']['SHORT_PASSWORD']}")`,
+      invalidEmailFormat: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['INVALID_EMAIL_FORMAT']}")`,
+      takenEmail: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['TAKEN_EMAIL']}")`,
+      takenUsername: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['TAKEN_USERNAME']}")`,
     };
     this.heading = page.locator('h1');
     this.loginRedirectLink = page.locator('span', {

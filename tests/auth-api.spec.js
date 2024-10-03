@@ -14,7 +14,7 @@ let loginEmail, loginPassword, loginUsername;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Register and login via Api', () => {
-  test('NE - Register with all input fields emty', async ({ page }) => {
+  test('NE - Register with all input fields empty', async ({ page }) => {
     //Instantiate api register class
     const registerApi = new RegisterApi(page);
     //Register user successfully
@@ -24,12 +24,14 @@ test.describe('Register and login via Api', () => {
       registerApi.emptyInputFields['password']
     );
     //Assertations
-    expect(responseJson['errors']['email']).toContain(ERRORS['MISSING_EMAIL']);
+    expect(responseJson['errors']['email']).toContain(
+      ERRORS['REGISTER']['MISSING_EMAIL']
+    );
     expect(responseJson['errors']['username']).toContain(
-      ERRORS['MISSING_USERNAME']
+      ERRORS['REGISTER']['MISSING_USERNAME']
     );
     expect(responseJson['errors']['password']).toContain(
-      ERRORS['MISSING_PASSWORD']
+      ERRORS['REGISTER']['MISSING_PASSWORD']
     );
   });
 
@@ -43,9 +45,11 @@ test.describe('Register and login via Api', () => {
       registerApi.invalidEmailFormat['password']
     );
     //Assertations
-    expect(responseJson['message']).toBe(ERRORS['INVALID_EMAIL_FORMAT']);
+    expect(responseJson['message']).toBe(
+      ERRORS['REGISTER']['INVALID_EMAIL_FORMAT']
+    );
     expect(responseJson['errors']['email']).toContain(
-      ERRORS['INVALID_EMAIL_FORMAT']
+      ERRORS['REGISTER']['INVALID_EMAIL_FORMAT']
     );
   });
 
@@ -59,9 +63,9 @@ test.describe('Register and login via Api', () => {
       registerApi.shortPassword['password']
     );
     //Assertations
-    expect(responseJson['message']).toBe(ERRORS['SHORT_PASSWORD']);
+    expect(responseJson['message']).toBe(ERRORS['REGISTER']['SHORT_PASSWORD']);
     expect(responseJson['errors']['password']).toContain(
-      ERRORS['SHORT_PASSWORD']
+      ERRORS['REGISTER']['SHORT_PASSWORD']
     );
   });
 
@@ -74,9 +78,11 @@ test.describe('Register and login via Api', () => {
       loginApi.emptyInputFields['password']
     );
     //Assertations
-    expect(responseJson['errors']['email']).toContain(ERRORS['MISSING_EMAIL']);
+    expect(responseJson['errors']['email']).toContain(
+      ERRORS['LOGIN']['MISSING_EMAIL']
+    );
     expect(responseJson['errors']['password']).toContain(
-      ERRORS['MISSING_PASSWORD']
+      ERRORS['LOGIN']['MISSING_PASSWORD']
     );
   });
 
@@ -122,9 +128,11 @@ test.describe('Register and login via Api', () => {
       loginPassword
     );
     expect(responseJson['errors']['username']).toContain(
-      ERRORS['TAKEN_USERNAME']
+      ERRORS['REGISTER']['TAKEN_USERNAME']
     );
-    expect(responseJson['errors']['email']).toContain(ERRORS['TAKEN_EMAIL']);
+    expect(responseJson['errors']['email']).toContain(
+      ERRORS['REGISTER']['TAKEN_EMAIL']
+    );
   });
 
   test('Login with registered user', async ({ page }) => {
