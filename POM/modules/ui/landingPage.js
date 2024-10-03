@@ -1,5 +1,3 @@
-import { test } from '@playwright/test';
-
 export class LandingPage {
   constructor(page) {
     this.page = page;

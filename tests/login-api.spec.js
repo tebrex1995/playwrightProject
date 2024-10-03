@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { LoginApi } from '../POM/modules/api/loginApi';
 import { RESPONSE_MESSAGES, existingUser, ERRORS } from '../fixtures';
-import { LoginPage } from '../POM/modules/ui/loginPage';
 
 test.describe('Login via API', () => {
   let loginApi;

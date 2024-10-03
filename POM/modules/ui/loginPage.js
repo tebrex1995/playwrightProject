@@ -1,4 +1,3 @@
-import { test } from '@playwright/test';
 import { Header } from './header';
 import { ERRORS, URLS, utils } from '../../../fixtures';
 
