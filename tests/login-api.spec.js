@@ -7,7 +7,7 @@ test.describe('Login via API', () => {
   test.beforeEach('Instantiate class', async ({ page }) => {
     loginApi = new LoginApi(page);
   });
-  test('NE - Shouldn"t be able to login without provided data', async ({
+  test.only('NE - Shouldn"t be able to login without provided data', async ({
     page,
   }) => {
     //Login registered user
