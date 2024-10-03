@@ -5,7 +5,6 @@ import { HEADINGS, utils, URLS, ERRORS } from '../../../fixtures';
 export class RegisterPage {
   constructor(page) {
     this.page = page;
-    //Success message
     this.successRegisterMessage = page.getByText(
       HEADINGS['SUCCESSFULL_REGISTER_MESSAGE']
     );
