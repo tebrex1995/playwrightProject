@@ -40,7 +40,11 @@ export class RegisterPage {
     this.registerInputs = ['#username', '#email', '#password'];
 
     //Test Data
-    this.emptyInputFields = ['', '', ''];
+    this.emptyInputFields = [
+      utils.generateRandomString(0),
+      utils.generateRandomString(0),
+      utils.generateRandomString(0),
+    ];
     this.invalidEmailInInputField = [
       utils.generateRandomString(5),
       'invalid@email',

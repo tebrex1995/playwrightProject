@@ -19,7 +19,10 @@ export class LoginPage {
     this.submitButton = page.locator('button');
     this.loginInputs = ['#email', '#password'];
     //Test Data
-    this.emptyInputFields = ['', ''];
+    this.emptyInputFields = [
+      utils.generateRandomString(0),
+      utils.generateRandomString(0),
+    ];
     this.wrongEmailAndPassword = [
       `${utils.generateRandomString(4)}@test.com`,
       utils.generateRandomString(7),

@@ -3,6 +3,21 @@ import { URLS, utils } from '../../../fixtures';
 export class RegisterApi {
   constructor(page) {
     this.page = page;
+    this.emptyInputFields = {
+      username: utils.generateRandomString(0),
+      email: utils.generateRandomString(0),
+      password: utils.generateRandomString(0),
+    };
+    this.invalidEmailFormat = {
+      username: utils.generateRandomString(6),
+      email: `${utils.generateRandomString(5)}@email`,
+      password: utils.generateRandomString(6),
+    };
+    this.shortPassword = {
+      username: utils.generateRandomString(6),
+      email: `${utils.generateRandomString(5)}@email.com`,
+      password: utils.generateRandomString(3),
+    };
   }
 
   async registerViaApi(username, email, password) {
