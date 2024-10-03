@@ -12,7 +12,6 @@ export class LoginPage {
       `${ERRORS['LOGIN']['WRONG_EMAIL_OR_PASSWORD']}`
     );
     //Page locators
-
     this.heading = page.locator('h1');
     this.emailInput = page.locator('#email');
     this.passwordInput = page.locator('#password');
