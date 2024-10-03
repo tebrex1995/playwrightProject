@@ -5,14 +5,15 @@ import { generateUserCredentials, URLS, HEADINGS } from '../fixtures';
 
 test.describe('Register user successfully', () => {
   let registerPage, loginPage;
-  test.beforeEach('Visit Home Page', async ({ page }) => {
-    await page.goto('/');
+  test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
+    await page.goto(`${URLS['REGISTER']}`);
+    await expect(page).toHaveURL(/.*register/);
     //Instantiate register class
     registerPage = new RegisterPage(page);
     loginPage = new LoginPage(page);
   });
 
-  test('NE - Shouldn"t be able to register without providing data', async ({
+  test('Shouldn"t be able to register without providing data', async ({
     page,
   }) => {
     //Register user with all empty input fields
@@ -24,7 +25,7 @@ test.describe('Register user successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
-  test('NE - Should"t be able to register with invalid email format provided', async ({
+  test('Should"t be able to register with invalid email format provided', async ({
     page,
   }) => {
     //Register user with an empty email input field
@@ -37,7 +38,7 @@ test.describe('Register user successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
-  test('NE - Should"t be able to register with password less than 3 characters', async ({
+  test('Should"t be able to register with password less than 3 characters', async ({
     page,
   }) => {
     //Register user with an empty email input field
@@ -47,7 +48,7 @@ test.describe('Register user successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
-  test('Register Successfully', async ({ page }) => {
+  test('Should be Registered Successfully', async ({ page }) => {
     //Generate user data
     const { username, email, password } = generateUserCredentials(10);
     //Register user with valid credentials

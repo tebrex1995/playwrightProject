@@ -33,7 +33,6 @@ export class LoginPage {
     //Instantiate class
     const header = new Header(page);
     //Page locators
-    await header.logInButton.click();
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.submitButton.click();

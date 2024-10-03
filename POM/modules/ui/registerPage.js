@@ -1,5 +1,6 @@
 import { Header } from './header';
 import { HEADINGS, utils, URLS, ERRORS } from '../../../fixtures';
+import { Common } from './Common';
 
 export class RegisterPage {
   constructor(page) {
@@ -9,19 +10,7 @@ export class RegisterPage {
     );
 
     //Page locators
-    this.locatorPrefix = {
-      mb3Class: '.mb-3 .text-center p:has-text',
-      mb6Class: '.mb-6 .text-center p:has-text',
-    };
-    this.formInputLocators = {
-      missingUsername: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['MISSING_USERNAME']}")`,
-      missingEmail: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['MISSING_EMAIL']}")`,
-      missingPassword: `${this.locatorPrefix.mb6Class}("${ERRORS['REGISTER']['MISSING_PASSWORD']}")`,
-      shortPassword: `${this.locatorPrefix.mb6Class}("${ERRORS['REGISTER']['SHORT_PASSWORD']}")`,
-      invalidEmailFormat: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['INVALID_EMAIL_FORMAT']}")`,
-      takenEmail: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['TAKEN_EMAIL']}")`,
-      takenUsername: `${this.locatorPrefix.mb3Class}("${ERRORS['REGISTER']['TAKEN_USERNAME']}")`,
-    };
+    this.common = new Common(page);
     this.heading = page.locator('h1');
     this.loginRedirectLink = page.locator('span', {
       hasText: HEADINGS['HAVE_ACCOUNT'],
@@ -33,14 +22,24 @@ export class RegisterPage {
     this.registerInputs = ['#username', '#email', '#password'];
 
     //Input field error messages
-    this.missingUsername = page.locator(this.formInputLocators.missingUsername);
-    this.missingEmail = page.locator(this.formInputLocators.missingEmail);
-    this.missingPassword = page.locator(this.formInputLocators.missingPassword);
-    this.shortPassword = page.locator(this.formInputLocators.shortPassword);
-    this.takenEmail = page.locator(this.formInputLocators.takenEmail);
-    this.takenUsername = page.locator(this.formInputLocators.takenUsername);
+    this.missingUsername = page.locator(
+      this.common.formInputLocators.missingUsername
+    );
+    this.missingEmail = page.locator(
+      this.common.formInputLocators.missingEmail
+    );
+    this.missingPassword = page.locator(
+      this.common.formInputLocators.missingPassword
+    );
+    this.shortPassword = page.locator(
+      this.common.formInputLocators.shortPassword
+    );
+    this.takenEmail = page.locator(this.common.formInputLocators.takenEmail);
+    this.takenUsername = page.locator(
+      this.common.formInputLocators.takenUsername
+    );
     this.invalidEmailFormat = page.locator(
-      this.formInputLocators.invalidEmailFormat
+      this.common.formInputLocators.invalidEmailFormat
     );
     this.usernameLabel = page.locator('label', {
       hasText: 'Username',
@@ -66,7 +65,6 @@ export class RegisterPage {
   async registerValidUser(page, username, email, password) {
     //Instantiate header class
     const header = new Header(page);
-    await header.registerButton.click();
     await this.usernameInput.fill(username);
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
