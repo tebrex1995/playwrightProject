@@ -65,7 +65,7 @@ export class RegisterPage {
   }
 
   async registerValidUser(page, username, email, password) {
-    //initiate header class
+    //Instantiate header class
     const header = new Header(page);
     await header.registerButton.click();
     await this.usernameInput.fill(username);

@@ -1,14 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { RegisterPage } from '../POM/modules/ui/registerPage';
+import { LoginPage } from '../POM/modules/ui/loginPage';
 import { generateUserCredentials, URLS, HEADINGS } from '../fixtures';
-import { RegisterPage } from '../POM/modules/ui/registerPage.js';
-import { LoginPage } from '../POM/modules/ui/loginPage.js';
-//Declare reusable variables
-let loginEmail, loginPassword, loginUsername;
 
-//Set serial execution
-test.describe.configure({ mode: 'serial' });
-
-test.describe('Register and Login successfully', () => {
+test.describe('Register user successfully', () => {
   test.beforeEach('Visit Home Page', async ({ page }) => {
     await page.goto('/');
   });
@@ -54,38 +49,9 @@ test.describe('Register and Login successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
-  test('NE -Shouldn"t be able to login without providing data', async ({
-    page,
-  }) => {
-    //Instantiate  classes
-    const loginPage = new LoginPage(page);
-    const registerPage = new RegisterPage(page);
-    //Try login with empty input fields
-    await loginPage.invalidLogin(page, loginPage.emptyInputFields);
-    //Assert
-    await expect(registerPage.missingEmail).toBeVisible();
-    await expect(loginPage.missingPassword).toBeVisible();
-  });
-  test('NE - Shouldn"t be able to login with email that is not registered', async ({
-    page,
-  }) => {
-    //Instantiate  classes
-    const loginPage = new LoginPage(page);
-    const registerPage = new RegisterPage(page);
-    //Try login with empty input fields
-    await loginPage.invalidLogin(page, loginPage.wrongEmailAndPassword);
-    //Assert
-    await expect(loginPage.wrongEmailOrPasswod).toBeVisible();
-    await expect(loginPage.heading).toHaveText(HEADINGS['LOGIN']);
-  });
-
   test('Register Successfully', async ({ page }) => {
     //Generate user data
     const { username, email, password } = generateUserCredentials(10);
-    loginEmail = email;
-    loginPassword = password;
-    loginUsername = username;
-
     //Instantiate register class
     const registerPage = new RegisterPage(page);
     //Register user with valid credentials
@@ -104,41 +70,6 @@ test.describe('Register and Login successfully', () => {
       frame.locator('h4', { hasText: HEADINGS['IFRAME'] })
     ).toBeVisible();
   });
-
-  test('NE - Should"t be able to register with already used email and password', async ({
-    page,
-  }) => {
-    //Instantiate register class
-    const registerPage = new RegisterPage(page);
-    //Register user with an empty email input field
-    await registerPage.invalidRegister(page, [
-      loginUsername,
-      loginEmail,
-      loginPassword,
-    ]);
-    //Assert
-    await expect(registerPage.takenEmail).toBeVisible();
-    await expect(registerPage.takenUsername).toBeVisible();
-    await expect(registerPage.successRegisterMessage).toBeHidden();
-  });
-
-  test('Login Successfull', async ({ page }) => {
-    //Instantiate login class
-    const loginPage = new LoginPage(page);
-    //Login user
-    await loginPage.loginValidUser(page, loginEmail, loginPassword);
-    //Wait for url to load
-    await page.waitForURL(URLS['DASHBOARD']);
-    //Login assertions
-    await expect(
-      page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
-    ).toBeVisible();
-    const frame = page.frameLocator('iframe');
-    await expect(
-      frame.locator('h4', { hasText: HEADINGS['IFRAME'] })
-    ).toBeVisible();
-  });
-
   test.afterEach('Logout', async ({ page }) => {
     //Instantiate login class
     const loginPage = new LoginPage(page);
