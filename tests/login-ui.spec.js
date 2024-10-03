@@ -4,16 +4,16 @@ import { RegisterPage } from '../POM/modules/ui/registerPage.js';
 import { LoginPage } from '../POM/modules/ui/loginPage.js';
 
 test.describe('Login UI tests', () => {
+  let loginPage, registerPage;
   test.beforeEach('Visit Home Page', async ({ page }) => {
     await page.goto('/');
+    loginPage = new LoginPage(page);
+    registerPage = new RegisterPage(page);
   });
 
   test('NE -Shouldn"t be able to login without providing data', async ({
     page,
   }) => {
-    //Instantiate  classes
-    const loginPage = new LoginPage(page);
-    const registerPage = new RegisterPage(page);
     //Try login with empty input fields
     await loginPage.invalidLogin(page, loginPage.emptyInputFields);
     //Assert
@@ -24,9 +24,6 @@ test.describe('Login UI tests', () => {
   test('NE - Shouldn"t be able to login with email that is not registered', async ({
     page,
   }) => {
-    //Instantiate  classes
-    const loginPage = new LoginPage(page);
-    const registerPage = new RegisterPage(page);
     //Try login with empty input fields
     await loginPage.invalidLogin(page, loginPage.wrongEmailAndPassword);
     //Assert
@@ -34,8 +31,6 @@ test.describe('Login UI tests', () => {
     await expect(loginPage.heading).toHaveText(HEADINGS['LOGIN']);
   });
   test('Login Successfull', async ({ page }) => {
-    //Instantiate login class
-    const loginPage = new LoginPage(page);
     //Login user
     await loginPage.loginValidUser(
       page,
@@ -55,8 +50,6 @@ test.describe('Login UI tests', () => {
   });
 
   test.afterEach('Logout', async ({ page }) => {
-    //Instantiate login class
-    const loginPage = new LoginPage(page);
     //Logout user
     await loginPage.logoutUser(page);
   });

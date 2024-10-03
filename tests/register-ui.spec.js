@@ -4,15 +4,17 @@ import { LoginPage } from '../POM/modules/ui/loginPage';
 import { generateUserCredentials, URLS, HEADINGS } from '../fixtures';
 
 test.describe('Register user successfully', () => {
+  let registerPage, loginPage;
   test.beforeEach('Visit Home Page', async ({ page }) => {
     await page.goto('/');
+    //Instantiate register class
+    registerPage = new RegisterPage(page);
+    loginPage = new LoginPage(page);
   });
 
   test('NE - Shouldn"t be able to register without providing data', async ({
     page,
   }) => {
-    //Instantiate register class
-    const registerPage = new RegisterPage(page);
     //Register user with all empty input fields
     await registerPage.invalidRegister(page, registerPage.emptyInputFields);
     //Assert
@@ -25,8 +27,6 @@ test.describe('Register user successfully', () => {
   test('NE - Should"t be able to register with invalid email format provided', async ({
     page,
   }) => {
-    //Instantiate register class
-    const registerPage = new RegisterPage(page);
     //Register user with an empty email input field
     await registerPage.invalidRegister(
       page,
@@ -40,8 +40,6 @@ test.describe('Register user successfully', () => {
   test('NE - Should"t be able to register with password less than 3 characters', async ({
     page,
   }) => {
-    //Instantiate register class
-    const registerPage = new RegisterPage(page);
     //Register user with an empty email input field
     await registerPage.invalidRegister(page, registerPage.shortPasswordInput);
     //Assert
@@ -52,8 +50,6 @@ test.describe('Register user successfully', () => {
   test('Register Successfully', async ({ page }) => {
     //Generate user data
     const { username, email, password } = generateUserCredentials(10);
-    //Instantiate register class
-    const registerPage = new RegisterPage(page);
     //Register user with valid credentials
     await registerPage.registerValidUser(page, username, email, password);
     //Register Assertations
@@ -71,8 +67,6 @@ test.describe('Register user successfully', () => {
     ).toBeVisible();
   });
   test.afterEach('Logout', async ({ page }) => {
-    //Instantiate login class
-    const loginPage = new LoginPage(page);
     //Logout user
     await loginPage.logoutUser(page);
   });

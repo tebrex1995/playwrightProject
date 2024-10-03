@@ -8,11 +8,13 @@ import {
 } from '../fixtures';
 
 test.describe('Register via Api', () => {
+  let registerApi;
+  test.beforeEach('Instantiate class', async ({ page }) => {
+    registerApi = new RegisterApi(page);
+  });
   test('NE - Shouldn"t be able to register without provided data', async ({
     page,
   }) => {
-    //Instantiate api register class
-    const registerApi = new RegisterApi(page);
     //Register user with empty input fields
     const responseJson = await registerApi.registerViaApi(
       registerApi.emptyInputFields['username'],
@@ -33,8 +35,6 @@ test.describe('Register via Api', () => {
   test('NE - Shouldn"t be able to register with already used email and password', async ({
     page,
   }) => {
-    //Instantiate api register class
-    const registerApi = new RegisterApi(page);
     //Register user successfully
     const responseJson = await registerApi.registerViaApi(
       existingUser['username'],
@@ -52,8 +52,6 @@ test.describe('Register via Api', () => {
   test('NE - Shouldn"t be able to register with invalid email format', async ({
     page,
   }) => {
-    //Instantiate api register class
-    const registerApi = new RegisterApi(page);
     //Register user successfully
     const responseJson = await registerApi.registerViaApi(
       registerApi.invalidEmailFormat['username'],
@@ -72,8 +70,6 @@ test.describe('Register via Api', () => {
   test('NE - Shouldn"t be able to register with short password', async ({
     page,
   }) => {
-    //Instantiate api register class
-    const registerApi = new RegisterApi(page);
     //Register user successfully
     const responseJson = await registerApi.registerViaApi(
       registerApi.shortPassword['username'],
@@ -89,8 +85,6 @@ test.describe('Register via Api', () => {
   test('Register successfully', async ({ page }) => {
     //Generate valid test data
     const { username, email, password } = generateUserCredentials(6);
-    //Instantiate api register class
-    const registerApi = new RegisterApi(page);
     //Register user successfully
     const responseJson = await registerApi.registerViaApi(
       username,

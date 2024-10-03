@@ -1,13 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { LoginApi } from '../POM/modules/api/loginApi';
 import { RESPONSE_MESSAGES, existingUser, ERRORS } from '../fixtures';
+import { LoginPage } from '../POM/modules/ui/loginPage';
 
 test.describe('Login via API', () => {
+  let loginApi;
+  test.beforeEach('Instantiate class', async ({ page }) => {
+    loginApi = new LoginApi(page);
+  });
   test('NE - Shouldn"t be able to login without provided data', async ({
     page,
   }) => {
-    //Instantiate api login class
-    const loginApi = new LoginApi(page);
     //Login registered user
     const responseJson = await loginApi.loginViaBE(
       loginApi.emptyInputFields['email'],
@@ -24,8 +27,6 @@ test.describe('Login via API', () => {
   test('NE - Shouldn"t be able to login with not registered user', async ({
     page,
   }) => {
-    //Instantiate api login class
-    const loginApi = new LoginApi(page);
     //Login registered user
     const responseJson = await loginApi.loginViaBE(
       loginApi.nonExistingUser['email'],
@@ -34,8 +35,6 @@ test.describe('Login via API', () => {
     expect(responseJson['error']).toBe(RESPONSE_MESSAGES['UNAUTHORIZED']);
   });
   test('Login with registerd user', async ({ page }) => {
-    //Instantiate api login class
-    const loginApi = new LoginApi(page);
     //Login registered user
     const responseJson = await loginApi.loginViaBE(
       existingUser.email,
