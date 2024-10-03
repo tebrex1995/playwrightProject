@@ -13,7 +13,9 @@ test.describe('Register and Login successfully', () => {
     await page.goto('/');
   });
 
-  test('NE - Register with all  input fields empty', async ({ page }) => {
+  test('NE - Shouldn"t be able to register without providing data', async ({
+    page,
+  }) => {
     //Instantiate register class
     const registerPage = new RegisterPage(page);
     //Register user with all empty input fields
@@ -25,7 +27,9 @@ test.describe('Register and Login successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
-  test('NE - Register with invalid email format', async ({ page }) => {
+  test('NE - Should"t be able to register with invalid email format provided', async ({
+    page,
+  }) => {
     //Instantiate register class
     const registerPage = new RegisterPage(page);
     //Register user with an empty email input field
@@ -38,7 +42,9 @@ test.describe('Register and Login successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
-  test('NE - Register with short password', async ({ page }) => {
+  test('NE - Should"t be able to register with password less than 3 characters', async ({
+    page,
+  }) => {
     //Instantiate register class
     const registerPage = new RegisterPage(page);
     //Register user with an empty email input field
@@ -48,7 +54,9 @@ test.describe('Register and Login successfully', () => {
     await expect(registerPage.successRegisterMessage).toBeHidden();
   });
 
-  test('NE - Login with empty input fields', async ({ page }) => {
+  test('NE -Shouldn"t be able to login without providing data', async ({
+    page,
+  }) => {
     //Instantiate  classes
     const loginPage = new LoginPage(page);
     const registerPage = new RegisterPage(page);
@@ -58,7 +66,9 @@ test.describe('Register and Login successfully', () => {
     await expect(registerPage.missingEmail).toBeVisible();
     await expect(loginPage.missingPassword).toBeVisible();
   });
-  test('NE - Login with non-existing email', async ({ page }) => {
+  test('NE - Shouldn"t be able to login with email that is not registered', async ({
+    page,
+  }) => {
     //Instantiate  classes
     const loginPage = new LoginPage(page);
     const registerPage = new RegisterPage(page);
@@ -95,7 +105,9 @@ test.describe('Register and Login successfully', () => {
     ).toBeVisible();
   });
 
-  test('NE - Register with taken email & username', async ({ page }) => {
+  test('NE - Should"t be able to register with already used email and password', async ({
+    page,
+  }) => {
     //Instantiate register class
     const registerPage = new RegisterPage(page);
     //Register user with an empty email input field

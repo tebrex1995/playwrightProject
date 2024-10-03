@@ -14,7 +14,9 @@ let loginEmail, loginPassword, loginUsername;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Register and login via Api', () => {
-  test('NE - Register with all input fields empty', async ({ page }) => {
+  test('NE - Shouldn"t be able to register without provided data', async ({
+    page,
+  }) => {
     //Instantiate api register class
     const registerApi = new RegisterApi(page);
     //Register user successfully
@@ -35,7 +37,9 @@ test.describe('Register and login via Api', () => {
     );
   });
 
-  test('NE - Register with invalid email format', async ({ page }) => {
+  test('NE - Shouldn"t be able to register with invalid email format', async ({
+    page,
+  }) => {
     //Instantiate api register class
     const registerApi = new RegisterApi(page);
     //Register user successfully
@@ -53,7 +57,9 @@ test.describe('Register and login via Api', () => {
     );
   });
 
-  test('NE - Register with short password', async ({ page }) => {
+  test('NE - Shouldn"t be able to register with short password', async ({
+    page,
+  }) => {
     //Instantiate api register class
     const registerApi = new RegisterApi(page);
     //Register user successfully
@@ -69,7 +75,9 @@ test.describe('Register and login via Api', () => {
     );
   });
 
-  test('NE - Login with empty input fields', async ({ page }) => {
+  test('NE - Shouldn"t be able to login without provided data', async ({
+    page,
+  }) => {
     //Instantiate api login class
     const loginApi = new LoginApi(page);
     //Login registered user
@@ -86,7 +94,9 @@ test.describe('Register and login via Api', () => {
     );
   });
 
-  test('NE - Login with non-existing user', async ({ page }) => {
+  test('NE - Shouldn"t be able to login with not registered user', async ({
+    page,
+  }) => {
     //Instantiate api login class
     const loginApi = new LoginApi(page);
     //Login registered user
@@ -118,7 +128,9 @@ test.describe('Register and login via Api', () => {
     );
   });
 
-  test('NE - Register with taken email and useraname', async ({ page }) => {
+  test('NE - Shouldn"t be able to register with already used email and password', async ({
+    page,
+  }) => {
     //Instantiate api register class
     const registerApi = new RegisterApi(page);
     //Register user successfully
@@ -135,7 +147,7 @@ test.describe('Register and login via Api', () => {
     );
   });
 
-  test('Login with registered user', async ({ page }) => {
+  test('Shouldn"t be able to login with registered user', async ({ page }) => {
     //Instantiate api login class
     const loginApi = new LoginApi(page);
     //Login registered user
