@@ -1,8 +1,9 @@
-import { URLS, utils } from '../../../fixtures';
+import { URLS, utils, BASE_API } from '../../../fixtures';
 
 export class RegisterApi {
   constructor(page) {
     this.page = page;
+    this.registerEndpoint = URLS['REGISTER'];
     this.emptyInputFields = {
       username: utils.generateRandomString(0),
       email: utils.generateRandomString(0),
@@ -22,7 +23,7 @@ export class RegisterApi {
 
   async registerViaApi(username, email, password) {
     let response = await this.page.request.post(
-      `${URLS['BASE_API']}${URLS['REGISTER']}`,
+      `${BASE_API['BASE_API']}${this.registerEndpoint}`,
       {
         headers: { Accept: 'application/json' },
         data: {

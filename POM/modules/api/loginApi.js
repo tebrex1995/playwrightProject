@@ -1,4 +1,4 @@
-import { URLS, utils } from '../../../fixtures';
+import { URLS, utils, BASE_API } from '../../../fixtures';
 
 export class LoginApi {
   constructor(page) {
@@ -11,11 +11,12 @@ export class LoginApi {
       email: utils.generateRandomString(0),
       password: utils.generateRandomString(0),
     };
+    this.loginEndpoint = URLS['LOGIN'];
   }
 
   async loginViaBE(email, password) {
     let response = await this.page.request.post(
-      `/${URLS['BASE_API']}${URLS['LOGIN']}`,
+      `/${BASE_API['BASE_API']}${this.loginEndpoint}`,
       {
         headers: { Accept: 'application/json' },
         data: {
