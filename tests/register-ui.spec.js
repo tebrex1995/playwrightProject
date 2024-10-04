@@ -62,8 +62,8 @@ test.describe('Register user successfully', () => {
     await expect(registerPage['successRegisterMessage']).toBeVisible();
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);
-    await expect(common['dashboardLocators']['headingSpan']).toBeVisible();
-    await expect(common['dashboardLocators']['iframeHeading']).toBeVisible();
+    await expect(dashboard['heading']).toBeVisible();
+    await expect(dashboard['iframeHeading']).toBeVisible();
   });
   test.afterEach('Logout', async ({ page }) => {
     //Logout user
