@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { URLS, existingUser } from '../fixtures';
+import { URLS, existingUser, utils } from '../fixtures';
 import { LoginPage, Dashboard } from '../POM/modules/ui';
 
 test.describe('Dashboard tests', () => {
@@ -25,13 +25,24 @@ test.describe('Dashboard tests', () => {
     }
   );
 
-  test('Locators ', async ({ page }) => {
-    await expect(dashboard['heading']).toBeVisible();
-    await expect(page.getByTestId('products-container')).toBeVisible();
+  test('First page should have max number of products', async ({ page }) => {
+    // await dashboard.navigateToPage(page, 6);
+    await expect(dashboard['productsContainerToCount']).toHaveCount(
+      dashboard['productsPerPage']
+    );
   });
 
-  test('All products have visible elements', async ({ page }) => {
-    await dashboard.navigateToPage(page, 6);
+  test('Products on dashboard should be on 6 pages', async ({ page }) => {
+    const pages = await utils.countDivElements(
+      page,
+      dashboard['paginationElements']['parent'],
+      dashboard['paginationElements']['child']
+    );
+    await expect(pages).toBe(dashboard['NumberOfPages']);
+  });
+
+  test.only('Loop pages', async ({ page }) => {
+    await dashboard.loopPages(page);
   });
 
   test.afterEach('Logout', async ({ page }) => {
