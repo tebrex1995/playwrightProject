@@ -52,8 +52,10 @@ export class Dashboard {
       this.paginationElements['parent'],
       this.paginationElements['child']
     );
+    const allPages = [];
     for (let i = 1; i <= pageNumber; i++) {
-      console.log(`You are on page ${i}`);
+      allPages.push(i);
     }
+    return allPages;
   }
 }

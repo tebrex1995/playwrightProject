@@ -41,8 +41,8 @@ test.describe('Dashboard tests', () => {
     await expect(pages).toBe(dashboard['NumberOfPages']);
   });
 
-  test.only('Loop pages', async ({ page }) => {
-    await dashboard.loopPages(page);
+  test('Loop pages', async ({ page }) => {
+    console.log(await dashboard.loopPages(page));
   });
 
   test.afterEach('Logout', async ({ page }) => {
