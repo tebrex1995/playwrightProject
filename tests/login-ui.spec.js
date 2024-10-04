@@ -110,20 +110,14 @@ test.describe('Login UI tests', () => {
   test('User should be successfully logged in', async ({ page }) => {
     //Login user
     await loginPage.loginValidUser(
-      page,
-      existingUser.email,
-      existingUser.password
+      existingUser['email'],
+      existingUser['password']
     );
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);
     //Login assertions
-    await expect(
-      page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
-    ).toBeVisible();
-    const frame = page.frameLocator('iframe');
-    await expect(
-      frame.locator('h4', { hasText: HEADINGS['IFRAME'] })
-    ).toBeVisible();
+    await expect(common['dashboardLocators']['headingSpan']).toBeVisible();
+    await expect(common['dashboardLocators']['iframeHeading']).toBeVisible();
   });
 
   test.afterEach('Logout', async ({ page }) => {

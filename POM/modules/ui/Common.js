@@ -1,4 +1,4 @@
-import { ERRORS } from '../../../fixtures';
+import { ERRORS, HEADINGS } from '../../../fixtures';
 
 export class Common {
   constructor(page) {
@@ -14,6 +14,13 @@ export class Common {
       invalidEmailFormat: `${this.locatorPrefix['FormInputLocatorClass']}("${ERRORS['REGISTER']['INVALID_EMAIL_FORMAT']}")`,
       takenEmail: `${this.locatorPrefix['FormInputLocatorClass']}("${ERRORS['REGISTER']['TAKEN_EMAIL']}")`,
       takenUsername: `${this.locatorPrefix['FormInputLocatorClass']}("${ERRORS['REGISTER']['TAKEN_USERNAME']}")`,
+    };
+    this.iframe = page.frameLocator('iframe');
+    this.dashboardLocators = {
+      headingSpan: page.locator('span', { hasText: HEADINGS['DASHBOARD'] }),
+      iframeHeading: this.iframe.locator('h4', {
+        hasText: HEADINGS['IFRAME'],
+      }),
     };
   }
 }
