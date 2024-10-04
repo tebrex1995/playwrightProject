@@ -1,5 +1,5 @@
 import { Common } from './Common';
-import { HEADINGS } from '../../../fixtures';
+import { HEADINGS, utils } from '../../../fixtures';
 
 export class Dashboard {
   constructor(page) {
@@ -9,7 +9,9 @@ export class Dashboard {
     //Page locators
     this.heading = page.locator('span', { hasText: HEADINGS['DASHBOARD'] });
     //Product locators
-    this.productsContainer = page.getByTestId('products-container');
+    // this.divCount = page.locator('.basis-3 > div');
+    this.productsContainer = page.locator('.basis-3');
+    this.productsContainerToCount = page.locator('.basis-3 > div');
     this.productCard = page.getByTestId('product-card');
     this.productTitle = page.locator('h5');
     this.productLink = page.locator('href');
@@ -24,16 +26,38 @@ export class Dashboard {
     this.productModalDescription = page.locator('p.m-0');
     this.productModalImage = page.locator('img');
     //Pagination Locators
-    this.productPageButtons = page.locator('.paginated .p-button-label');
+    this.paginationElements = {
+      parent: '.paginated',
+      child: '.p-button-label',
+    };
+    this.paginationDiv = page.locator(this.paginationElements['parent']);
+    this.productPageButtons = page.locator(this.paginationElements['child']);
+
     //iFrame Locators
     this.iframe = page.frameLocator('iframe');
     this.iframeHeading = this.iframe.locator('h4', {
       hasText: HEADINGS['IFRAME'],
     });
+    //Values
+    this.productsPerPage = 12;
+    this.NumberOfPages = 6;
   }
-  async navigateToPage(page, productPage) {
-    await page.locator('button[aria-label]', { hasText: productPage }).click();
+  async navigateToPage(page, productsPage) {
+    await page.locator('button[aria-label]', { hasText: productsPage }).click();
   }
 
-  // const loopPages = async () => {};
+  async loopPages(page) {
+    for (
+      let i = 1;
+      i <
+      utils.countDivElements(
+        page,
+        this.paginationElements['parent'],
+        this.paginationElements['child']
+      );
+      i++
+    ) {
+      console.log(`You are on page ${i}`);
+    }
+  }
 }

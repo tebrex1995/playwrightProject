@@ -1,12 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { RegisterPage } from '../POM/modules/ui/registerPage';
 import { LoginPage } from '../POM/modules/ui/loginPage';
-import {
-  generateUserCredentials,
-  URLS,
-  HEADINGS,
-  invalidUsers,
-} from '../fixtures';
+import { generateUserCredentials, URLS, invalidUsers } from '../fixtures';
 
 test.describe('Register user successfully', () => {
   let registerPage, loginPage;
@@ -15,7 +10,6 @@ test.describe('Register user successfully', () => {
     await page.goto(`${URLS['REGISTER']}`);
     await expect(page).toHaveURL(/.*register/);
     //Instantiate register class
-    common = new Common(page);
     registerPage = new RegisterPage(page);
     loginPage = new LoginPage(page);
   });

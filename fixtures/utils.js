@@ -16,8 +16,10 @@ const fillAndSubmitForm = async (page, fields, values) => {
   await page.locator('button').click();
 };
 
-// const commonData = {
-//   loginInputsIds: ['#email', '#password'],
-// };
+const countDivElements = async (page, divLocator, children) => {
+  // return await divLocator.length;
+  const count = await page.locator(`${divLocator} ${children}`).count();
+  return count;
+};
 
-export { generateRandomString, fillAndSubmitForm };
+export { generateRandomString, fillAndSubmitForm, countDivElements };
