@@ -18,9 +18,7 @@ export class LoginPage {
     this.loginInputs = ['#email', '#password'];
   }
 
-  async loginValidUser(page, email, password) {
-    //Instantiate class
-    const header = new Header(page);
+  async loginValidUser(email, password) {
     //Page locators
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);

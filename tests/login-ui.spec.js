@@ -125,13 +125,8 @@ test.describe('Login UI tests', () => {
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);
     //Login assertions
-    await expect(
-      page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
-    ).toBeVisible();
-    const frame = page.frameLocator('iframe');
-    await expect(
-      frame.locator('h4', { hasText: HEADINGS['IFRAME'] })
-    ).toBeVisible();
+    await expect(common['dashboardLocators']['headingSpan']).toBeVisible();
+    await expect(common['dashboardLocators']['iframeHeading']).toBeVisible();
   });
 
   test.afterEach('Logout', async ({ page }) => {
