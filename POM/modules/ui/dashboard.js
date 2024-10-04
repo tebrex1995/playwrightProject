@@ -47,16 +47,12 @@ export class Dashboard {
   }
 
   async loopPages(page) {
-    for (
-      let i = 1;
-      i <
-      utils.countDivElements(
-        page,
-        this.paginationElements['parent'],
-        this.paginationElements['child']
-      );
-      i++
-    ) {
+    const pageNumber = await utils.countDivElements(
+      page,
+      this.paginationElements['parent'],
+      this.paginationElements['child']
+    );
+    for (let i = 1; i <= pageNumber; i++) {
       console.log(`You are on page ${i}`);
     }
   }
