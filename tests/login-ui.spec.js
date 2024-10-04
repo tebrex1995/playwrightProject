@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { URLS, HEADINGS, existingUser, utils } from '../fixtures';
-import { LoginPage } from '../POM/modules/ui/loginPage.js';
-import { Common } from '../POM/modules/ui/Common.js';
+import { LoginPage, Common } from '../POM/modules/ui';
 
 test.describe('Login UI tests', () => {
   let loginPage, common;

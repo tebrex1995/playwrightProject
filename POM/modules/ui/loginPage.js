@@ -1,6 +1,6 @@
 import { Header } from './header';
 import { ERRORS, URLS, utils } from '../../../fixtures';
-import { Common } from './Common';
+import { Common } from '../ui/Common';
 
 export class LoginPage {
   constructor(page) {

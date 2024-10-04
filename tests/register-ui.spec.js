@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
-import { RegisterPage } from '../POM/modules/ui/registerPage';
-import { LoginPage } from '../POM/modules/ui/loginPage';
+import { RegisterPage, LoginPage, Common } from '../POM/modules/ui';
 import { generateUserCredentials, URLS } from '../fixtures';
 
 test.describe('Register user successfully', () => {
-  let registerPage, loginPage;
+  let registerPage, loginPage, common;
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['REGISTER']}`);
     await expect(page).toHaveURL(/.*register/);
     //Instantiate register class
+    common = new Common(page);
     registerPage = new RegisterPage(page);
     loginPage = new LoginPage(page);
   });
