@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { RegisterPage } from '../POM/modules/ui/registerPage';
 import { LoginPage } from '../POM/modules/ui/loginPage';
-import { generateUserCredentials, URLS, HEADINGS } from '../fixtures';
+import { generateUserCredentials, URLS } from '../fixtures';
 
 test.describe('Register user successfully', () => {
   let registerPage, loginPage;
@@ -17,12 +17,12 @@ test.describe('Register user successfully', () => {
     page,
   }) => {
     //Register user with all empty input fields
-    await registerPage.invalidRegister(page, registerPage.emptyInputFields);
+    await registerPage.invalidRegister(page, registerPage['emptyInputFields']);
     //Assert
-    await expect(registerPage.missingUsername).toBeVisible();
-    await expect(registerPage.missingEmail).toBeVisible();
-    await expect(registerPage.missingPassword).toBeVisible();
-    await expect(registerPage.successRegisterMessage).toBeHidden();
+    await expect(registerPage['missingUsername']).toBeVisible();
+    await expect(registerPage['missingEmail']).toBeVisible();
+    await expect(registerPage['missingPassword']).toBeVisible();
+    await expect(registerPage['successRegisterMessage']).toBeHidden();
   });
 
   test('Should"t be able to register with invalid email format provided', async ({
@@ -31,21 +31,24 @@ test.describe('Register user successfully', () => {
     //Register user with an empty email input field
     await registerPage.invalidRegister(
       page,
-      registerPage.invalidEmailInInputField
+      registerPage['invalidEmailInInputField']
     );
     //Assert
-    await expect(registerPage.invalidEmailFormat).toBeVisible();
-    await expect(registerPage.successRegisterMessage).toBeHidden();
+    await expect(registerPage['invalidEmailFormat']).toBeVisible();
+    await expect(registerPage['successRegisterMessage']).toBeHidden();
   });
 
   test('Should"t be able to register with password less than 3 characters', async ({
     page,
   }) => {
     //Register user with an empty email input field
-    await registerPage.invalidRegister(page, registerPage.shortPasswordInput);
+    await registerPage.invalidRegister(
+      page,
+      registerPage['shortPasswordInput']
+    );
     //Assert
-    await expect(registerPage.shortPassword).toBeVisible();
-    await expect(registerPage.successRegisterMessage).toBeHidden();
+    await expect(registerPage['shortPassword']).toBeVisible();
+    await expect(registerPage['successRegisterMessage']).toBeHidden();
   });
 
   test('Should be Registered Successfully', async ({ page }) => {
@@ -54,18 +57,13 @@ test.describe('Register user successfully', () => {
     //Register user with valid credentials
     await registerPage.registerValidUser(page, username, email, password);
     //Register Assertations
-    await expect(registerPage.usernameLabel).toBeVisible();
-    await expect(registerPage.loginRedirectLink).toBeVisible();
-    await expect(registerPage.successRegisterMessage).toBeVisible();
+    await expect(registerPage['usernameLabel']).toBeVisible();
+    await expect(registerPage['loginRedirectLink']).toBeVisible();
+    await expect(registerPage['successRegisterMessage']).toBeVisible();
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);
-    await expect(
-      page.locator('span', { hasText: HEADINGS['DASHBOARD'] })
-    ).toBeVisible();
-    const frame = page.frameLocator('iframe');
-    await expect(
-      frame.locator('h4', { hasText: HEADINGS['IFRAME'] })
-    ).toBeVisible();
+    await expect(common['dashboardLocators']['headingSpan']).toBeVisible();
+    await expect(common['dashboardLocators']['iframeHeading']).toBeVisible();
   });
   test.afterEach('Logout', async ({ page }) => {
     //Logout user
