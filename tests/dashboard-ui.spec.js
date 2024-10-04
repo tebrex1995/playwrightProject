@@ -1,17 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { URLS, existingUser } from '../fixtures';
-import { LoginPage } from '../POM/modules/ui/loginPage';
-import { Common } from '../POM/modules/ui/Common';
+import { LoginPage, Dashboard } from '../POM/modules/ui';
 
 test.describe('Dashboard tests', () => {
   //Declare class Variables
-  let loginPage, common;
+  let loginPage, dashboard;
 
   test.beforeEach(
     'Instantiate classes and login successfuly',
     async ({ page }) => {
       //Instantiate class and Visit page
-      common = new Common(page);
+      dashboard = new Dashboard(page);
       loginPage = new LoginPage(page);
       //Visit login page
       await page.goto(URLS['LOGIN']);
@@ -29,6 +28,10 @@ test.describe('Dashboard tests', () => {
   test('Locators ', async ({ page }) => {
     await expect(dashboard['heading']).toBeVisible();
     await expect(page.getByTestId('products-container')).toBeVisible();
+  });
+
+  test('All products have visible elements', async ({ page }) => {
+    await dashboard.navigateToPage(page, 6);
   });
 
   test.afterEach('Logout', async ({ page }) => {
