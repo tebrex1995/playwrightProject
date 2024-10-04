@@ -15,6 +15,7 @@ test.describe('Register user successfully', () => {
     await page.goto(`${URLS['REGISTER']}`);
     await expect(page).toHaveURL(/.*register/);
     //Instantiate register class
+    common = new Common(page);
     registerPage = new RegisterPage(page);
     loginPage = new LoginPage(page);
   });
