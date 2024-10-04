@@ -1,13 +1,12 @@
 import { Header } from './header';
 import { ERRORS, URLS, utils } from '../../../fixtures';
+import { Common } from './Common';
 
 export class LoginPage {
   constructor(page) {
+    this.common = new Common(page);
     this.page = page;
     //Error message locator
-    this.missingPassword = page.locator(
-      `.mb-3 .text-center p:has-text("${ERRORS['LOGIN']['MISSING_PASSWORD']}")`
-    );
     this.wrongEmailOrPasswod = page.getByText(
       `${ERRORS['LOGIN']['WRONG_EMAIL_OR_PASSWORD']}`
     );

@@ -12,7 +12,7 @@ test.describe('Register via Api', () => {
   test.beforeEach('Instantiate class', async ({ page }) => {
     registerApi = new RegisterApi(page);
   });
-  test('NE - Shouldn"t be able to register without provided data', async ({
+  test('Shouldn"t be able to register without provided data', async ({
     page,
   }) => {
     //Register user with empty input fields
@@ -32,7 +32,7 @@ test.describe('Register via Api', () => {
       ERRORS['REGISTER']['MISSING_PASSWORD']
     );
   });
-  test('NE - Shouldn"t be able to register with already used email and password', async ({
+  test('Shouldn"t be able to register with already used email and password', async ({
     page,
   }) => {
     //Register user successfully
@@ -49,7 +49,7 @@ test.describe('Register via Api', () => {
     );
   });
 
-  test('NE - Shouldn"t be able to register with invalid email format', async ({
+  test('Shouldn"t be able to register with invalid email format', async ({
     page,
   }) => {
     //Register user successfully
@@ -67,7 +67,7 @@ test.describe('Register via Api', () => {
     );
   });
 
-  test('NE - Shouldn"t be able to register with short password', async ({
+  test('Shouldn"t be able to register with short password', async ({
     page,
   }) => {
     //Register user successfully

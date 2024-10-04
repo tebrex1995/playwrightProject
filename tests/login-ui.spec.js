@@ -1,16 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { URLS, HEADINGS, existingUser, utils } from '../fixtures';
-import { RegisterPage } from '../POM/modules/ui/registerPage.js';
 import { LoginPage } from '../POM/modules/ui/loginPage.js';
-import { Header } from '../POM/modules/ui/header.js';
+import { Common } from '../POM/modules/ui/Common.js';
 
 test.describe('Login UI tests', () => {
-  let loginPage, registerPage;
+  let loginPage, common;
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['LOGIN']}`);
     await expect(page).toHaveURL(`${URLS['LOGIN']}`);
     loginPage = new LoginPage(page);
-    registerPage = new RegisterPage(page);
+    common = new Common(page);
   });
 
   test('Form text inputs should be editable', async () => {
@@ -94,8 +93,9 @@ test.describe('Login UI tests', () => {
     //Try login with empty input fields
     await loginPage.invalidLogin(page, loginPage.emptyInputFields);
     //Assert
-    await expect(registerPage.missingEmail).toBeVisible();
-    await expect(loginPage.missingPassword).toBeVisible();
+    await expect(
+      page.locator(common['formInputLocators']['missingEmail'])
+    ).toBeVisible();
   });
 
   test('Shouldn"t be able to login with email that is not registered', async ({

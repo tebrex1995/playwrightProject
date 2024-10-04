@@ -36,8 +36,8 @@ test.describe('Login via API', () => {
   test('Login with registerd user', async ({ page }) => {
     //Login registered user
     const responseJson = await loginApi.loginViaBE(
-      existingUser.email,
-      existingUser.password
+      existingUser['email'],
+      existingUser['password']
     );
     //Assertations
     expect(responseJson['status']).toBe(RESPONSE_MESSAGES['STATUS_SUCCESS']);
