@@ -15,12 +15,5 @@ export class Common {
       takenEmail: `${this.locatorPrefix['FormInputLocatorClass']}("${ERRORS['REGISTER']['TAKEN_EMAIL']}")`,
       takenUsername: `${this.locatorPrefix['FormInputLocatorClass']}("${ERRORS['REGISTER']['TAKEN_USERNAME']}")`,
     };
-    this.iframe = page.frameLocator('iframe');
-    this.dashboardLocators = {
-      headingSpan: page.locator('span', { hasText: HEADINGS['DASHBOARD'] }),
-      iframeHeading: this.iframe.locator('h4', {
-        hasText: HEADINGS['IFRAME'],
-      }),
-    };
   }
 }

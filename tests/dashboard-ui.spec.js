@@ -21,15 +21,13 @@ test.describe('Dashboard tests', () => {
         existingUser['email'],
         existingUser['password']
       );
-      await expect(common['dashboardLocators']['headingSpan']).toBeVisible();
+      await expect(dashboard['heading']).toBeVisible();
       await expect(page).toHaveURL(URLS['DASHBOARD']);
     }
   );
 
   test('Locators ', async ({ page }) => {
-    //Get 1 card
-
-    await expect(common['dashboardLocators']['headingSpan']).toBeVisible();
+    await expect(dashboard['heading']).toBeVisible();
     await expect(page.getByTestId('products-container')).toBeVisible();
   });
 

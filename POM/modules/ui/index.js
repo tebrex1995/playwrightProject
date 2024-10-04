@@ -4,3 +4,4 @@ export { LandingPage } from './landingPage';
 export { LoginPage } from './loginPage';
 export { RegisterPage } from './registerPage';
 export { Common } from './Common';
+export { Dashboard } from './dashboard';
