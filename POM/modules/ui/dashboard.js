@@ -20,18 +20,20 @@ export class Dashboard {
     this.productPrice = page.locator('.py-1 span.font-semibold');
     this.productButton = page.locator('button.p-button svg');
     //Products Modal locators
-    page.this.productModalTitle = page.locator('.p-dialog-title');
+    this.productModalTitle = page.locator('.p-dialog-title');
     this.productModalDescription = page.locator('p.m-0');
     this.productModalImage = page.locator('img');
     //Pagination Locators
     this.productPageButtons = page.locator('.paginated .p-button-label');
-    this.specificPageButton = page.locator('button[aria-label]', {
-      hasText: `${productsPage}`,
-    });
     //iFrame Locators
     this.iframe = page.frameLocator('iframe');
     this.iframeHeading = this.iframe.locator('h4', {
       hasText: HEADINGS['IFRAME'],
     });
   }
+  async navigateToPage(page, productPage) {
+    await page.locator('button[aria-label]', { hasText: productPage }).click();
+  }
+
+  // const loopPages = async () => {};
 }
