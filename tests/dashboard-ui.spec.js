@@ -24,8 +24,17 @@ test.describe('Dashboard tests', () => {
       await expect(page).toHaveURL(URLS['DASHBOARD']);
     }
   );
+  /**
+   * TODO:
+   *
+    1. VERIFY NUMBER OF PRODUCTS PER PAGE
+    2.Verify that the total product count across pages matches the total number of products.
+    3. Add product to cart? MAYBE?
+    4. Verify product image 
+    5. verify modals
+   */
 
-  test('First page should have max number of products', async ({ page }) => {
+  test('First page should have max number of products', async () => {
     // await dashboard.navigateToPage(page, 6);
     await expect(dashboard['productsContainerToCount']).toHaveCount(
       dashboard['productsPerPage']
@@ -50,6 +59,20 @@ test.describe('Dashboard tests', () => {
     ).toHaveCSS('background-color', dashboard['activeBtnBgColor']);
   });
 
+  test.only('Get product from page', async ({ page }) => {
+    //Waits
+    await page.waitForLoadState('networkidle');
+    //Extract product information
+    const productCards = await page.locator(
+      dashboard['productCard']['attributeLocator']
+    );
+    const productCard = await productCards.nth(1);
+    console.log('Products Title', productCard);
+    console.log('Products Title');
+    console.log('Products Title');
+
+    console.log('product', await productCards.nth(1).getByTitle());
+  });
   test.afterEach('Logout', async ({ page }) => {
     //Logout user
     await loginPage.logoutUser(page);
