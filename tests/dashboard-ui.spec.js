@@ -41,8 +41,8 @@ test.describe('Dashboard tests', () => {
 
   test('Should be able to navigate to last page', async ({ page }) => {
     //Loop throught all pages and get last page
-    const allPages = await dashboard.getNumberOfPages(page);
-    const lastPage = await allPages.length;
+    const getNumberOfPages = await dashboard.getNumberOfPages(page);
+    const lastPage = await getNumberOfPages.length;
     //Navigate to last page
     await dashboard.navigateToPage(page, lastPage);
     await expect(
