@@ -67,10 +67,10 @@ export class Dashboard {
   }
 
   //Click on every page
-  async clickOnEveryPage(page, pageNumber) {
+  async clickOnEveryPage(page, numberOfPages) {
     await this.getNumberOfPages(page);
-    for (const page of pageNumber) {
-      this.paginationElements.specificPage(page).click();
+    for (const page of numberOfPages) {
+      this.paginationElements.specificPage(page);
     }
   }
 }
