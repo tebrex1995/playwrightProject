@@ -32,17 +32,22 @@ test.describe('Dashboard tests', () => {
     );
   });
 
-  test('Products on dashboard should be on 6 pages', async ({ page }) => {
-    const pages = await utils.countDivElements(
-      page,
-      dashboard['paginationElements']['parent'],
-      dashboard['paginationElements']['child']
-    );
-    await expect(pages).toBe(dashboard['NumberOfPages']);
+  test('Products on dashboard should be on provided number of pages', async ({
+    page,
+  }) => {
+    const pages = await dashboard.getNumberOfPages(page);
+    await expect(pages.length).toBe(dashboard['NumberOfPages']);
   });
 
-  test('Loop pages', async ({ page }) => {
-    console.log(await dashboard.loopPages(page));
+  test('Should be able to navigate to last page', async ({ page }) => {
+    //Loop throught all pages and get last page
+    const allPages = await dashboard.getNumberOfPages(page);
+    const lastPage = await allPages.length;
+    //Navigate to last page
+    await dashboard.navigateToPage(page, lastPage);
+    await expect(
+      page.locator(`${dashboard['paginationElements'].specificPage(lastPage)}`)
+    ).toHaveCSS('background-color', dashboard['activeBtnBgColor']);
   });
 
   test.afterEach('Logout', async ({ page }) => {

@@ -6,10 +6,11 @@ export class Dashboard {
     this.page = page;
     //Instantiate class
     this.common = new Common(page);
+    //Attribute Values
+    this.activeBtnBgColor = 'rgb(158, 160, 246)';
     //Page locators
     this.heading = page.locator('span', { hasText: HEADINGS['DASHBOARD'] });
     //Product locators
-    // this.divCount = page.locator('.basis-3 > div');
     this.productsContainer = page.locator('.basis-3');
     this.productsContainerToCount = page.locator('.basis-3 > div');
     this.productCard = page.getByTestId('product-card');
@@ -27,8 +28,10 @@ export class Dashboard {
     this.productModalImage = page.locator('img');
     //Pagination Locators
     this.paginationElements = {
-      parent: '.paginated',
       child: '.p-button-label',
+      parent: '.paginated',
+      specificPage: pageNumber =>
+        `${this.paginationElements['parent']} button:nth-child(${pageNumber}) `,
     };
     this.paginationDiv = page.locator(this.paginationElements['parent']);
     this.productPageButtons = page.locator(this.paginationElements['child']);
@@ -42,20 +45,32 @@ export class Dashboard {
     this.productsPerPage = 12;
     this.NumberOfPages = 6;
   }
+
+  //////METHODS
+  ///Navigate to specific page number
   async navigateToPage(page, productsPage) {
     await page.locator('button[aria-label]', { hasText: productsPage }).click();
   }
-
-  async loopPages(page) {
+  //Get number of pages
+  async getNumberOfPages(page) {
     const pageNumber = await utils.countDivElements(
       page,
       this.paginationElements['parent'],
       this.paginationElements['child']
     );
+
     const allPages = [];
     for (let i = 1; i <= pageNumber; i++) {
       allPages.push(i);
     }
     return allPages;
+  }
+
+  //Click on every page
+  async clickOnEveryPage(page, pageNumber) {
+    await this.getNumberOfPages(page);
+    for (const page of pageNumber) {
+      this.paginationElements.specificPage(page).click();
+    }
   }
 }
