@@ -13,7 +13,11 @@ export class Dashboard {
     //Product locators
     this.productsContainer = page.locator('.basis-3');
     this.productsContainerToCount = page.locator('.basis-3 > div');
-    this.productCard = page.getByTestId('product-card');
+    this.productCard = {
+      testId: 'product-card',
+      fullLocator: page.getByTestId('product-card'),
+      attributeLocator: '[test-id="product-card"]',
+    };
     this.productTitle = page.locator('h5');
     this.productLink = page.locator('href');
     this.productImage = page.getByAltText('product image');
