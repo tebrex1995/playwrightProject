@@ -116,7 +116,7 @@ test.describe('Login UI tests', () => {
     await expect(loginPage['heading']).toHaveText(HEADINGS['LOGIN']);
   });
 
-  test.only('User should be successfully logged in', async ({ page }) => {
+  test('User should be successfully logged in', async ({ page }) => {
     //Login user
     await loginPage.loginValidUser(
       existingUser['email'],
