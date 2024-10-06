@@ -9,7 +9,7 @@ export class Dashboard {
     //Attribute Values
     this.activeBtnBgColor = 'rgb(158, 160, 246)';
     //Page locators
-    this.heading = page.locator('span', { hasText: HEADINGS['DASHBOARD'] });
+    this.heading = page.getByText(HEADINGS['DASHBOARD']);
     //Product locators
     this.productsContainer = {
       fullLocator: page.locator('.basis-3'),
@@ -60,7 +60,10 @@ export class Dashboard {
     this.NumberOfPages = 6;
   }
 
-  //////METHODS
+  //***********METHODS***********//
+
+  //********PAGINATION****** *//
+
   ///Navigate to specific page number
   async navigateToPage(page, productsPage) {
     await page.locator('button[aria-label]', { hasText: productsPage }).click();
@@ -87,24 +90,32 @@ export class Dashboard {
       this.paginationElements.specificPage(page);
     }
   }
-
-  //Get all products data and put in array of objects
-  async getAllProducts(page) {
+  //*****PRODUCTS******** *//
+  //Wait for network idle and get all product cards from single page
+  async getAllproductCards(page) {
+    //Wait for load state
+    await page.waitForLoadState('networkidle');
     //Get all products
-    const numberOfProducts = await page
-      .locator(this.productCard['attributeLocator'])
-      .count();
+    const productCards = await page.locator(
+      this.productCard['attributeLocator']
+    );
+    return productCards;
+  }
+
+  //Get all products  data from page and put in array of objects
+  async getAllProducts(page) {
+    //Wait for load state
+    await page.waitForLoadState('networkidle');
+    //Get all products
+
     const allProducts = [];
     return numberOfProducts;
   }
 
   //Get product data
   async getProductData(page, productNumber) {
-    //Wait for load state
-    await page.waitForLoadState('networkidle');
-    //Get all products
-    const productCards = await page.locator('[test-id="product-card"]');
-
+    //Get all product cards from single page
+    const productCards = await this.getAllproductCards(page);
     //Get specific product
     const productCard = await productCards.nth(productNumber - 1);
 
@@ -135,11 +146,14 @@ export class Dashboard {
 
     //Return object with product data
     return {
-      title: productTitle,
-      image: productImage,
-      description: productDescription,
-      price: productPrice,
-      button: productCartButton,
+      productElements: {
+        title: productTitle,
+        image: productImage,
+        description: productDescription,
+        price: productPrice,
+        button: productCartButton,
+      },
+
       textContent: {
         title: productTitleText,
         description: productDescriptionText,
