@@ -66,7 +66,9 @@ export class Dashboard {
 
   ///Navigate to specific page number
   async navigateToPage(page, productsPage) {
-    await page.locator('button[aria-label]', { hasText: productsPage }).click();
+    await page.locator(`button[aria-label="${productsPage}"]`).click();
+    //Wait after click to load page
+    await page.waitForLoadState('networkidle');
   }
   //Get number of pages
   async getNumberOfPages(page) {

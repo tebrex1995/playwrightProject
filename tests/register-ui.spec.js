@@ -12,6 +12,7 @@ test.describe('Register user successfully', () => {
     //Instantiate register class
     registerPage = new RegisterPage(page);
     loginPage = new LoginPage(page);
+    dashboard = new Dashboard(page);
   });
 
   test('Shouldn"t be able to register without providing data', async ({
