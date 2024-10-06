@@ -34,11 +34,11 @@ test.describe('Dashboard tests', () => {
     5. verify modals
    */
 
-  test('First page should have max number of products', async () => {
-    // await dashboard.navigateToPage(page, 6);
-    await expect(dashboard['productsContainerToCount']).toHaveCount(
-      dashboard['productsPerPage']
-    );
+  test('First page should have max number of products', async ({ page }) => {
+    await dashboard.navigateToPage(page, 1);
+    await expect(
+      dashboard['productsContainer']['productsContainerToCount']
+    ).toHaveCount(dashboard['productsPerPage']);
   });
 
   test('Products on dashboard should be on provided number of pages', async ({
@@ -69,6 +69,10 @@ test.describe('Dashboard tests', () => {
     await expect(product.price).toBeVisible();
     await expect(product.button).toBeVisible();
   });
+
+  // test('Get all products from a page', async ({ page }) => {
+  //   console.log(await dashboard.getAllProducts(page));
+  // });
 
   test.afterEach('Logout', async ({ page }) => {
     //Logout user
