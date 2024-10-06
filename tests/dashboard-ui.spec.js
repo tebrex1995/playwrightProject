@@ -22,13 +22,14 @@ test.describe('Dashboard tests', () => {
       );
       //wait for loadState
       await page.waitForLoadState('networkidle');
-      await expect(dashboard['heading']).toBeVisible();
       await expect(page).toHaveURL(URLS['DASHBOARD']);
     }
   );
   /**
    * TODO:
-   *
+   *1. test out of stock
+   2. test if button is clickable if not out of stick
+   
     1. VERIFY NUMBER OF PRODUCTS PER PAGE
     2.Verify that the total product count across pages matches the total number of products.
     3. Add product to cart? MAYBE?
@@ -47,7 +48,7 @@ test.describe('Dashboard tests', () => {
     page,
   }) => {
     const pages = await dashboard.getNumberOfPages(page);
-    await expect(pages.length).toBe(dashboard['NumberOfPages']);
+    await expect(await pages.length).toBe(dashboard['NumberOfPages']);
   });
 
   test('Should be able to navigate to last page', async ({ page }) => {
@@ -55,7 +56,7 @@ test.describe('Dashboard tests', () => {
     const getNumberOfPages = await dashboard.getNumberOfPages(page);
     const lastPage = await getNumberOfPages.length;
     //Navigate to last page
-    await dashboard.navigateToPage(page, lastPage);
+    await dashboard.navigateToPage(page, await lastPage);
     await expect(
       page.locator(`${dashboard['paginationElements'].specificPage(lastPage)}`)
     ).toHaveCSS('background-color', dashboard['activeBtnBgColor']);

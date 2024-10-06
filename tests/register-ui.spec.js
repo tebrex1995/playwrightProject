@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { RegisterPage, LoginPage, Common } from '../POM/modules/ui';
+import { RegisterPage, LoginPage, Common, Dashboard } from '../POM/modules/ui';
 import { generateUserCredentials, URLS } from '../fixtures';
 
 test.describe('Register user successfully', () => {
-  let registerPage, loginPage, common;
+  let registerPage, loginPage, common, dashboard;
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['REGISTER']}`);
     await expect(page).toHaveURL(/.*register/);
@@ -11,6 +11,7 @@ test.describe('Register user successfully', () => {
     common = new Common(page);
     registerPage = new RegisterPage(page);
     loginPage = new LoginPage(page);
+    dashboard = new Dashboard(page);
   });
 
   test('Shouldn"t be able to register without providing data', async ({
