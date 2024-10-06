@@ -44,22 +44,6 @@ export class RegisterPage {
     this.usernameLabel = page.locator('label', {
       hasText: 'Username',
     });
-    //Test Data
-    this.emptyInputFields = [
-      utils.generateRandomString(0),
-      utils.generateRandomString(0),
-      utils.generateRandomString(0),
-    ];
-    this.invalidEmailInInputField = [
-      utils.generateRandomString(5),
-      'invalid@email',
-      utils.generateRandomString(8),
-    ];
-    this.shortPasswordInput = [
-      utils.generateRandomString(5),
-      `${utils.generateRandomString(5)}@email.com`,
-      utils.generateRandomString(3),
-    ];
   }
 
   async registerValidUser(page, username, email, password) {

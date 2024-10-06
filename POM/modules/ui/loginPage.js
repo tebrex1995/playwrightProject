@@ -16,16 +16,6 @@ export class LoginPage {
     this.passwordInput = page.locator('#password');
     this.submitButton = page.locator('button');
     this.loginInputs = ['#email', '#password'];
-
-    //Test Data
-    this.emptyInputFields = [
-      utils.generateRandomString(0),
-      utils.generateRandomString(0),
-    ];
-    this.wrongEmailAndPassword = [
-      `${utils.generateRandomString(4)}@test.com`,
-      utils.generateRandomString(7),
-    ];
   }
 
   async loginValidUser(page, email, password) {
@@ -39,6 +29,7 @@ export class LoginPage {
 
   async logoutUser(page) {
     const header = new Header(page);
+    console.log(await header.burgerMenu);
     if (await header.burgerMenu.isVisible()) {
       await header.burgerMenu.click();
       await header.logoutButton.click();

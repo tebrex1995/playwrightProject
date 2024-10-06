@@ -4,22 +4,23 @@ import {
   RESPONSE_MESSAGES,
   generateUserCredentials,
   existingUser,
+  invalidUsers,
   ERRORS,
 } from '../fixtures';
 
 test.describe('Register via Api', () => {
   let registerApi;
+
   test.beforeEach('Instantiate class', async ({ page }) => {
     registerApi = new RegisterApi(page);
   });
-  test('Shouldn"t be able to register without provided data', async ({
-    page,
-  }) => {
-    //Register user with empty input fields
+
+  test("Shouldn't be able to register without provided data", async () => {
+    //Send register request
     const responseJson = await registerApi.registerViaApi(
-      registerApi.emptyInputFields['username'],
-      registerApi.emptyInputFields['email'],
-      registerApi.emptyInputFields['password']
+      invalidUsers['api']['emptyInputFields']['username'],
+      invalidUsers['api']['emptyInputFields']['email'],
+      invalidUsers['api']['emptyInputFields']['password']
     );
     //Assertations
     expect(responseJson['errors']['email']).toContain(
@@ -32,10 +33,9 @@ test.describe('Register via Api', () => {
       ERRORS['REGISTER']['MISSING_PASSWORD']
     );
   });
-  test('Shouldn"t be able to register with already used email and password', async ({
-    page,
-  }) => {
-    //Register user successfully
+
+  test("Shouldn't be able to register with already used email and password", async () => {
+    //Send register request
     const responseJson = await registerApi.registerViaApi(
       existingUser['username'],
       existingUser['email'],
@@ -49,14 +49,11 @@ test.describe('Register via Api', () => {
     );
   });
 
-  test('Shouldn"t be able to register with invalid email format', async ({
-    page,
-  }) => {
-    //Register user successfully
+  test("Shouldn't be able to register with invalid email format", async () => {
     const responseJson = await registerApi.registerViaApi(
-      registerApi.invalidEmailFormat['username'],
-      registerApi.invalidEmailFormat['email'],
-      registerApi.invalidEmailFormat['password']
+      invalidUsers['api']['invalidEmailFormat']['username'],
+      invalidUsers['api']['invalidEmailFormat']['email'],
+      invalidUsers['api']['invalidEmailFormat']['password']
     );
     //Assertations
     expect(responseJson['message']).toBe(
@@ -67,14 +64,14 @@ test.describe('Register via Api', () => {
     );
   });
 
-  test('Shouldn"t be able to register with short password', async ({
-    page,
-  }) => {
-    //Register user successfully
+  test("Shouldn't be able to register with short password", async () => {
+    ['api'];
+    //Send register request
+
     const responseJson = await registerApi.registerViaApi(
-      registerApi.shortPassword['username'],
-      registerApi.shortPassword['email'],
-      registerApi.shortPassword['password']
+      invalidUsers['api']['shortPassword']['username'],
+      invalidUsers['api']['shortPassword']['email'],
+      invalidUsers['api']['shortPassword']['password']
     );
     //Assertations
     expect(responseJson['message']).toBe(ERRORS['REGISTER']['SHORT_PASSWORD']);
@@ -82,7 +79,8 @@ test.describe('Register via Api', () => {
       ERRORS['REGISTER']['SHORT_PASSWORD']
     );
   });
-  test('Register successfully', async ({ page }) => {
+
+  test('Register successfully', async () => {
     //Generate valid test data
     const { username, email, password } = generateUserCredentials(6);
     //Register user successfully

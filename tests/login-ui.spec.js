@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { URLS, HEADINGS, existingUser, utils } from '../fixtures';
+import { URLS, HEADINGS, existingUser, utils, invalidUsers } from '../fixtures';
 import { LoginPage } from '../POM/modules/ui/loginPage.js';
 import { Common } from '../POM/modules/ui/Common.js';
 
 test.describe('Login UI tests', () => {
   let loginPage, common;
+
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['LOGIN']}`);
     await expect(page).toHaveURL(`${URLS['LOGIN']}`);
@@ -21,12 +22,12 @@ test.describe('Login UI tests', () => {
     await expect(page.locator('form input')).toHaveCount(2);
   });
 
-  test('Form text inputs should both have id attributes', async ({ page }) => {
+  test('Form text inputs should both have id attributes', async () => {
     await expect(loginPage.emailInput).toHaveId(
-      loginPage.loginInputs[0].split('#')[1]
+      loginPage['loginInputs'][0].split('#')[1]
     );
     await expect(loginPage.passwordInput).toHaveId(
-      loginPage.loginInputs[1].split('#')[1]
+      loginPage['loginInputs'][1].split('#')[1]
     );
   });
 
@@ -64,6 +65,7 @@ test.describe('Login UI tests', () => {
     await expect(loginPage.emailInput).toBeEnabled();
     await expect(loginPage.passwordInput).toBeEnabled();
   });
+
   test('Form submit button should be enabled', async () => {
     await expect(loginPage.submitButton).toBeEnabled();
   });
@@ -91,7 +93,10 @@ test.describe('Login UI tests', () => {
     page,
   }) => {
     //Try login with empty input fields
-    await loginPage.invalidLogin(page, loginPage.emptyInputFields);
+    await loginPage.invalidLogin(
+      page,
+      invalidUsers['ui']['login']['emptyInputFields']
+    );
     //Assert
     await expect(
       page.locator(common['formInputLocators']['missingEmail'])
@@ -102,17 +107,20 @@ test.describe('Login UI tests', () => {
     page,
   }) => {
     //Try login with empty input fields
-    await loginPage.invalidLogin(page, loginPage.wrongEmailAndPassword);
+    await loginPage.invalidLogin(
+      page,
+      invalidUsers['ui']['login']['wrongEmailAndPassword']
+    );
     //Assert
-    await expect(loginPage.wrongEmailOrPasswod).toBeVisible();
-    await expect(loginPage.heading).toHaveText(HEADINGS['LOGIN']);
+    await expect(loginPage['wrongEmailOrPasswod']).toBeVisible();
+    await expect(loginPage['heading']).toHaveText(HEADINGS['LOGIN']);
   });
-  test('User should be successfully logged in', async ({ page }) => {
+
+  test.only('User should be successfully logged in', async ({ page }) => {
     //Login user
     await loginPage.loginValidUser(
-      page,
-      existingUser.email,
-      existingUser.password
+      existingUser['email'],
+      existingUser['password']
     );
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);

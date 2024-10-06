@@ -1,10 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { RegisterPage } from '../POM/modules/ui/registerPage';
 import { LoginPage } from '../POM/modules/ui/loginPage';
-import { generateUserCredentials, URLS, HEADINGS } from '../fixtures';
+import {
+  generateUserCredentials,
+  URLS,
+  HEADINGS,
+  invalidUsers,
+} from '../fixtures';
 
 test.describe('Register user successfully', () => {
   let registerPage, loginPage;
+
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['REGISTER']}`);
     await expect(page).toHaveURL(/.*register/);
@@ -17,7 +23,10 @@ test.describe('Register user successfully', () => {
     page,
   }) => {
     //Register user with all empty input fields
-    await registerPage.invalidRegister(page, registerPage.emptyInputFields);
+    await registerPage.invalidRegister(
+      page,
+      invalidUsers['ui']['register']['emptyInputFields']
+    );
     //Assert
     await expect(registerPage.missingUsername).toBeVisible();
     await expect(registerPage.missingEmail).toBeVisible();
@@ -31,7 +40,7 @@ test.describe('Register user successfully', () => {
     //Register user with an empty email input field
     await registerPage.invalidRegister(
       page,
-      registerPage.invalidEmailInInputField
+      invalidUsers['ui']['register']['invalidEmailInInputField']
     );
     //Assert
     await expect(registerPage.invalidEmailFormat).toBeVisible();
@@ -42,7 +51,10 @@ test.describe('Register user successfully', () => {
     page,
   }) => {
     //Register user with an empty email input field
-    await registerPage.invalidRegister(page, registerPage.shortPasswordInput);
+    await registerPage.invalidRegister(
+      page,
+      invalidUsers['ui']['register']['shortPasswordInput']
+    );
     //Assert
     await expect(registerPage.shortPassword).toBeVisible();
     await expect(registerPage.successRegisterMessage).toBeHidden();
@@ -67,6 +79,7 @@ test.describe('Register user successfully', () => {
       frame.locator('h4', { hasText: HEADINGS['IFRAME'] })
     ).toBeVisible();
   });
+
   test.afterEach('Logout', async ({ page }) => {
     //Logout user
     await loginPage.logoutUser(page);
