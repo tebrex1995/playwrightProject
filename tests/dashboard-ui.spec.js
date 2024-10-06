@@ -37,21 +37,15 @@ test.describe('Dashboard tests', () => {
     5. verify modals
    */
 
-  test('First page should have max number of products', async ({ page }) => {
-    await dashboard.navigateToPage(page, 1);
-    await expect(
-      dashboard['productsContainer']['productsContainerToCount']
-    ).toHaveCount(dashboard['productsPerPage']);
-  });
+  test.slow(
+    'Products on dashboard should be on provided number of pages',
+    async ({ page }) => {
+      const pages = await dashboard.getNumberOfPages(page);
+      await expect(await pages.length).toBe(dashboard['NumberOfPages']);
+    }
+  );
 
-  test('Products on dashboard should be on provided number of pages', async ({
-    page,
-  }) => {
-    const pages = await dashboard.getNumberOfPages(page);
-    await expect(await pages.length).toBe(dashboard['NumberOfPages']);
-  });
-
-  test('Should be able to navigate to last page', async ({ page }) => {
+  test.slow('Should be able to navigate to last page', async ({ page }) => {
     //Loop throught all pages and get last page
     const getNumberOfPages = await dashboard.getNumberOfPages(page);
     const lastPage = await getNumberOfPages.length;
@@ -60,6 +54,13 @@ test.describe('Dashboard tests', () => {
     await expect(
       page.locator(`${dashboard['paginationElements'].specificPage(lastPage)}`)
     ).toHaveCSS('background-color', dashboard['activeBtnBgColor']);
+  });
+
+  test('First page should have max number of products', async ({ page }) => {
+    await dashboard.navigateToPage(page, 1);
+    await expect(
+      dashboard['productsContainer']['productsContainerToCount']
+    ).toHaveCount(dashboard['productsPerPage']);
   });
 
   test('First product should be visible', async ({ page }) => {
