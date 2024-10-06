@@ -20,6 +20,8 @@ test.describe('Dashboard tests', () => {
         existingUser['email'],
         existingUser['password']
       );
+      //wait for loadState
+      await page.waitForLoadState('networkidle');
       await expect(dashboard['heading']).toBeVisible();
       await expect(page).toHaveURL(URLS['DASHBOARD']);
     }
@@ -61,13 +63,13 @@ test.describe('Dashboard tests', () => {
 
   test('First product should be visible', async ({ page }) => {
     const product = await dashboard.getProductData(page, 1);
-    await expect(product.image).toBeVisible();
-    await expect(product.image).toHaveRole('img');
-    await expect(product.image).toHaveAttribute('src');
-    await expect(product.title).toBeVisible();
-    await expect(product.description).toBeVisible();
-    await expect(product.price).toBeVisible();
-    await expect(product.button).toBeVisible();
+    await expect(product['productElements']['image']).toBeVisible();
+    await expect(product['productElements']['image']).toHaveRole('img');
+    await expect(product['productElements']['image']).toHaveAttribute('src');
+    await expect(product['productElements']['title']).toBeVisible();
+    await expect(product['productElements']['description']).toBeVisible();
+    await expect(product['productElements']['price']).toBeVisible();
+    await expect(product['productElements']['button']).toBeVisible();
   });
 
   // test('Get all products from a page', async ({ page }) => {
