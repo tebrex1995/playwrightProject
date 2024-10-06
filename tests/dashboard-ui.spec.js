@@ -59,9 +59,17 @@ test.describe('Dashboard tests', () => {
     ).toHaveCSS('background-color', dashboard['activeBtnBgColor']);
   });
 
-  test.only('Get product from page', async ({ page }) => {
-    await dashboard.getAllProductsOnPage(page);
+  test('First product should be visible', async ({ page }) => {
+    const product = await dashboard.getProductData(page, 1);
+    await expect(product.image).toBeVisible();
+    await expect(product.image).toHaveRole('img');
+    await expect(product.image).toHaveAttribute('src');
+    await expect(product.title).toBeVisible();
+    await expect(product.description).toBeVisible();
+    await expect(product.price).toBeVisible();
+    await expect(product.button).toBeVisible();
   });
+
   test.afterEach('Logout', async ({ page }) => {
     //Logout user
     await loginPage.logoutUser(page);

@@ -11,17 +11,26 @@ export class Dashboard {
     //Page locators
     this.heading = page.locator('span', { hasText: HEADINGS['DASHBOARD'] });
     //Product locators
-    this.productsContainer = page.locator('.basis-3');
+    this.productsContainer = {
+      fullLocator: page.locator('.basis-3'),
+      locatorsClass: '.basis-3',
+    };
     this.productsContainerToCount = page.locator('.basis-3 > div');
     this.productCard = {
-      testId: 'product-card',
-      fullLocator: page.getByTestId('product-card'),
-      attributeLocator: '[test-id="product-card"]',
+      testId: 'products-container',
+      fullLocator: page.getByTestId('products-container'),
+      attributeLocator: '[test-id="products-container"]',
     };
-    this.productTitle = page.locator('h5');
+    this.productTitle = {
+      partialLocator: 'h5',
+      fullLocator: page.locator('h5'),
+    };
     this.productDescription = page.locator('p.px-1.py-1');
     this.productLink = page.locator('href');
-    this.productImage = page.getByAltText('product image');
+    this.productImage = {
+      partialLocator: 'img',
+      fullLocator: page.getByAltText('product image'),
+    };
     this.productStar = page.getByRole('rating');
     this.productRating = page.locator('span.ml-4');
     this.ProductRatingComponent = page.locator('.w-10');
@@ -78,26 +87,69 @@ export class Dashboard {
       this.paginationElements.specificPage(page);
     }
   }
-  //Get all products on page
-  async getAllProductsOnPage(page) {
-    //Waits
+
+  //Get all products data and put in array of objects
+  async getAllProducts(page) {
+    //Get all products
+    const numberOfProducts = await page
+      .locator(this.productCard['attributeLocator'])
+      .count();
+    const allProducts = [];
+    return numberOfProducts;
+  }
+
+  //Get product data
+  async getProductData(page, productNumber) {
+    //Wait for load state
     await page.waitForLoadState('networkidle');
-    //Extract product information
-    const productCards = await page.locator(
-      this.productCard['attributeLocator']
+    //Get all products
+    const productCards = await page.locator('[test-id="product-card"]');
+
+    //Get specific product
+    const productCard = await productCards.nth(productNumber - 1);
+
+    //Get product Title
+    const productTitle = await productCard.locator(
+      this.productTitle['partialLocator']
     );
-    const productCard = await productCards.nth(1);
-    const productTitle = await productCard
-      .locator(this.productTitle)
-      .textContent();
-    console.log('Products Title:', productTitle);
-    const productDescription = await productCard
-      .locator(this.productDescription)
-      .textContent();
-    console.log('Products Description:', productDescription);
-    const productPrice = await productCard
-      .locator(this.productPrice)
-      .textContent();
-    console.log('Products Price', productPrice);
+    const productTitleText = productTitle.textContent();
+
+    //Get product image
+    const productImage = await productCard.locator(
+      this.productImage['partialLocator']
+    );
+    const ProductImageText = productImage.textContent();
+
+    //Get product Description
+    const productDescription = await productCard.locator(
+      this.productDescription
+    );
+    const productDescriptionText = productDescription.textContent();
+
+    //Get product Price
+    const productPrice = await productCard.locator(this.productPrice);
+    const productPriceText = productDescription.textContent();
+
+    //Get product cart button
+    const productCartButton = await productCard.locator(this.productButton);
+
+    //Return object with product data
+    return {
+      title: productTitle,
+      image: productImage,
+      description: productDescription,
+      price: productPrice,
+      button: productCartButton,
+      textContent: {
+        title: productTitleText,
+        description: productDescriptionText,
+        price: productPriceText,
+      },
+    };
+  }
+
+  //Loop throught all products in page
+  async loopProductsOnAllPages(page) {
+    this.clickOnEveryPage(page, (await this.getNumberOfPages(page)).length);
   }
 }
