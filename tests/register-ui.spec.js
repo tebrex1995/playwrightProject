@@ -22,7 +22,6 @@ test.describe('Register user successfully', () => {
       page,
       invalidUsers['ui']['register']['emptyInputFields']
     );
-
     //Assert
     await expect(registerPage['missingUsername']).toBeVisible();
     await expect(registerPage['missingEmail']).toBeVisible();
