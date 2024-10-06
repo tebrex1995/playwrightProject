@@ -27,7 +27,6 @@ export class LoginPage {
 
   async logoutUser(page) {
     const header = new Header(page);
-    console.log(await header.burgerMenu);
     if (await header.burgerMenu.isVisible()) {
       await header.burgerMenu.click();
       await header.logoutButton.click();

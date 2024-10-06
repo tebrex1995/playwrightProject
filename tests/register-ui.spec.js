@@ -1,10 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { RegisterPage } from '../POM/modules/ui/registerPage';
-import { LoginPage } from '../POM/modules/ui/loginPage';
+import { LoginPage, RegisterPage, Dashboard } from '../POM/modules/ui';
 import { generateUserCredentials, URLS, invalidUsers } from '../fixtures';
 
 test.describe('Register user successfully', () => {
-  let registerPage, loginPage;
+  let registerPage, loginPage, dashboard;
 
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['REGISTER']}`);

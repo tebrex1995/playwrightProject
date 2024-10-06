@@ -1,10 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { URLS, HEADINGS, existingUser, utils, invalidUsers } from '../fixtures';
-import { LoginPage } from '../POM/modules/ui/loginPage.js';
-import { Common } from '../POM/modules/ui/Common.js';
+import { LoginPage, Dashboard, Common } from '../POM/modules/ui';
 
 test.describe('Login UI tests', () => {
-  let loginPage, common;
+  let loginPage, common, dashboard;
 
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['LOGIN']}`);
@@ -117,7 +116,7 @@ test.describe('Login UI tests', () => {
     await expect(loginPage['heading']).toHaveText(HEADINGS['LOGIN']);
   });
 
-  test.only('User should be successfully logged in', async ({ page }) => {
+  test('User should be successfully logged in', async ({ page }) => {
     //Login user
     await loginPage.loginValidUser(
       existingUser['email'],
