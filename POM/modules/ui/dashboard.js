@@ -102,7 +102,7 @@ export class Dashboard {
     return productCards;
   }
 
-  //Get all products  data from page and put in array of objects
+  //Get all products  elements from page and put in array of objects
   async getAllProducts(page) {
     //Wait for load state
     await page.waitForLoadState('networkidle');
