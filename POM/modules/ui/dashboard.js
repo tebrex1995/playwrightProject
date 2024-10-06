@@ -14,12 +14,12 @@ export class Dashboard {
     this.productsContainer = {
       fullLocator: page.locator('.basis-3'),
       locatorsClass: '.basis-3',
+      productsContainerToCount: page.locator('.basis-3 > div'),
     };
-    this.productsContainerToCount = page.locator('.basis-3 > div');
     this.productCard = {
-      testId: 'products-container',
-      fullLocator: page.getByTestId('products-container'),
-      attributeLocator: '[test-id="products-container"]',
+      testId: 'product-card',
+      fullLocator: page.getByTestId('product-card'),
+      attributeLocator: '[test-id="product-card"]',
     };
     this.productTitle = {
       partialLocator: 'h5',
