@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { URLS, existingUser, utils } from '../fixtures';
+import { URLS, existingUser } from '../fixtures';
 import { LoginPage, Dashboard } from '../POM/modules/ui';
 
 test.describe('Dashboard tests', () => {
@@ -60,18 +60,7 @@ test.describe('Dashboard tests', () => {
   });
 
   test.only('Get product from page', async ({ page }) => {
-    //Waits
-    await page.waitForLoadState('networkidle');
-    //Extract product information
-    const productCards = await page.locator(
-      dashboard['productCard']['attributeLocator']
-    );
-    const productCard = await productCards.nth(1);
-    console.log('Products Title', productCard);
-    console.log('Products Title');
-    console.log('Products Title');
-
-    console.log('product', await productCards.nth(1).getByTitle());
+    await dashboard.getAllProductsOnPage(page);
   });
   test.afterEach('Logout', async ({ page }) => {
     //Logout user
