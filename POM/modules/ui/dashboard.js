@@ -19,6 +19,7 @@ export class Dashboard {
       attributeLocator: '[test-id="product-card"]',
     };
     this.productTitle = page.locator('h5');
+    this.productDescription = page.locator('p.px-1.py-1');
     this.productLink = page.locator('href');
     this.productImage = page.getByAltText('product image');
     this.productStar = page.getByRole('rating');
@@ -76,5 +77,27 @@ export class Dashboard {
     for (const page of numberOfPages) {
       this.paginationElements.specificPage(page);
     }
+  }
+  //Get all products on page
+  async getAllProductsOnPage(page) {
+    //Waits
+    await page.waitForLoadState('networkidle');
+    //Extract product information
+    const productCards = await page.locator(
+      this.productCard['attributeLocator']
+    );
+    const productCard = await productCards.nth(1);
+    const productTitle = await productCard
+      .locator(this.productTitle)
+      .textContent();
+    console.log('Products Title:', productTitle);
+    const productDescription = await productCard
+      .locator(this.productDescription)
+      .textContent();
+    console.log('Products Description:', productDescription);
+    const productPrice = await productCard
+      .locator(this.productPrice)
+      .textContent();
+    console.log('Products Price', productPrice);
   }
 }
