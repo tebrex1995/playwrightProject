@@ -1,20 +1,13 @@
 import { ENDPOINTS } from '../../../fixtures';
+import { BaseApi } from './baseApi';
 
-export class LoginApi {
+export class LoginApi extends BaseApi {
   constructor(page) {
-    this.page = page;
+    super(page);
+    this.endpoint = ENDPOINTS['LOGIN_ENDPOINT'];
   }
 
-  async loginViaBE(email, password) {
-    let response = await this.page.request.post(ENDPOINTS['LOGIN_ENDPOINT'], {
-      headers: { Accept: 'application/json' },
-      data: {
-        email: email,
-        password: password,
-      },
-    });
-    let responseJson = await response.json();
-
-    return responseJson;
+  async login(payload) {
+    return await this.post(this.endpoint, payload);
   }
 }

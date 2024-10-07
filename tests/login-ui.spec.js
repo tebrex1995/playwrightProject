@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { URLS, HEADINGS, existingUser, utils, invalidUsers } from '../fixtures';
+import {
+  URLS,
+  HEADINGS,
+  EXISTING_USER,
+  utils,
+  INVALID_USER,
+} from '../fixtures';
 import { LoginPage, Dashboard, Common } from '../POM/modules/ui';
 
 test.describe('Login UI tests', () => {
@@ -95,7 +101,7 @@ test.describe('Login UI tests', () => {
     //Try login with empty input fields
     await loginPage.invalidLogin(
       page,
-      invalidUsers['ui']['login']['emptyInputFields']
+      INVALID_USER['ui']['login']['emptyInputFields']
     );
     //Assert
     await expect(
@@ -109,7 +115,7 @@ test.describe('Login UI tests', () => {
     //Try login with empty input fields
     await loginPage.invalidLogin(
       page,
-      invalidUsers['ui']['login']['wrongEmailAndPassword']
+      INVALID_USER['ui']['login']['wrongEmailAndPassword']
     );
     //Assert
     await expect(loginPage['wrongEmailOrPasswod']).toBeVisible();
@@ -119,8 +125,8 @@ test.describe('Login UI tests', () => {
   test('User should be successfully logged in', async ({ page }) => {
     //Login user
     await loginPage.loginValidUser(
-      existingUser['email'],
-      existingUser['password']
+      EXISTING_USER['email'],
+      EXISTING_USER['password']
     );
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);

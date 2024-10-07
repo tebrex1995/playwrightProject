@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { URLS, existingUser } from '../fixtures';
+import { URLS, EXISTING_USER } from '../fixtures';
 import { LoginPage, Dashboard } from '../POM/modules/ui';
 
 test.describe('Dashboard tests', () => {
@@ -17,8 +17,8 @@ test.describe('Dashboard tests', () => {
       await expect(page).toHaveURL(URLS['LOGIN']);
       //Login user with valid credentials
       await loginPage.loginValidUser(
-        existingUser['email'],
-        existingUser['password']
+        EXISTING_USER['email'],
+        EXISTING_USER['password']
       );
       await expect(page).toHaveURL(URLS['DASHBOARD']);
     }

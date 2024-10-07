@@ -1,23 +1,13 @@
 import { ENDPOINTS } from '../../../fixtures';
+import { BaseApi } from './baseApi';
 
-export class RegisterApi {
+export class RegisterApi extends BaseApi {
   constructor(page) {
-    this.page = page;
+    super(page);
+    this.endpoint = ENDPOINTS['REGISTER_ENDPOINT'];
   }
 
-  async registerViaApi(username, email, password) {
-    let response = await this.page.request.post(
-      ENDPOINTS['REGISTER_ENDPOINT'],
-      {
-        headers: { Accept: 'application/json' },
-        data: {
-          username: username,
-          email: email,
-          password: password,
-        },
-      }
-    );
-    let responseJson = response.json();
-    return responseJson;
+  async register(payload) {
+    return await this.post(this.endpoint, payload);
   }
 }

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage, RegisterPage, Dashboard } from '../POM/modules/ui';
-import { generateUserCredentials, URLS, invalidUsers } from '../fixtures';
+import { generateUserCredentials, URLS, INVALID_USER } from '../fixtures';
 
 test.describe('Register user successfully', () => {
   let registerPage, loginPage, dashboard;
@@ -21,7 +21,7 @@ test.describe('Register user successfully', () => {
     //Register user with all empty input fields
     await registerPage.invalidRegister(
       page,
-      invalidUsers['ui']['register']['emptyInputFields']
+      INVALID_USER['ui']['register']['emptyInputFields']
     );
     //Assert
     await expect(registerPage['missingUsername']).toBeVisible();
@@ -36,7 +36,7 @@ test.describe('Register user successfully', () => {
     //Register user with an empty email input field
     await registerPage.invalidRegister(
       page,
-      invalidUsers['ui']['register']['invalidEmailInInputField']
+      INVALID_USER['ui']['register']['invalidEmailInInputField']
     );
     //Assert
     await expect(registerPage['invalidEmailFormat']).toBeVisible();
@@ -49,7 +49,7 @@ test.describe('Register user successfully', () => {
     //Register user with an empty email input field
     await registerPage.invalidRegister(
       page,
-      invalidUsers['ui']['register']['shortPasswordInput']
+      INVALID_USER['ui']['register']['shortPasswordInput']
     );
     //Assert
     await expect(registerPage['shortPassword']).toBeVisible();
