@@ -6,6 +6,6 @@ jobs:
   simple-health-check:
     runs-on: ubuntu-latest
     steps:
-      name: Run healthcheck
-      run: |
-        curl -I ${{ vars.SERVER_ENDPOINT }} | grep 'HTTP/2 200'
+      - name: Ping the server
+        run: |
+          curl -I ${{ vars.SERVER_ENDPOINT }} | grep 'HTTP/2 200'
