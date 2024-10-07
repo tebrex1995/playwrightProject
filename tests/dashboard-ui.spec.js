@@ -71,11 +71,12 @@ test.describe('Dashboard tests', () => {
     await expect(product['productElements']['button']).toBeVisible();
   });
 
-  test('All products on dashboard should be visible', async ({ page }) => {
-    const products = await dashboard.loopProductsOnAllPages(page);
-    for (let i = 0; i <= products.length; i++) {
-      console.log(products[i]);
-    }
+  test.only('All products on dashboard should be visible', async ({ page }) => {
+    await dashboard.loopProductsOnAllPages(page);
+    // for (let i = 0; i < products.length; i++) {
+    //   console.log(products[i]);
+    // }
+
     expect(true).toBe(true);
 
     // for (const product of products) {

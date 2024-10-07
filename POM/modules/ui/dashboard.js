@@ -138,7 +138,7 @@ export class Dashboard {
 
     //Get product Price
     const productPrice = await productCard.locator(this.productPrice);
-    const productPriceText = await productDescription.textContent();
+    const productPriceText = await productPrice.textContent();
 
     //Get product cart button
     const productCartButton = await productCard.locator(this.productButton);
@@ -160,22 +160,30 @@ export class Dashboard {
       },
     };
   }
+
   //Loop throught all products in page
   async loopProductsOnAllPages(page) {
-    const allProducts = [];
+    //Get Number of pages and initialize allProducts array
     const pages = await this.getAllPages(page);
-
-    //Get all products from all pages and push in an arrar
+    const allProducts = [];
+    //Loop through each page
     for (let i = 0; i < pages.length; i++) {
+      //Get all products,their number and products indexes
       const products = await this.getAllproductCards(page);
       const numberOfProductsOnPage = await products.count();
       const productsIndex = await utils.getproductsIndex(
         numberOfProductsOnPage
       );
-      for (const index of await productsIndex) {
+      //Get product data from each product on the page and push it in array
+      for (const index of productsIndex) {
         const productData = await this.getProductData(page, index);
         allProducts.push(productData);
+        console.log(
+          `This is product Data ${productData['textContent']['title']}`
+        );
       }
+      //Go to next page
+      console.log(`You are on page ${i}`);
       await this.navigateToPage(page, i + 1);
     }
 
