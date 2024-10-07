@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { RegisterApi } from '../POM/modules/api/registerApi';
 import {
-  RESPONSE_MESSAGES,
+  STATUS,
   generateUserCredentials,
-  existingUser,
-  invalidUsers,
+  EXISTING_USER,
+  INVALID_USER,
   ERRORS,
 } from '../fixtures';
 
@@ -17,10 +17,8 @@ test.describe('Register via Api', () => {
 
   test("Shouldn't be able to register without provided data", async () => {
     //Send register request
-    const responseJson = await registerApi.registerViaApi(
-      invalidUsers['api']['emptyInputFields']['username'],
-      invalidUsers['api']['emptyInputFields']['email'],
-      invalidUsers['api']['emptyInputFields']['password']
+    const responseJson = await registerApi.register(
+      INVALID_USER['api']['emptyInputFields']
     );
     //Assertations
     expect(responseJson['errors']['email']).toContain(
@@ -36,11 +34,7 @@ test.describe('Register via Api', () => {
 
   test("Shouldn't be able to register with already used email and password", async () => {
     //Send register request
-    const responseJson = await registerApi.registerViaApi(
-      existingUser['username'],
-      existingUser['email'],
-      existingUser['password']
-    );
+    const responseJson = await registerApi.register(EXISTING_USER['register']);
     expect(responseJson['errors']['username']).toContain(
       ERRORS['REGISTER']['TAKEN_USERNAME']
     );
@@ -50,10 +44,8 @@ test.describe('Register via Api', () => {
   });
 
   test("Shouldn't be able to register with invalid email format", async () => {
-    const responseJson = await registerApi.registerViaApi(
-      invalidUsers['api']['invalidEmailFormat']['username'],
-      invalidUsers['api']['invalidEmailFormat']['email'],
-      invalidUsers['api']['invalidEmailFormat']['password']
+    const responseJson = await registerApi.register(
+      INVALID_USER['api']['register']['invalidEmailFormat']
     );
     //Assertations
     expect(responseJson['message']).toBe(
@@ -68,10 +60,8 @@ test.describe('Register via Api', () => {
     ['api'];
     //Send register request
 
-    const responseJson = await registerApi.registerViaApi(
-      invalidUsers['api']['shortPassword']['username'],
-      invalidUsers['api']['shortPassword']['email'],
-      invalidUsers['api']['shortPassword']['password']
+    const responseJson = await registerApi.register(
+      INVALID_USER['api']['register']['shortPassword']
     );
     //Assertations
     expect(responseJson['message']).toBe(ERRORS['REGISTER']['SHORT_PASSWORD']);
@@ -82,17 +72,11 @@ test.describe('Register via Api', () => {
 
   test('Register successfully', async () => {
     //Generate valid test data
-    const { username, email, password } = generateUserCredentials(6);
+    const user = generateUserCredentials(6);
     //Register user successfully
-    const responseJson = await registerApi.registerViaApi(
-      username,
-      email,
-      password
-    );
+    const responseJson = await registerApi.register(user);
     //Assertations
-    expect(responseJson['status']).toBe(RESPONSE_MESSAGES['STATUS_SUCCESS']);
-    expect(responseJson['message']).toBe(
-      RESPONSE_MESSAGES['USER_CREATED_MESSAGE']
-    );
+    expect(responseJson['status']).toBe(STATUS['STATUS_SUCCESS']);
+    expect(responseJson['message']).toBe(STATUS['USER_CREATED_MESSAGE']);
   });
 });

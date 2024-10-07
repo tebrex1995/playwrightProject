@@ -1,6 +1,6 @@
 import { Header } from './header';
 import { ERRORS, URLS, utils } from '../../../fixtures';
-import { Common } from './Common';
+import { Common } from '../ui/Common';
 
 export class LoginPage {
   constructor(page) {
@@ -18,9 +18,7 @@ export class LoginPage {
     this.loginInputs = ['#email', '#password'];
   }
 
-  async loginValidUser(page, email, password) {
-    //Instantiate class
-    const header = new Header(page);
+  async loginValidUser(email, password) {
     //Page locators
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);

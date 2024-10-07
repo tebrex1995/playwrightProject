@@ -1,11 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { LoginApi } from '../POM/modules/api/loginApi';
-import {
-  RESPONSE_MESSAGES,
-  existingUser,
-  ERRORS,
-  invalidUsers,
-} from '../fixtures';
+import { STATUS, EXISTING_USER, ERRORS, INVALID_USER } from '../fixtures';
 
 test.describe('Login via API', () => {
   let loginApi;
@@ -15,12 +10,11 @@ test.describe('Login via API', () => {
   });
 
   test("Shouldn't be able to login without provided data", async () => {
-    //Login registered user
-    const responseJson = await loginApi.loginViaBE(
-      invalidUsers['api']['emptyInputFields']['email'],
-      invalidUsers['api']['emptyInputFields']['password']
+    // //Login registered user
+    const responseJson = await loginApi.login(
+      INVALID_USER['api']['login']['emptyInputFields']
     );
-    //Assertations
+    // Assertations;
     expect(responseJson['errors']['email']).toContain(
       ERRORS['LOGIN']['MISSING_EMAIL']
     );
@@ -31,20 +25,17 @@ test.describe('Login via API', () => {
 
   test("Shouldn't be able to login with not registered user", async () => {
     //Login registered user
-    const responseJson = await loginApi.loginViaBE(
-      invalidUsers['api']['nonExistingUser']['email'],
-      invalidUsers['api']['nonExistingUser']['password']
+    const responseJson = await loginApi.login(
+      INVALID_USER['api']['login']['nonEXISTING_USER']
     );
-    expect(responseJson['error']).toBe(RESPONSE_MESSAGES['UNAUTHORIZED']);
+    expect(responseJson['error']).toBe(STATUS['UNAUTHORIZED']);
   });
 
   test('Login with registered user', async () => {
     //Login registered user
-    const responseJson = await loginApi.loginViaBE(
-      existingUser['email'],
-      existingUser['password']
-    );
+    const responseJson = await loginApi.login(EXISTING_USER['login']);
     //Assertations
-    expect(responseJson['status']).toBe(RESPONSE_MESSAGES['STATUS_SUCCESS']);
+    expect(responseJson['status']).toBe(STATUS['STATUS_SUCCESS']);
+    expect(responseJson['user']['email']).toBe(EXISTING_USER['login']['email']);
   });
 });

@@ -16,8 +16,24 @@ const fillAndSubmitForm = async (page, fields, values) => {
   await page.locator('button').click();
 };
 
-// const commonData = {
-//   loginInputsIds: ['#email', '#password'],
-// };
+const countDivElements = async (page, divLocator, children) => {
+  // return await divLocator.length;
+  const count = await page.locator(`${divLocator} ${children}`).count();
+  return count;
+};
 
-export { generateRandomString, fillAndSubmitForm };
+const getproductsIndex = async numberOfProducts => {
+  const productsNumber = numberOfProducts;
+  const productsIndex = [];
+  for (let i = 1; i <= productsNumber; i++) {
+    productsIndex.push(i);
+  }
+  return productsIndex;
+};
+
+export {
+  generateRandomString,
+  fillAndSubmitForm,
+  countDivElements,
+  getproductsIndex,
+};

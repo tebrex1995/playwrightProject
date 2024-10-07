@@ -1,4 +1,4 @@
-import { ERRORS } from '../../../fixtures';
+import { ERRORS, HEADINGS } from '../../../fixtures';
 
 export class Common {
   constructor(page) {

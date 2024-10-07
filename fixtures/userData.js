@@ -1,31 +1,46 @@
 import { generateRandomString } from './utils';
 
-export const existingUser = {
-  email: 'aleksatester@gmail.com',
-  password: 'test123',
-  username: 'aleksatester',
+export const EXISTING_USER = {
+  login: { email: 'aleksatester@gmail.com', password: 'test123' },
+  register: {
+    email: 'aleksatester@gmail.com',
+    password: 'test123',
+    username: 'aleksatester',
+  },
 };
 
-export const invalidUsers = {
+export const INVALID_USER = {
   api: {
-    nonExistingUser: {
-      email: `${generateRandomString(4)}@email.com`,
-      password: generateRandomString(6),
+    login: {
+      nonEXISTING_USER: {
+        email: `${generateRandomString(4)}@email.com`,
+        password: generateRandomString(6),
+      },
+      emptyInputFields: {
+        email: `${generateRandomString(0)} `,
+        password: `${generateRandomString(0)} `,
+      },
+      invalidEmailFormat: {
+        email: `${generateRandomString(5)}@email`,
+        password: generateRandomString(6),
+      },
     },
-    emptyInputFields: {
-      username: generateRandomString(0),
-      email: generateRandomString(0),
-      password: generateRandomString(0),
-    },
-    invalidEmailFormat: {
-      username: generateRandomString(6),
-      email: `${generateRandomString(5)}@email`,
-      password: generateRandomString(6),
-    },
-    shortPassword: {
-      username: generateRandomString(6),
-      email: `${generateRandomString(5)}@email.com`,
-      password: generateRandomString(3),
+    register: {
+      emptyInputFields: {
+        username: generateRandomString(0),
+        email: generateRandomString(0),
+        password: generateRandomString(0),
+      },
+      invalidEmailFormat: {
+        username: generateRandomString(6),
+        email: `${generateRandomString(5)}@email`,
+        password: generateRandomString(6),
+      },
+      shortPassword: {
+        username: generateRandomString(6),
+        email: `${generateRandomString(5)}@email.com`,
+        password: generateRandomString(3),
+      },
     },
   },
   ui: {
