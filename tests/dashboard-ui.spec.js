@@ -47,6 +47,7 @@ test.describe('Dashboard tests', () => {
     //Loop throught all pages and get last page
     const getAllPages = await dashboard.getAllPages(page);
     const lastPage = await getAllPages.length;
+
     //Navigate to last page
     await dashboard.navigateToPage(page, await lastPage);
     await expect(

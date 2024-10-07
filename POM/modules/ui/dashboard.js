@@ -73,6 +73,7 @@ export class Dashboard {
   //Get number of pages
   async getAllPages(page) {
     await page.waitForLoadState('networkidle');
+
     const pageNumber = await utils.countDivElements(
       page,
       this.paginationElements['parent'],
@@ -88,6 +89,7 @@ export class Dashboard {
   //Click on every page
   async clickOnEveryPage(page, numberOfPages) {
     await this.getAllPages(page);
+
     for (const page of numberOfPages) {
       this.paginationElements.specificPage(page);
     }
