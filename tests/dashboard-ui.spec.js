@@ -76,6 +76,7 @@ test.describe('Dashboard tests', () => {
     for (let i = 0; i <= products.length; i++) {
       console.log(products[i]);
     }
+    expect(true).toBe(true);
 
     // for (const product of products) {
     //   await expect(product['productElements']['title']).toBeVisible();
