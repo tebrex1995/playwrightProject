@@ -129,7 +129,6 @@ export class Dashboard {
     const productImage = await productCard.locator(
       this.productImage['partialLocator']
     );
-    const ProductImageText = await productImage.textContent();
 
     //Get product Description
     const productDescription = await productCard.locator(
@@ -161,25 +160,24 @@ export class Dashboard {
       },
     };
   }
-
   //Loop throught all products in page
   async loopProductsOnAllPages(page) {
     const allProducts = [];
     const pages = await this.getAllPages(page);
-    const products = await this.getAllproductCards(page);
-    const numberOfProductsOnPage = await products.count();
-    const productsIndex = await utils.getproductsIndex(numberOfProductsOnPage);
-    //Get all products from a page and push in an arrar
-    for (let i = 0; i < pages.length; i++)
-      if (!pages[i]) {
-        break;
-      } else {
-        for (const index of await productsIndex) {
-          const productData = await this.getProductData(page, index);
-          allProducts.push(productData);
-        }
-        await this.navigateToPage(page, i + 1);
+
+    //Get all products from all pages and push in an arrar
+    for (let i = 0; i < pages.length; i++) {
+      const products = await this.getAllproductCards(page);
+      const numberOfProductsOnPage = await products.count();
+      const productsIndex = await utils.getproductsIndex(
+        numberOfProductsOnPage
+      );
+      for (const index of await productsIndex) {
+        const productData = await this.getProductData(page, index);
+        allProducts.push(productData);
       }
+      await this.navigateToPage(page, i + 1);
+    }
 
     return allProducts;
   }

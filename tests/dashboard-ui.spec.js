@@ -71,9 +71,21 @@ test.describe('Dashboard tests', () => {
     await expect(product['productElements']['button']).toBeVisible();
   });
 
-  test('Get all products from a page', async ({ page }) => {
-    const p = await dashboard.loopProductsOnAllPages(page);
-    console.log(p.length);
+  test.only('All products on dashboard should be visible', async ({ page }) => {
+    const products = await dashboard.loopProductsOnAllPages(page);
+    for (let i = 0; i <= products.length; i++) {
+      console.log(products[i]);
+    }
+
+    // for (const product of products) {
+    //   await expect(product['productElements']['title']).toBeVisible();
+    //   await expect(product['productElements']['image']).toBeVisible();
+    //   await expect(product['productElements']['image']).toHaveRole('img');
+    //   await expect(product['productElements']['image']).toHaveAttribute('src');
+    //   await expect(product['productElements']['description']).toBeVisible();
+    //   await expect(product['productElements']['price']).toBeVisible();
+    //   await expect(product['productElements']['button']).toBeVisible();
+    // }
   });
 
   test.afterEach('Logout', async ({ page }) => {
