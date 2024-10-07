@@ -1,18 +1,10 @@
 import { test, expect } from '@playwright/test';
-<<<<<<< HEAD
 import { URLS, HEADINGS, existingUser, utils, invalidUsers } from '../fixtures';
 import { LoginPage, Dashboard, Common } from '../POM/modules/ui';
 
 test.describe('Login UI tests', () => {
   let loginPage, common, dashboard;
 
-=======
-import { URLS, HEADINGS, existingUser, utils } from '../fixtures';
-import { LoginPage, Common, Dashboard } from '../POM/modules/ui';
-
-test.describe('Login UI tests', () => {
-  let loginPage, common, dashboard;
->>>>>>> a8dbd3b5a0a01db1172e4c1f1817b1cb98b115c5
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['LOGIN']}`);
     await expect(page).toHaveURL(`${URLS['LOGIN']}`);
@@ -30,13 +22,8 @@ test.describe('Login UI tests', () => {
     await expect(page.locator('form input')).toHaveCount(2);
   });
 
-<<<<<<< HEAD
   test('Form text inputs should both have id attributes', async () => {
     await expect(loginPage.emailInput).toHaveId(
-=======
-  test('Form text inputs should both have id attributes', async ({ page }) => {
-    await expect(loginPage['emailInput']).toHaveId(
->>>>>>> a8dbd3b5a0a01db1172e4c1f1817b1cb98b115c5
       loginPage['loginInputs'][0].split('#')[1]
     );
     await expect(loginPage.passwordInput).toHaveId(
@@ -106,14 +93,10 @@ test.describe('Login UI tests', () => {
     page,
   }) => {
     //Try login with empty input fields
-<<<<<<< HEAD
     await loginPage.invalidLogin(
       page,
       invalidUsers['ui']['login']['emptyInputFields']
     );
-=======
-    await loginPage.invalidLogin(page, loginPage['emptyInputFields']);
->>>>>>> a8dbd3b5a0a01db1172e4c1f1817b1cb98b115c5
     //Assert
     await expect(
       page.locator(common['formInputLocators']['missingEmail'])
@@ -124,14 +107,10 @@ test.describe('Login UI tests', () => {
     page,
   }) => {
     //Try login with empty input fields
-<<<<<<< HEAD
     await loginPage.invalidLogin(
       page,
       invalidUsers['ui']['login']['wrongEmailAndPassword']
     );
-=======
-    await loginPage.invalidLogin(page, loginPage['wrongEmailAndPassword']);
->>>>>>> a8dbd3b5a0a01db1172e4c1f1817b1cb98b115c5
     //Assert
     await expect(loginPage['wrongEmailOrPasswod']).toBeVisible();
     await expect(loginPage['heading']).toHaveText(HEADINGS['LOGIN']);

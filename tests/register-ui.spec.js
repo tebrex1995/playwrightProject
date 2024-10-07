@@ -1,18 +1,10 @@
 import { test, expect } from '@playwright/test';
-<<<<<<< HEAD
 import { LoginPage, RegisterPage, Dashboard } from '../POM/modules/ui';
 import { generateUserCredentials, URLS, invalidUsers } from '../fixtures';
 
 test.describe('Register user successfully', () => {
   let registerPage, loginPage, dashboard;
 
-=======
-import { RegisterPage, LoginPage, Common, Dashboard } from '../POM/modules/ui';
-import { generateUserCredentials, URLS } from '../fixtures';
-
-test.describe('Register user successfully', () => {
-  let registerPage, loginPage, common, dashboard;
->>>>>>> a8dbd3b5a0a01db1172e4c1f1817b1cb98b115c5
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['REGISTER']}`);
     await expect(page).toHaveURL(/.*register/);
@@ -27,14 +19,10 @@ test.describe('Register user successfully', () => {
     page,
   }) => {
     //Register user with all empty input fields
-<<<<<<< HEAD
     await registerPage.invalidRegister(
       page,
       invalidUsers['ui']['register']['emptyInputFields']
     );
-=======
-    await registerPage.invalidRegister(page, registerPage['emptyInputFields']);
->>>>>>> a8dbd3b5a0a01db1172e4c1f1817b1cb98b115c5
     //Assert
     await expect(registerPage['missingUsername']).toBeVisible();
     await expect(registerPage['missingEmail']).toBeVisible();
@@ -48,11 +36,7 @@ test.describe('Register user successfully', () => {
     //Register user with an empty email input field
     await registerPage.invalidRegister(
       page,
-<<<<<<< HEAD
       invalidUsers['ui']['register']['invalidEmailInInputField']
-=======
-      registerPage['invalidEmailInInputField']
->>>>>>> a8dbd3b5a0a01db1172e4c1f1817b1cb98b115c5
     );
     //Assert
     await expect(registerPage['invalidEmailFormat']).toBeVisible();
@@ -65,11 +49,7 @@ test.describe('Register user successfully', () => {
     //Register user with an empty email input field
     await registerPage.invalidRegister(
       page,
-<<<<<<< HEAD
       invalidUsers['ui']['register']['shortPasswordInput']
-=======
-      registerPage['shortPasswordInput']
->>>>>>> a8dbd3b5a0a01db1172e4c1f1817b1cb98b115c5
     );
     //Assert
     await expect(registerPage['shortPassword']).toBeVisible();
