@@ -184,7 +184,6 @@ export class Dashboard {
       }
       //Go to next page
       console.log(`You are on page ${i}`);
-      await this.navigateToPage(page, i + 1);
     }
 
     return allProducts;
