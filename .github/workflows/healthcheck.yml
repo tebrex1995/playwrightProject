@@ -5,7 +5,7 @@ on:
 
 jobs:
   simple-health-check:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps: Ping the server
     run: |
       curl -I ${{ vars.SERVER_ENDPOINT }} | grep 'HTTP/2 200'
