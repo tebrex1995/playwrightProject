@@ -22,18 +22,18 @@ const countDivElements = async (page, divLocator, children) => {
   return count;
 };
 
-const getProductIndex = async numberOfProducts => {
+const getproductsIndex = async numberOfProducts => {
   const productsNumber = numberOfProducts;
-  const productIndex = [];
+  const productsIndex = [];
   for (let i = 1; i <= productsNumber; i++) {
-    productIndex.push(i);
+    productsIndex.push(i);
   }
-  return productIndex;
+  return productsIndex;
 };
 
 export {
   generateRandomString,
   fillAndSubmitForm,
   countDivElements,
-  getProductIndex,
+  getproductsIndex,
 };

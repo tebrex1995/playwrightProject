@@ -35,19 +35,17 @@ test.describe('Dashboard tests', () => {
     5. verify modals
    */
 
-  test.slow(
-    'Products on dashboard should be on provided number of pages',
-    async ({ page }) => {
-      const pages = await dashboard.getAllPages(page);
-      await expect(await pages.length).toBe(dashboard['NumberOfPages']);
-    }
-  );
+  test('Products on dashboard should be on provided number of pages', async ({
+    page,
+  }) => {
+    const pages = await dashboard.getAllPages(page);
+    await expect(await pages.length).toBe(dashboard['NumberOfPages']);
+  });
 
-  test.slow('Should be able to navigate to last page', async ({ page }) => {
+  test('Should be able to navigate to last page', async ({ page }) => {
     //Loop throught all pages and get last page
     const getAllPages = await dashboard.getAllPages(page);
     const lastPage = await getAllPages.length;
-
     //Navigate to last page
     await dashboard.navigateToPage(page, await lastPage);
     await expect(
@@ -73,8 +71,9 @@ test.describe('Dashboard tests', () => {
     await expect(product['productElements']['button']).toBeVisible();
   });
 
-  test.only('Get all products from a page', async ({ page }) => {
+  test('Get all products from a page', async ({ page }) => {
     const p = await dashboard.loopProductsOnAllPages(page);
+    console.log(p.length);
   });
 
   test.afterEach('Logout', async ({ page }) => {

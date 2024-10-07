@@ -106,40 +106,40 @@ export class Dashboard {
     return productCards;
   }
 
-  async getOneProduct(page, productIndex) {
+  async getOneProduct(page, productsIndex) {
     const ProductCards = await this.getAllproductCards(page);
     //Get specific product
-    const productCard = await ProductCards.nth(productIndex - 1);
+    const productCard = await ProductCards.nth(productsIndex - 1);
     return productCard;
   }
 
   //Get product data
-  async getProductData(page, productIndex) {
+  async getProductData(page, productsIndex) {
     //Get all product cards from single page
     // const productCards = await this.getAllproductCards(page);
-    const productCard = await this.getOneProduct(page, productIndex);
+    const productCard = await this.getOneProduct(page, productsIndex);
 
     //Get product Title
     const productTitle = await productCard.locator(
       this.productTitle['partialLocator']
     );
-    const productTitleText = productTitle.textContent();
+    const productTitleText = await productTitle.textContent();
 
     //Get product image
     const productImage = await productCard.locator(
       this.productImage['partialLocator']
     );
-    const ProductImageText = productImage.textContent();
+    const ProductImageText = await productImage.textContent();
 
     //Get product Description
     const productDescription = await productCard.locator(
       this.productDescription
     );
-    const productDescriptionText = productDescription.textContent();
+    const productDescriptionText = await productDescription.textContent();
 
     //Get product Price
     const productPrice = await productCard.locator(this.productPrice);
-    const productPriceText = productDescription.textContent();
+    const productPriceText = await productDescription.textContent();
 
     //Get product cart button
     const productCartButton = await productCard.locator(this.productButton);
@@ -155,7 +155,7 @@ export class Dashboard {
       },
 
       textContent: {
-        title: productTitleText,
+        title: productTitleText.trim(''),
         description: productDescriptionText,
         price: productPriceText,
       },
@@ -164,16 +164,23 @@ export class Dashboard {
 
   //Loop throught all products in page
   async loopProductsOnAllPages(page) {
+    const allProducts = [];
     const pages = await this.getAllPages(page);
     const products = await this.getAllproductCards(page);
     const numberOfProductsOnPage = await products.count();
-    const productIndex = await utils.getProductIndex(numberOfProductsOnPage);
-    console.log(productIndex);
-    //GET PRODUCTS FROM A PAGE IN SINGLE ARRAY
-    //Loop through pages and get all products
-    // for(const product in products)
-    // const allProducts = [];
-    // for (const singlePage of pages) {
-    // }
+    const productsIndex = await utils.getproductsIndex(numberOfProductsOnPage);
+    //Get all products from a page and push in an arrar
+    for (let i = 0; i < pages.length; i++)
+      if (!pages[i]) {
+        break;
+      } else {
+        for (const index of await productsIndex) {
+          const productData = await this.getProductData(page, index);
+          allProducts.push(productData);
+        }
+        await this.navigateToPage(page, i + 1);
+      }
+
+    return allProducts;
   }
 }
