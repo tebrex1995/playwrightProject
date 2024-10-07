@@ -1,4 +1,4 @@
-import { END_POINTS } from '../../../fixtures';
+import { ENDPOINTS } from '../../../fixtures';
 
 export class RegisterApi {
   constructor(page) {
@@ -7,7 +7,7 @@ export class RegisterApi {
 
   async registerViaApi(username, email, password) {
     let response = await this.page.request.post(
-      END_POINTS['REGISTER_ENDPOINT'],
+      ENDPOINTS['REGISTER_ENDPOINT'],
       {
         headers: { Accept: 'application/json' },
         data: {

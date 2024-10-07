@@ -1,4 +1,4 @@
-import { END_POINTS } from '../../../fixtures';
+import { ENDPOINTS } from '../../../fixtures';
 
 export class LoginApi {
   constructor(page) {
@@ -6,7 +6,7 @@ export class LoginApi {
   }
 
   async loginViaBE(email, password) {
-    let response = await this.page.request.post(END_POINTS['LOGIN_ENDPOINT'], {
+    let response = await this.page.request.post(ENDPOINTS['LOGIN_ENDPOINT'], {
       headers: { Accept: 'application/json' },
       data: {
         email: email,

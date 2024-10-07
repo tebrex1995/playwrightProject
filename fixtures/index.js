@@ -1,4 +1,4 @@
-export { URLS, END_POINTS } from './pages';
+export { URLS, ENDPOINTS } from './pages';
 export { HEADINGS, ERRORS } from './pageTextValues';
 export { RESPONSE_MESSAGES } from './responseMessages';
 export {
