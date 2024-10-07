@@ -20,8 +20,6 @@ test.describe('Dashboard tests', () => {
         existingUser['email'],
         existingUser['password']
       );
-      //wait for loadState
-      await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(URLS['DASHBOARD']);
     }
   );
@@ -40,15 +38,15 @@ test.describe('Dashboard tests', () => {
   test.slow(
     'Products on dashboard should be on provided number of pages',
     async ({ page }) => {
-      const pages = await dashboard.getNumberOfPages(page);
+      const pages = await dashboard.getAllPages(page);
       await expect(await pages.length).toBe(dashboard['NumberOfPages']);
     }
   );
 
   test.slow('Should be able to navigate to last page', async ({ page }) => {
     //Loop throught all pages and get last page
-    const getNumberOfPages = await dashboard.getNumberOfPages(page);
-    const lastPage = await getNumberOfPages.length;
+    const getAllPages = await dashboard.getAllPages(page);
+    const lastPage = await getAllPages.length;
     //Navigate to last page
     await dashboard.navigateToPage(page, await lastPage);
     await expect(
@@ -74,9 +72,9 @@ test.describe('Dashboard tests', () => {
     await expect(product['productElements']['button']).toBeVisible();
   });
 
-  // test('Get all products from a page', async ({ page }) => {
-  //   console.log(await dashboard.getAllProducts(page));
-  // });
+  test.only('Get all products from a page', async ({ page }) => {
+    const p = await dashboard.loopProductsOnAllPages(page);
+  });
 
   test.afterEach('Logout', async ({ page }) => {
     //Logout user

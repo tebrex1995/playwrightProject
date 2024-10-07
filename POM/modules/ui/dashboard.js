@@ -71,13 +71,13 @@ export class Dashboard {
     await page.waitForLoadState('networkidle');
   }
   //Get number of pages
-  async getNumberOfPages(page) {
+  async getAllPages(page) {
+    await page.waitForLoadState('networkidle');
     const pageNumber = await utils.countDivElements(
       page,
       this.paginationElements['parent'],
       this.paginationElements['child']
     );
-
     const allPages = [];
     for (let i = 1; i <= pageNumber; i++) {
       allPages.push(i);
@@ -87,7 +87,7 @@ export class Dashboard {
 
   //Click on every page
   async clickOnEveryPage(page, numberOfPages) {
-    await this.getNumberOfPages(page);
+    await this.getAllPages(page);
     for (const page of numberOfPages) {
       this.paginationElements.specificPage(page);
     }
@@ -104,22 +104,18 @@ export class Dashboard {
     return productCards;
   }
 
-  //Get all products  elements from page and put in array of objects
-  async getAllProducts(page) {
-    //Wait for load state
-    await page.waitForLoadState('networkidle');
-    //Get all products
-
-    const allProducts = [];
-    return numberOfProducts;
+  async getOneProduct(page, productIndex) {
+    const ProductCards = await this.getAllproductCards(page);
+    //Get specific product
+    const productCard = await ProductCards.nth(productIndex - 1);
+    return productCard;
   }
 
   //Get product data
-  async getProductData(page, productNumber) {
+  async getProductData(page, productIndex) {
     //Get all product cards from single page
-    const productCards = await this.getAllproductCards(page);
-    //Get specific product
-    const productCard = await productCards.nth(productNumber - 1);
+    // const productCards = await this.getAllproductCards(page);
+    const productCard = await this.getOneProduct(page, productIndex);
 
     //Get product Title
     const productTitle = await productCard.locator(
@@ -166,6 +162,16 @@ export class Dashboard {
 
   //Loop throught all products in page
   async loopProductsOnAllPages(page) {
-    this.clickOnEveryPage(page, (await this.getNumberOfPages(page)).length);
+    const pages = await this.getAllPages(page);
+    const products = await this.getAllproductCards(page);
+    const numberOfProductsOnPage = await products.count();
+    const productIndex = await utils.getProductIndex(numberOfProductsOnPage);
+    console.log(productIndex);
+    //GET PRODUCTS FROM A PAGE IN SINGLE ARRAY
+    //Loop through pages and get all products
+    // for(const product in products)
+    // const allProducts = [];
+    // for (const singlePage of pages) {
+    // }
   }
 }
