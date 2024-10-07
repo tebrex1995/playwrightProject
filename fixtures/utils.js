@@ -16,4 +16,8 @@ const fillAndSubmitForm = async (page, fields, values) => {
   await page.locator('button').click();
 };
 
+// const commonData = {
+//   loginInputsIds: ['#email', '#password'],
+// };
+
 export { generateRandomString, fillAndSubmitForm };

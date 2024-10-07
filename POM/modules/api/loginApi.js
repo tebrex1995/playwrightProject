@@ -1,10 +1,12 @@
-export class Login {
+import { ENDPOINTS } from '../../../fixtures';
+
+export class LoginApi {
   constructor(page) {
     this.page = page;
   }
 
   async loginViaBE(email, password) {
-    let response = await this.page.request.post('/api/v1/auth/login', {
+    let response = await this.page.request.post(ENDPOINTS['LOGIN_ENDPOINT'], {
       headers: { Accept: 'application/json' },
       data: {
         email: email,
