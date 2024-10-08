@@ -167,10 +167,18 @@ export class Dashboard {
     const pages = await this.getAllPages(page);
     const allProducts = [];
     //Loop through each page
-    for (let i = 0; i < pages.length; i++) {
+    for (const pageNum of pages) {
+      //Go to next page
+      await this.navigateToPage(page, pageNum);
+      //Wait for products to load
+      await page.waitForTimeout(3000);
       //Get all products,their number and products indexes
+
       const products = await this.getAllproductCards(page);
       const numberOfProductsOnPage = await products.count();
+      console.log(
+        `THIS IS NUMBER OF PRODUCTS ON A PAGE: ${numberOfProductsOnPage}`
+      );
       const productsIndex = await utils.getproductsIndex(
         numberOfProductsOnPage
       );
@@ -182,8 +190,7 @@ export class Dashboard {
           `This is product Data ${productData['textContent']['title']}`
         );
       }
-      //Go to next page
-      console.log(`You are on page ${i}`);
+      console.log(`You are on page ${pageNum}`);
     }
 
     return allProducts;

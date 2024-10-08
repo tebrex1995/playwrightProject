@@ -17,8 +17,8 @@ test.describe('Dashboard tests', () => {
       await expect(page).toHaveURL(URLS['LOGIN']);
       //Login user with valid credentials
       await loginPage.loginValidUser(
-        EXISTING_USER['email'],
-        EXISTING_USER['password']
+        EXISTING_USER['login']['email'],
+        EXISTING_USER['login']['password']
       );
       await expect(page).toHaveURL(URLS['DASHBOARD']);
     }
@@ -71,23 +71,9 @@ test.describe('Dashboard tests', () => {
     await expect(product['productElements']['button']).toBeVisible();
   });
 
-  test.only('All products on dashboard should be visible', async ({ page }) => {
-    await dashboard.loopProductsOnAllPages(page);
-    // for (let i = 0; i < products.length; i++) {
-    //   console.log(products[i]);
-    // }
-
-    expect(true).toBe(true);
-
-    // for (const product of products) {
-    //   await expect(product['productElements']['title']).toBeVisible();
-    //   await expect(product['productElements']['image']).toBeVisible();
-    //   await expect(product['productElements']['image']).toHaveRole('img');
-    //   await expect(product['productElements']['image']).toHaveAttribute('src');
-    //   await expect(product['productElements']['description']).toBeVisible();
-    //   await expect(product['productElements']['price']).toBeVisible();
-    //   await expect(product['productElements']['button']).toBeVisible();
-    // }
+  test('All products on dashboard should be visible', async ({ page }) => {
+    const allProducts = await dashboard.loopProductsOnAllPages(page);
+    expect(allProducts.length).toBeGreaterThan(69);
   });
 
   test.afterEach('Logout', async ({ page }) => {
