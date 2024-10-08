@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage, RegisterPage, Dashboard } from '../POM/modules/ui';
+import { LoginPage, RegisterPage, Dashboard, Common } from '../POM/modules/ui';
 import { generateUserCredentials, URLS, INVALID_USER } from '../fixtures';
 
 test.describe('Register user successfully', () => {

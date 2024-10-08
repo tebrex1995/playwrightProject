@@ -56,8 +56,7 @@ export class Dashboard {
       hasText: HEADINGS['IFRAME'],
     });
     //Values
-    this.productsPerPage = 12;
-    this.NumberOfPages = 6;
+    this.productsOnFullPage = 12;
   }
 
   //***********METHODS***********//
@@ -67,13 +66,12 @@ export class Dashboard {
   ///Navigate to specific page number
   async navigateToPage(page, productsPage) {
     await page.locator(`button[aria-label="${productsPage}"]`).click();
-    //Wait after click to load page
-    await page.waitForLoadState('networkidle');
+    //Wait for products to load
+    await page.waitForTimeout(3000);
   }
   //Get number of pages
   async getAllPages(page) {
     await page.waitForLoadState('networkidle');
-
     const pageNumber = await utils.countDivElements(
       page,
       this.paginationElements['parent'],
@@ -170,15 +168,10 @@ export class Dashboard {
     for (const pageNum of pages) {
       //Go to next page
       await this.navigateToPage(page, pageNum);
-      //Wait for products to load
-      await page.waitForTimeout(3000);
-      //Get all products,their number and products indexes
 
+      //Get all products,their number and products indexes
       const products = await this.getAllproductCards(page);
       const numberOfProductsOnPage = await products.count();
-      console.log(
-        `THIS IS NUMBER OF PRODUCTS ON A PAGE: ${numberOfProductsOnPage}`
-      );
       const productsIndex = await utils.getproductsIndex(
         numberOfProductsOnPage
       );
@@ -186,13 +179,9 @@ export class Dashboard {
       for (const index of productsIndex) {
         const productData = await this.getProductData(page, index);
         allProducts.push(productData);
-        console.log(
-          `This is product Data ${productData['textContent']['title']}`
-        );
       }
-      console.log(`You are on page ${pageNum}`);
     }
-
+    await this.navigateToPage(page, 1);
     return allProducts;
   }
 }
