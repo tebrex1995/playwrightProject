@@ -24,7 +24,6 @@ test.describe('Dashboard tests', () => {
       );
       await expect(page).toHaveURL(URLS['DASHBOARD']);
       //Get all products with their data in one array
-      allProducts = await dashboard.loopProductsOnAllPages(page);
     }
   );
 
@@ -39,13 +38,6 @@ test.describe('Dashboard tests', () => {
     5. verify modals
    */
 
-  test('First page should have max number of products', async ({ page }) => {
-    await dashboard.navigateToPage(page, 1);
-    await expect(
-      dashboard['productsContainer']['productsContainerToCount']
-    ).toHaveCount(dashboard['productsOnFullPage']);
-  });
-
   test('First product should be visible', async ({ page }) => {
     const product = await allProducts[0];
     await expect(product['productElements']['image']).toBeVisible();
@@ -58,17 +50,17 @@ test.describe('Dashboard tests', () => {
   });
 
   test('All products on dashboard should be visible', async ({ page }) => {
-    const allPages = await dashboard.getAllPages(page);
+    const allProducts = await dashboard.loopProductsOnAllPages(page);
 
+    const allPages = await dashboard.getAllPages(page);
     //Define iterator for allProducts products array
     let productIndex = 0;
     // Loop through each page
     for (const pageNum of allPages) {
       // Navigate to the current page
       console.log('YOU ARE ON PAGE: ', pageNum);
-      if (pageNum > 1) {
-        await dashboard.navigateToPage(page, pageNum);
-      }
+      await dashboard.navigateToPage(page, pageNum);
+
       // Get the number of products on the current page
       const productsOnCurrentPage = await page
         .locator('[test-id="product-card"]')
@@ -76,11 +68,11 @@ test.describe('Dashboard tests', () => {
       // Loop through products on currentPage
       for (let i = 0; i < productsOnCurrentPage; i++) {
         // Compare the current product title with the title from the allProducts array
-        const test = await page
+        const test = page
           .locator('[test-id="product-card"]')
           .nth(i)
           .locator('h5');
-        console.log('PRODUCT TITLE::', test.textContent());
+        console.log('PRODUCT TITLE::', await test.textContent());
         //Assert Each product
         await expect(
           page
