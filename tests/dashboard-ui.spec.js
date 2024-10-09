@@ -47,7 +47,7 @@ test.describe('Dashboard tests', () => {
   test('There should be new products loaded on next page', async () => {
     //Initialize first product variable and get common locator for products
     const productOnPage = await dashboard.getAllProductsLocator(page);
-    let firstProduct = await productOnPage
+    let firstProduct = productOnPage
       .first()
       .locator(dashboard['productTitle']['partialLocator']);
 
