@@ -4,28 +4,22 @@ import { LoginPage, Dashboard } from '../POM/modules/ui';
 
 test.describe('Dashboard tests', () => {
   //Declare class Variables
-  let browser, context, page, dashboard, allProducts, loginPage;
+  let dashboard, loginPage, allProducts;
 
-  test.beforeAll(
-    'Instantiate classes, open browser context, login user and get all products from pages',
-    async () => {
-      browser = await chromium.launch();
-      context = await browser.newContext();
-      page = await context.newPage();
-      //Instantiate class and Visit page
-      dashboard = new Dashboard(page);
-      loginPage = new LoginPage(page);
-      await page.goto(URLS['LOGIN']);
-      await expect(page).toHaveURL(URLS['LOGIN']);
-      //Login user with valid credentials
-      await loginPage.loginValidUser(
-        EXISTING_USER['login']['email'],
-        EXISTING_USER['login']['password']
-      );
-      await expect(page).toHaveURL(URLS['DASHBOARD']);
-      //Get all products with their data in one array
-    }
-  );
+  test.beforeEach('Instantiate class and login user', async ({ page }) => {
+    //Instantiate class and Visit page
+    dashboard = new Dashboard(page);
+    loginPage = new LoginPage(page);
+    await page.goto(URLS['LOGIN']);
+    await expect(page).toHaveURL(URLS['LOGIN']);
+    //Login user with valid credentials
+    await loginPage.loginValidUser(
+      EXISTING_USER['login']['email'],
+      EXISTING_USER['login']['password']
+    );
+    await expect(page).toHaveURL(URLS['DASHBOARD']);
+    allProducts = await dashboard.loopProductsOnAllPages(page);
+  });
 
   /**
    * TODO:
@@ -38,7 +32,7 @@ test.describe('Dashboard tests', () => {
     5. verify modals
    */
 
-  test('First product should be visible', async ({ page }) => {
+  test('First product should be visible', async () => {
     const product = await allProducts[0];
     await expect(product['productElements']['image']).toBeVisible();
     await expect(product['productElements']['image']).toHaveRole('img');
@@ -49,30 +43,30 @@ test.describe('Dashboard tests', () => {
     await expect(product['productElements']['button']).toBeVisible();
   });
 
-  test('All products on dashboard should be visible', async ({ page }) => {
-    const allProducts = await dashboard.loopProductsOnAllPages(page);
+  // test.only('Get title from all products', async ({ page }) => {
+  //   const pages = allPages;
+  //   console.log(pages);
 
+  //   expect(true).toBe(true);
+  // });
+  test.only('All products on dashboard should be visible', async ({ page }) => {
+    await expect(allProducts.length).toBeGreaterThan(69);
+
+    //Get all products with their data in one array
     const allPages = await dashboard.getAllPages(page);
     //Define iterator for allProducts products array
     let productIndex = 0;
     // Loop through each page
     for (const pageNum of allPages) {
       // Navigate to the current page
-      console.log('YOU ARE ON PAGE: ', pageNum);
-      await dashboard.navigateToPage(page, pageNum);
-
+      await dashboard.navigateToPage(page, await pageNum);
       // Get the number of products on the current page
       const productsOnCurrentPage = await page
-        .locator('[test-id="product-card"]')
+        .locator(dashboard['productCard']['attributeLocator'])
         .count();
       // Loop through products on currentPage
       for (let i = 0; i < productsOnCurrentPage; i++) {
         // Compare the current product title with the title from the allProducts array
-        const test = page
-          .locator('[test-id="product-card"]')
-          .nth(i)
-          .locator('h5');
-        console.log('PRODUCT TITLE::', await test.textContent());
         //Assert Each product
         await expect(
           page
@@ -84,16 +78,10 @@ test.describe('Dashboard tests', () => {
         productIndex++;
       }
     }
-
-    await expect(allProducts.length).toBeGreaterThan(69);
   });
 
   test.afterEach('Logout', async ({ page }) => {
     //Logout user
     await loginPage.logoutUser(page);
-  });
-
-  test.afterAll(async () => {
-    await browser.close();
   });
 });
