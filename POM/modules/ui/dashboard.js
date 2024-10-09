@@ -25,7 +25,10 @@ export class Dashboard {
       partialLocator: 'h5',
       fullLocator: page.locator('h5'),
     };
-    this.productDescription = page.locator('p.px-1.py-1');
+    this.productDescription = {
+      paritalLocator: '.text-sm',
+      fullLocator: page.locator('.text-sm'),
+    };
     this.productLink = page.locator('href');
     this.productImage = {
       partialLocator: 'img',
@@ -130,7 +133,7 @@ export class Dashboard {
 
     //Get product Description
     const productDescription = await productCard.locator(
-      this.productDescription
+      this.productDescription['paritalLocator']
     );
     const productDescriptionText = await productDescription.textContent();
 

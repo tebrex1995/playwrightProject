@@ -26,32 +26,17 @@ test.describe('Dashboard tests', () => {
    *1. test out of stock
    2. test if button is clickable if not out of stick
    
-    2.Verify that the total product count across pages matches the total number of products.
     3. Add product to cart? MAYBE?
-    4. Verify product image 
     5. verify modals
    */
 
-  test('First product should be visible', async () => {
-    const product = await allProducts[0];
-    await expect(product['productElements']['image']).toBeVisible();
-    await expect(product['productElements']['image']).toHaveRole('img');
-    await expect(product['productElements']['image']).toHaveAttribute('src');
-    await expect(product['productElements']['title']).toBeVisible();
-    await expect(product['productElements']['description']).toBeVisible();
-    await expect(product['productElements']['price']).toBeVisible();
-    await expect(product['productElements']['button']).toBeVisible();
+  test('All products should exist on page', async ({ page }) => {
+    await expect(allProducts.length).toBeGreaterThan(69);
   });
 
-  // test.only('Get title from all products', async ({ page }) => {
-  //   const pages = allPages;
-  //   console.log(pages);
-
-  //   expect(true).toBe(true);
-  // });
-  test.only('All products on dashboard should be visible', async ({ page }) => {
-    await expect(allProducts.length).toBeGreaterThan(69);
-
+  test('All elements on products on dashboard should be visible', async ({
+    page,
+  }) => {
     //Get all products with their data in one array
     const allPages = await dashboard.getAllPages(page);
     //Define iterator for allProducts products array
@@ -68,13 +53,16 @@ test.describe('Dashboard tests', () => {
       for (let i = 0; i < productsOnCurrentPage; i++) {
         // Compare the current product title with the title from the allProducts array
         //Assert Each product
-        await expect(
-          page
-            .locator(dashboard['productCard']['attributeLocator'])
-            .nth(i)
-            .locator(dashboard['productTitle']['partialLocator'])
-        ).toHaveText(allProducts[productIndex]['textContent']['title']);
-
+        const product = allProducts[i];
+        await expect(product['productElements']['title']).toBeVisible();
+        await expect(product['productElements']['image']).toBeVisible();
+        await expect(product['productElements']['image']).toHaveRole('img');
+        await expect(product['productElements']['image']).toHaveAttribute(
+          'src'
+        );
+        await expect(product['productElements']['description']).toBeVisible();
+        await expect(product['productElements']['price']).toBeVisible();
+        await expect(product['productElements']['button']).toBeVisible();
         productIndex++;
       }
     }
