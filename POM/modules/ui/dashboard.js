@@ -40,9 +40,23 @@ export class Dashboard {
     this.productPrice = page.locator('.py-1 span.font-semibold');
     this.productButton = page.locator('button.p-button svg');
     //Products Modal locators
-    this.productModalTitle = page.locator('.p-dialog-title');
-    this.productModalDescription = page.locator('p.m-0');
-    this.productModalImage = page.locator('img');
+    this.modal = {
+      fullLocator: page.locator('#pr_id_3'),
+      partialLocator: '#pr_id_3',
+    };
+    this.closeModal = page.locator('.p-dialog-header-close-icon');
+    this.productModalTitle = {
+      fullLocator: page.locator('#pr_id_3_header'),
+      partialLocator: '.p-dialog-title',
+    };
+    this.productModalDescription = {
+      fullLocator: page.locator('p.m-0'),
+      partialLocator: 'p.m-0',
+    };
+    this.productModalImage = {
+      fullLocator: page.locator('img.py-4'),
+      partialLocator: 'img.py-4',
+    };
     //Pagination Locators
     this.paginationElements = {
       child: '.p-button-label',
