@@ -10,7 +10,7 @@ export class Dashboard {
     this.activeBtnBgColor = 'rgb(158, 160, 246)';
     //Page locators
     this.heading = page.getByText(HEADINGS['DASHBOARD']);
-    //Product locators
+    //*****Product locators*******\\
     this.productsContainer = {
       fullLocator: page.locator('.basis-3'),
       locatorsClass: '.basis-3',
@@ -38,8 +38,12 @@ export class Dashboard {
     this.productRating = page.locator('span.ml-4');
     this.ProductRatingComponent = page.locator('.w-10');
     this.productPrice = page.locator('.py-1 span.font-semibold');
-    this.productButton = page.locator('button.p-button svg');
-    //Products Modal locators
+    this.productButton = {
+      fullLocator: page.locator('button.p-button'),
+      partialLocator: 'button.p-button',
+      disabledButton: 'button.p-disabled',
+    };
+    //*******Products Modal locators*******\\
     this.modal = {
       fullLocator: page.locator('#pr_id_3'),
       partialLocator: '#pr_id_3',
@@ -57,7 +61,7 @@ export class Dashboard {
       fullLocator: page.locator('img.py-4'),
       partialLocator: 'img.py-4',
     };
-    //Pagination Locators
+    //***********Pagination Locators*******\\
     this.paginationElements = {
       child: '.p-button-label',
       parent: '.paginated',
@@ -67,13 +71,14 @@ export class Dashboard {
     this.paginationDiv = page.locator(this.paginationElements['parent']);
     this.productPageButtons = page.locator(this.paginationElements['child']);
 
-    //iFrame Locators
+    //******iFrame Locators*******\\
     this.iframe = page.frameLocator('iframe');
     this.iframeHeading = this.iframe.locator('h4', {
       hasText: HEADINGS['IFRAME'],
     });
     //Values
     this.productsOnFullPage = 12;
+    this.averageSumOfProducts = 69;
   }
 
   //***********METHODS***********//
@@ -110,8 +115,9 @@ export class Dashboard {
     }
   }
   //*****PRODUCTS******** *//
+
   //Wait for network idle and get all product cards from single page
-  async getAllproductCards(page) {
+  async getAllProductsLocator(page) {
     //Wait for load state
     await page.waitForLoadState('networkidle');
     //Get all products
@@ -122,7 +128,7 @@ export class Dashboard {
   }
 
   async getOneProduct(page, productsIndex) {
-    const ProductCards = await this.getAllproductCards(page);
+    const ProductCards = await this.getAllProductsLocator(page);
     //Get specific product
     const productCard = await ProductCards.nth(productsIndex - 1);
     return productCard;
@@ -131,7 +137,6 @@ export class Dashboard {
   //Get product data
   async getProductData(page, productsIndex) {
     //Get all product cards from single page
-    // const productCards = await this.getAllproductCards(page);
     const productCard = await this.getOneProduct(page, productsIndex);
 
     //Get product Title
@@ -156,7 +161,9 @@ export class Dashboard {
     const productPriceText = await productPrice.textContent();
 
     //Get product cart button
-    const productCartButton = await productCard.locator(this.productButton);
+    const productCartButton = await productCard.locator(
+      this.productButton['fullLocator']
+    );
 
     //Return object with product data
     return {
@@ -187,7 +194,7 @@ export class Dashboard {
       await this.navigateToPage(page, pageNum);
 
       //Get all products,their number and products indexes
-      const products = await this.getAllproductCards(page);
+      const products = await this.getAllProductsLocator(page);
       const numberOfProductsOnPage = await products.count();
       const productsIndex = await utils.getproductsIndex(
         numberOfProductsOnPage

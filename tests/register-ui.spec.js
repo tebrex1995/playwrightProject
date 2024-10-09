@@ -3,7 +3,7 @@ import { LoginPage, RegisterPage, Dashboard, Common } from '../POM/modules/ui';
 import { generateUserCredentials, URLS, INVALID_USER } from '../fixtures';
 
 test.describe('Register user successfully', () => {
-  let registerPage, loginPage, dashboard;
+  let registerPage, loginPage, dashboard, common;
 
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['REGISTER']}`);
