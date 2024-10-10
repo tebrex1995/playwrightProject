@@ -15,9 +15,7 @@ test.describe('Register via Api', () => {
     registerApi = new RegisterApi(page);
   });
 
-  test("Shouldn't be able to register without provided data", async ({
-    page,
-  }) => {
+  test("Shouldn't be able to register without provided data", async () => {
     //Send register request
     const responseJson = await registerApi.register(
       INVALID_USER['api']['emptyInputFields']
@@ -34,9 +32,7 @@ test.describe('Register via Api', () => {
     );
   });
 
-  test("Shouldn't be able to register with already used email and password", async ({
-    page,
-  }) => {
+  test("Shouldn't be able to register with already used email and password", async () => {
     //Send register request
     const responseJson = await registerApi.register(EXISTING_USER['register']);
     expect(responseJson['errors']['username']).toContain(
@@ -47,9 +43,7 @@ test.describe('Register via Api', () => {
     );
   });
 
-  test("Shouldn't be able to register with invalid email format", async ({
-    page,
-  }) => {
+  test("Shouldn't be able to register with invalid email format", async () => {
     const responseJson = await registerApi.register(
       INVALID_USER['api']['register']['invalidEmailFormat']
     );
@@ -62,11 +56,10 @@ test.describe('Register via Api', () => {
     );
   });
 
-  test("Shouldn't be able to register with short password", async ({
-    page,
-  }) => {
+  test("Shouldn't be able to register with short password", async () => {
     ['api'];
     //Send register request
+
     const responseJson = await registerApi.register(
       INVALID_USER['api']['register']['shortPassword']
     );
@@ -77,7 +70,7 @@ test.describe('Register via Api', () => {
     );
   });
 
-  test('Register successfully', async ({ page }) => {
+  test('Register successfully', async () => {
     //Generate valid test data
     const user = generateUserCredentials(6);
     //Register user successfully
