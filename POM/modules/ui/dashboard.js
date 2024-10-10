@@ -89,7 +89,7 @@ export class Dashboard {
   async navigateToPage(page, productsPage) {
     await page.locator(`button[aria-label="${productsPage}"]`).click();
     //Wait for products to load
-    await page.waitForTimeout(3000);
+    // await page.waitForTimeout(3000);
   }
   //Get number of pages
   async getAllPages(page) {
