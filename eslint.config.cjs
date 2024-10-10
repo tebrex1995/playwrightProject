@@ -1,8 +1,10 @@
 const { configs } = require('eslint-plugin-playwright');
+const babelParser = require('@babel/eslint-parser');
 
 module.exports = [
   {
     ...configs['flat/recommended'],
+    parser: babelParser,
     files: ['tests/**'],
   },
   {
