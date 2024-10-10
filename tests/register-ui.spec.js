@@ -30,7 +30,7 @@ test.describe('Register user successfully', () => {
     await expect(registerPage['successRegisterMessage']).toBeHidden();
   });
 
-  test('Should"t be able to register with invalid email format provided', async ({
+  test('Shouldn"t be able to register with invalid email format provided', async ({
     page,
   }) => {
     //Register user with an empty email input field
@@ -43,7 +43,7 @@ test.describe('Register user successfully', () => {
     await expect(registerPage['successRegisterMessage']).toBeHidden();
   });
 
-  test('Should"t be able to register with password less than 3 characters', async ({
+  test('Shouldn"t be able to register with password less than 3 characters', async ({
     page,
   }) => {
     //Register user with an empty email input field
