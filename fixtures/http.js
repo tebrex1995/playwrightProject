@@ -2,6 +2,8 @@ export const STATUS = {
   STATUS_SUCCESS: 'Success',
   USER_CREATED_MESSAGE: 'User created successfully',
   UNAUTHORIZED: 'Unauthorized',
+  DELETED_CUSTOMER: 'Customer deleted successfully.',
+  PRODUCT_CREATED: 'Product created successfully.',
 };
 
 export const ERRORS = {
@@ -21,5 +23,12 @@ export const ERRORS = {
     MISSING_PASSWORD: 'The password field is required.',
     INVALID_EMAIL_FORMAT: 'The email field format is invalid.',
     MISSING_EMAIL: 'The email field is required.',
+  },
+
+  CUSTOMERS_API: {
+    UNAUTHENTICATED: 'Unauthenticated.',
+    NO_CUSTOMER_FOUND: id => {
+      return `No customer found with ID ${id} found`;
+    },
   },
 };
