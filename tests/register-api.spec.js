@@ -47,7 +47,7 @@ test.describe('Register via Api', () => {
     const responseJson = await registerApi.register(
       INVALID_USER['api']['register']['invalidEmailFormat']
     );
-    //Assertations
+    //Assertions
     expect(responseJson['message']).toBe(
       ERRORS['REGISTER']['INVALID_EMAIL_FORMAT']
     );
