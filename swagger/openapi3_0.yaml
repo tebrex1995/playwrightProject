@@ -1,0 +1,3237 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  version: 1.0.0
+
+servers:
+  - url: https://automaticityacademy.ngrok.app/api/v1
+    description: Production server (uses live data)
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Log in with registered user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+                - email
+                - password
+              example:
+                email: "test-user@email.com"
+                password: "Test12345"
+      responses:
+        '200':
+          description: Logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      email_verified_at:
+                        type: string
+                      password:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                  auth:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      type:
+                        type: string
+                example:
+                  status: "Success"
+                  message: "User logged in successfully"
+                  user:
+                    id: 1
+                    username: "testuser"
+                    email: "test-user@email.com"
+                    email_verified_at: null
+                    password: "$2y$12$1XSFpD5XpwBNWlZLYFj31Oewqi..."
+                    created_at: "2024-09-01T11:57:55.000000Z"
+                    updated_at: "2024-09-01T11:57:55.000000Z"
+                  auth:
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    type: "Bearer"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Unauthorized"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  message: "The email field must be a valid email address"
+                  errors:
+                    password:
+                      - "The password field is required."
+                    email: 
+                      - "The email field must be a valid email address."
+      
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+              example:
+                username: "newuser"
+                email: "new-user@email.com"
+                password: "NewUser123"
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      updated_at:
+                        type: string
+                      created_at:
+                        type: string
+                      id:
+                        type: integer
+                  auth:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      type:
+                        type: string
+                example:
+                  status: "Success"
+                  message: "User created successfully"
+                  user:
+                    username: "newuser"
+                    email: "new-user@email.com"
+                    password: "$2y$12$tjwddwXp6E/87dkdqokmm8@$)d..."
+                    updated_at: "2024-09-01T13:55:46.000000Z"
+                    created_at: "2024-09-01T13:55:46.000000Z"
+                    id: 2
+                  auth:
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    type: "Bearer"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  message: "The username has already been taken. (and 2 more errors)"
+                  errors:
+                    username:
+                      - "The username has already been taken."
+                    email:
+                      - "The email field is required."
+                    password:
+                      - "The password field must be at least 6 characters"
+
+  /auth/profile:
+    post:
+      tags:
+        - auth
+      summary: Get authenticated user
+      responses:
+        '200':
+          description: Current authenticated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  email:
+                    type: string
+                  email_verified_at:
+                    type: string
+                  password:
+                    type: string
+                  updated_at::
+                    type: string
+                  created_at:
+                    type: string
+                example:
+                  id: 2
+                  username: "newuser"
+                  email: "new-user@email.com"
+                  email_verified_at: null
+                  password: "$2y$12$tjwddwXp6E/87dkdqokmm8@$)d..."
+                  updated_at: "2024-09-01T13:55:46.000000Z"
+                  created_at: "2024-09-01T13:55:46.000000Z"
+      security:
+        - bearerAuth: []
+
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: Log out user
+      responses:
+        '200':
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Successfully logged out"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Token has expired"
+      security:
+        - bearerAuth: []
+
+  /auth/refresh:
+    post:
+      tags:
+        - auth
+      summary: Regenerate JWT token
+      responses:
+        '200':
+          description: New JWT token generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+                example:
+                  access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  token_type: "bearer"
+                  expires_in: 3600
+      security:
+        - bearerAuth: []
+
+  /customers:
+    get:
+      tags:
+        - customers
+      summary: Lists all customers
+      responses:
+        '200':
+          description: List all customers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  customers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        cart_id:
+                          type: integer
+                          nullable: true
+                        username:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        email:
+                          type: string
+                        password:
+                          type: string
+                        date_of_birth:
+                          type: string
+                          format: date
+                        created_at:
+                          type: string
+                          format: date-ti
+                        updated_at:
+                          type: string
+                          format: date-time 
+                example:
+                  status: "Success"
+                  customers:
+                  - id: 1
+                    user_id: 1
+                    cart_id: null
+                    username: "john.doe"
+                    first_name: "John"
+                    last_name: "Doe"
+                    email: "john.doe@email.com"
+                    password: ""
+                    date_of_birth: "1980-01-01"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /customers/{id}:
+    get:
+      tags:
+        - customers
+      summary: Gets customer by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the customer
+      responses:
+        '200':
+          description: Get customer by ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      cart_id:
+                        type: integer
+                        nullable: true
+                      username:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      date_of_birth:
+                        type: string
+                        format: date
+                      created_at:
+                        type: string
+                        format: date-ti
+                      updated_at:
+                        type: string
+                        format: date-time  
+              example:
+                status: "Success"
+                customer:
+                  id: 1
+                  user_id: 1
+                  cart_id: null
+                  username: "john.doe"
+                  first_name: "John"
+                  last_name: "Doe"
+                  email: "john.doe@email.com"
+                  password: ""
+                  date_of_birth: "1980-01-01"
+                  created_at: "2024-01-01T00:00:00.000000Z"
+                  updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"                
+        '404':
+          description: No customer found with the given ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "No customer found with ID 1 found"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - customers
+      summary: Updates customer basic information
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the customer to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                date_of_birth:
+                  type: string
+                  format: date
+                email:
+                  type: string
+              required:
+                - username
+                - email
+                - date_of_birth
+              example:
+                username: "john_doe"
+                first_name: "John"
+                last_name: "Doe"
+                date_of_birth: "1980-01-01"
+                email: "john.doe@example.com"
+      responses:
+        '200':
+          description: Customer information updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      cart_id:
+                        type: integer
+                        nullable: true
+                      username:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      date_of_birth:
+                        type: string
+                        format: date
+                      created_at:
+                        type: string
+                        format: date-ti
+                      updated_at:
+                        type: string
+                        format: date-time  
+              example:
+                status: "Success"
+                message: "Customer updated successfully."
+                customer:
+                  id: 1
+                  user_id: 1
+                  cart_id: null
+                  username: "john.doe"
+                  first_name: "John"
+                  last_name: "Doe"
+                  email: "john.doe@email.com"
+                  password: ""
+                  date_of_birth: "1980-01-01"
+                  created_at: "2024-01-01T00:00:00.000000Z"
+                  updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "No customer found with ID 1 found"           
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  message: string,
+                  errors:
+                    username:
+                      - "The username field must be a string."
+                    first_name:
+                      - "The first name field must be a string."
+                    last_name:
+                      - "The last name field must be a string."
+                    date_of_birth:
+                      - "The date of birth field must match the format Y-m-d."
+                      - "You need to be over 16 years old"
+                      - "Really? Did you know Gavrilo Princip?"          
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - customers
+      summary: Deletes a customer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the customer to delete
+      responses:
+        '200':
+          description: Customer deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      cart_id:
+                        type: integer
+                        nullable: true
+                      username:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      date_of_birth:
+                        type: string
+                        format: date
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      billing_info:
+                        type: string
+                      shipping_info:
+                        type: string
+              example:
+                status: "Success"
+                message: "Customer deleted successfully.."
+                customer:
+                  id: 1
+                  user_id: 1
+                  cart_id: null
+                  username: "john.doe"
+                  first_name: "John"
+                  last_name: "Doe"
+                  email: "john.doe@email.com"
+                  password: ""
+                  date_of_birth: "1980-01-01"
+                  created_at: "2024-01-01T00:00:00.000000Z"
+                  updated_at: "2024-01-01T00:00:00.000000Z"
+                  billing_info: "{...}"
+                  shipping_info: "{...}"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "No customer found with ID 1 found"           
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /customers/{id}/billing-info:
+    get:
+      tags:
+        - customers
+      summary: Retrieve billing information for a customer
+      parameters:
+        - name: id
+          in: path
+          description: ID of the customer
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response with billing information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  billing_info:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      customer_id:
+                        type: integer
+                      cardholder:
+                        type: string
+                      card_type:
+                        type: string
+                      card_number:
+                        type: string
+                      cvv:
+                        type: integer
+                      card_expiration_date:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-ti
+                      updated_at:
+                        type: string
+                        format: date-time
+                example:
+                  status: "Success"
+                  message: "Billing information for customer ID 123"
+                  billing_info:
+                    id: 123
+                    customer_id: 123
+                    cardholder: "John Doe"
+                    card_type: "Visa"
+                    card_number: "4111111111111111"
+                    cvv: 123
+                    card_expiration_date: "12/24"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"            
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No customer found with ID 1 found"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - customers
+      summary: Update billing information for a customer
+      parameters:
+        - name: id
+          in: path
+          description: ID of the customer
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cardholder:
+                  type: string
+                card_type:
+                  type: string
+                card_number:
+                  type: string
+                cvv:
+                  type: integer
+                card_expiration_date:
+                  type: string
+              required:
+                - cardholder
+                - card_type
+                - card_number
+                - cvv
+                - card_expiration_date
+              example:
+                cardholder: "John Doe"
+                card_type: "Visa"
+                card_number: "4111111111111111"
+                cvv: 123
+                card_expiration_date: "12/24"
+      responses:
+        '200':
+          description: Billing information updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  billing_info:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      customer_id:
+                        type: integer
+                      cardholder:
+                        type: string
+                      card_type:
+                        type: string
+                      card_number:
+                        type: string
+                      cvv:
+                        type: integer
+                      card_expiration_date:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-ti
+                      updated_at:
+                        type: string
+                        format: date-time
+                example:
+                  status: "Success"
+                  message: "Billing information updated successfully"
+                  billing_info:
+                    id: 1
+                    customer_id: 1
+                    cardholder: "John Doe"
+                    card_type: "Visa"
+                    card_number: "4111111111111111"
+                    cvv: 123
+                    card_expiration_date: "12/24"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"            
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "No customer found with ID 1 found"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  errors:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+                example:
+                  status: "error"
+                  errors:
+                    cardholder:
+                    - "The cardholder field is required."
+                    card_type:
+                    - "The card type field is required."
+                    card_number:
+                    - "The card number field is required."
+                    - "The card number field must be at least 12 characters."
+                    card_expiration_date:
+                    - "The card expiration date field is required."
+                    - "The card expiration date format is invalid. Should be MM/YY"
+                    cvv:
+                    - "The cvv field is required."
+                    - "The cvv field must be an integer."
+                    - "The cvv field must be 3 digits."          
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /customers/{id}/shipping-info:
+    get:
+      tags:
+        - customers
+      summary: Retrieve shipping information for a customer
+      parameters:
+        - name: id
+          in: path
+          description: ID of the customer
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response with shipping information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  shipping_info:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      customer_id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      street_and_number:
+                        type: string
+                      city:
+                        type: string
+                      postal_code:
+                        type: integer
+                      country:
+                        type: string
+                      phone_number:
+                        type: string
+                      email:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-ti
+                      updated_at:
+                        type: string
+                        format: date-time  
+                example:
+                  status: "success"
+                  message: "Shipping information for customer ID 123"
+                  shipping_info:
+                    id: 123
+                    customer_id: 123
+                    first_name: "John"
+                    last_name: "Doe"
+                    street_and_number: "123 Main St"
+                    city: "Springfield"
+                    postal_code: 12345
+                    country: "USA"
+                    phone_number: "+1234567890"
+                    email: "john.doe@example.com"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"            
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "No customer found with ID 1 found"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - customers
+      summary: Update shipping information for a customer
+      parameters:
+        - name: id
+          in: path
+          description: ID of the customer
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                street_and_number:
+                  type: string
+                phone_number:
+                  type: string
+                city:
+                  type: string
+                postal_code:
+                  type: integer
+                country:
+                  type: string
+              required:
+                - first_name
+                - last_name
+                - email
+                - street_and_number
+                - phone_number
+                - city
+                - postal_code
+                - country
+              example:
+                first_name: "John"
+                last_name: "Doe"
+                email: "john.doe@example.com"
+                street_and_number: "123 Main St"
+                phone_number: "+1234567890"
+                city: "Springfield"
+                postal_code: 12345
+                country: "USA"
+      responses:
+        '200':
+          description: Shipping information updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  shipping_info:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      customer_id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      street_and_number:
+                        type: string
+                      city:
+                        type: string
+                      postal_code:
+                        type: integer
+                      country:
+                        type: string
+                      phone_number:
+                        type: string
+                      email:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                example:
+                  status: "success"
+                  message: "Shipping information updated successfully"
+                  shipping_info:
+                    id: 123
+                    customer_id: 123
+                    first_name: "John"
+                    last_name: "Doe"
+                    street_and_number: "123 Main St"
+                    city: "Springfield"
+                    postal_code: 12345
+                    country: "USA"
+                    phone_number: "+1234567890"
+                    email: "john.doe@mail.com"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"            
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "No customer found with ID 1 found"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  errors:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+                example:
+                  status: "error"
+                  errors:
+                    first_name:
+                    - "The first name field is required."
+                    last_name:
+                    - "The last name field is required."
+                    email:
+                    - "The email field is required."
+                    - "The email field format is invalid."
+                    street_and_number:
+                    - "The street and number field is required."
+                    phone_number:
+                    - "The phone number field must be at least 6 characters."
+                    - "The phone number field format is invalid."
+                    city:
+                    - "The city field is required."
+                    postal_code:
+                    - "The postal code field is required."
+                    - "The postal code field must be an integer."
+                    - "The postal code field must not be lower than 4 and greater than 10 characters."
+                    country:
+                    - "The country field is required."
+                    - "The country field format is invalid."          
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /products:
+    get:
+      tags:
+        - products
+      summary: List all products
+      responses:
+        '200':
+          description: List of all products with their images
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        description:
+                          type: string
+                        price:
+                          type: number
+                          format: float
+                        in_stock:
+                          type: boolean
+                        quantity:
+                          type: integer
+                        cart_quantity:
+                          type: integer
+                        category:
+                          type: string
+                        rating:
+                          type: number
+                          format: float
+                        product_image:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            product_id:
+                              type: integer
+                            src:
+                              type: string
+                            title:
+                              type: string
+                            mime_type:
+                              type: string
+                            alt_text:
+                              type: string
+                            description:
+                              type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                example:
+                  status: "Success"
+                  products:
+                    id: 1
+                    name: "Product 1"
+                    description: "Description of Product 1"
+                    price: 19.99
+                    in_stock: true
+                    quantity: 100
+                    cart_quantity: 1
+                    category: "Product 1 category"
+                    rating: 4.5
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+                    product_image:
+                      id: 1
+                      product_id: 1
+                      src: "https://example.com/image1.jpg"
+                      title: "Product 1 image"
+                      mime_type: "image/png"
+                      alt_text: "Product 1 alt text"
+                      description: "Product 1 image description"
+                      created_at: "2024-01-01T00:00:00.000000Z"
+                      updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"              
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"          
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - products
+      summary: Add new product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                in_stock:
+                  type: boolean
+                quantity:
+                  type: integer
+                rating:
+                  type: number
+                  format: float
+              required:
+                - name
+                - price
+                - in_stock
+                - quantity
+              example:
+                name: "New Product"
+                description: "New Product Description"
+                price: 49.99
+                in_stock: true
+                quantity: 50
+                rating: 4.8
+      responses:
+        '200':
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  product:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: number
+                        format: float
+                      in_stock:
+                        type: boolean
+                      quantity:
+                        type: integer
+                      rating:
+                        type: number
+                        format: float
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      id:
+                        type: integer
+                example:
+                  name: "New product"
+                  description: "New product description"
+                  price: 19.99
+                  in_stock: true
+                  quantity: 50
+                  rating: 4.5
+                  created_at: "2024-01-01T00:00:00.000000Z"
+                  updated_at: "2024-01-01T00:00:00.000000Z"
+                  id: 1
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"          
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  errors:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+                example:
+                  message: "The name field is required. (and 8 more errors)"
+                  errors:
+                    name:
+                      - "The name field is required."
+                    description:
+                      - "The description field must be a string."
+                    price:
+                      - "The price field is required."
+                      - "The price must be a number."
+                    in_stock:
+                      - "The in stock field is required."
+                      - "The in stock field must be true or false."
+                    quantity:
+                      - "The quantity field is required."
+                      - "The quantity must be a number."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /products/{id}:
+    get:
+      tags:
+        - products
+      summary: Get product by ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  product:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: number
+                        format: float
+                      in_stock:
+                        type: boolean
+                      quantity:
+                        type: integer
+                      rating:
+                        type: number
+                        format: float
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time  
+                      product_image:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          product_id:
+                            type: integer
+                          src:
+                            type: string
+                          title:
+                            type: string
+                          mime_type:
+                            type: string
+                          alt_text:
+                            type: string
+                          description:
+                            type: string
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
+                example:
+                  status: "success"
+                  product:
+                    id: 1
+                    name: "Product 1"
+                    description: "Description of Product 1"
+                    price: 19.99
+                    in_stock: true
+                    quantity: 100
+                    rating: 4.5
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+                    product_image:
+                      id: 1
+                      product_id: 1
+                      src: "https://example.com/image1.jpg"
+                      title: "Product 1 Image"
+                      mime_type: "image/jpeg"
+                      alt_text: "Product 1 front view"
+                      description: "Product 1 front view"
+                      created_at: "2024-01-01T00:00:00.000000Z"
+                      updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No product found."
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+    put:
+      tags:
+        - products
+      summary: Update a product
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                in_stock:
+                  type: boolean
+                quantity:
+                  type: integer
+                rating:
+                  type: number
+                  format: float
+              example:
+                name: "Updated Product"
+                description: "Updated Product Description"
+                price: 59.99
+                in_stock: true
+                quantity: 30
+                rating: 4.2
+      responses:
+        '200':
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  product:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: number
+                        format: float
+                      in_stock:
+                        type: boolean
+                      quantity:
+                        type: integer
+                      rating:
+                        type: number
+                        format: float
+                      cart_quantity:
+                        type: integer
+                      category:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                example:
+                  status: "Success"
+                  message: "Product updated successfully."
+                  product:
+                    id: 1
+                    name: "Updated Product"
+                    description: "Updated Product Description"
+                    price: 59.99
+                    in_stock: false
+                    quantity: 30
+                    cart_quantity: 0
+                    category: "other"
+                    rating: 4.5
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"            
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No product found."
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  errors:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+                example:
+                  status: "Error"
+                  errors:
+                    name:
+                      - "The name field is required."
+                    description:
+                      - "The description field must be a string."
+                    price:
+                      - "The price field is required."
+                      - "The price must be a number."
+                    in_stock:
+                      - "The in stock field is required."
+                      - "The in stock field must be true or false."
+                    quantity:
+                      - "The quantity field is required."
+                      - "The quantity must be a number."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - products
+      summary: Delete a product
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  product:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: number
+                        format: float
+                      in_stock:
+                        type: boolean
+                      quantity:
+                        type: integer
+                      rating:
+                        type: number
+                        format: float
+                      cart_quantity:
+                        type: integer
+                      category:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      product_image:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          product_id:
+                            type: integer
+                          src:
+                            type: string
+                          title:
+                            type: string
+                          mime_type:
+                            type: string
+                          alt_text:
+                            type: string
+                          description:
+                            type: string
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time  
+                example:
+                  status: "Success"
+                  message: "Product updated successfully."
+                  product:
+                    id: 1
+                    name: "Updated Product"
+                    description: "Updated Product Description"
+                    price: 59.99
+                    in_stock: false
+                    quantity: 30
+                    cart_quantity: 0
+                    category: "other"
+                    rating: 4.5
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+                    product_image:
+                      id: 1
+                      product_id: 1
+                      src: "https://example.com/image1.jpg"
+                      title: "Product 1 Image"
+                      mime_type: "image/jpeg"
+                      alt_text: "Product 1 front view"
+                      description: "Product 1 front view"
+                      created_at: "2024-01-01T00:00:00.000000Z"
+                      updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"            
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No product found."
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /product-images:
+    get:
+      tags:
+        - product images
+      summary: List all product images
+      responses:
+        '200':
+          description: List of all product images
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        product_id:
+                          type: integer
+                        src:
+                          type: string
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        mime_type:
+                          type: string
+                        alt_text:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                example:
+                  status: "Success"
+                  product_image:
+                    id: 1
+                    product_id: 1
+                    src: "https://example.com/image1.jpg"
+                    title: "Image 1"
+                    mime_type: "image/jpeg"
+                    alt_text: "Alt text for Image 1"
+                    description: "Description of Image 1"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - product images
+      summary: Add new product image
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                src:
+                  type: string
+                title:
+                  type: string
+                description:
+                  type: string
+                mime_type:
+                  type: string
+                alt_text:
+                  type: string
+              required:
+                - src
+              example:
+                src: "https://example.com/new-image.jpg"
+                title: "New Image"
+                description: "Description of New Image"
+                mime_type: "image/png"
+                alt_text: "Alt text for New Image"
+      responses:
+        '201':
+          description: Product image created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  product_image:
+                    type: object
+                    properties:
+                      src:
+                        type: string
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      mime_type:
+                        type: string
+                      alt_text:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      id:
+                        type: integer
+                example:
+                  status: "Success"
+                  message: "Product image created successfully"
+                  product_image:
+                    src: "https://example.com/new-image.jpg"
+                    title: "New Image"
+                    description: "Description of New Image"
+                    mime_type: "image/png"
+                    alt_text: "Alt text for New Image"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    id: 1
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  errors:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+                example:
+                  message: "The src field must be a string. (and 5 more errors)"
+                  errors:
+                    src:
+                      - "The src field must be a string."
+                      - "The src field is required."
+                    title:
+                      - "The title field must be a string."
+                    description:
+                      - "The description field must be a string."
+                    mime_type:
+                      - "The mime type field must be a string."
+                    alt_text:
+                      - "The alt text field must be a string."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /product-images/{id}:
+    get:
+      tags:
+        - product images
+      summary: Get product image by ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product image
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product image details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  product_image:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      product_id:
+                        type: integer
+                      src:
+                        type: string
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      mime_type:
+                        type: string
+                      alt_text:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                example:
+                  status: "success"
+                  product_image:
+                    id: 1
+                    product_id: 1
+                    src: "https://example.com/image1.jpg"
+                    title: "Image 1"
+                    mime_type: "image/jpeg"
+                    alt_text: "Alt text for Image 1"
+                    description: "Description of Image 1"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Product image not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No product image found."            
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - product images
+      summary: Update product image
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product image
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                src:
+                  type: string
+                title:
+                  type: string
+                description:
+                  type: string
+                mime_type:
+                  type: string
+                alt_text:
+                  type: string
+              example:
+                src: "https://example.com/updated-image.jpg"
+                title: "Updated Image"
+                description: "Updated Description"
+                mime_type: "image/png"
+                alt_text: "Updated Alt Text"
+      responses:
+        '200':
+          description: Product image updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  product_id:
+                    type: integer
+                  src:
+                    type: string
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  mime_type:
+                    type: string
+                  alt_text:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+              example:
+                  status: "Success"
+                  message: "Product image updated successfully."
+                  product_image:
+                    id: 1
+                    product_id: 1
+                    src: "https://example.com/image1.jpg"
+                    title: "Image 1"
+                    mime_type: "image/jpeg"
+                    alt_text: "Alt text for Image 1"
+                    description: "Description of Image 1"
+                    created_at: "2024-01-01T00:00:00.000000Z"
+                    updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Product image not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No product found."            
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  errors:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+                example:
+                  message: "The src field must be a string. (and 5 more errors)"
+                  errors:
+                    src:
+                      - "The src field must be a string."
+                      - "The src field is required."
+                    title:
+                      - "The title field must be a string."
+                    description:
+                      - "The description field must be a string."
+                    mime_type:
+                      - "The mime type field must be a string."
+                    alt_text:
+                      - "The alt text field must be a string."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /cart/{id}:
+    get:
+      tags:
+        - carts
+      summary: Get cart by ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the cart
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cart details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  cart:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        description:
+                          type: string
+                        price:
+                          type: number
+                          format: float
+                        in_stock:
+                          type: boolean
+                        quantity:
+                          type: integer
+                        cart_quantity:
+                          type: integer
+                        category:
+                          type: string
+                        rating:
+                          type: number
+                          format: float
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        pivot:
+                          type: object
+                          properties:
+                            cart_id:
+                              type: integer
+                            product_id:
+                              type: integer
+                            quantity:
+                              type: integer
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                example:
+                  status: "Success"
+                  cart:
+                    - id: 1
+                      name: "Product"
+                      description: "Product description"
+                      price: 19.99
+                      in_stock: true
+                      quantity: 10
+                      cart_quantity: 1
+                      category: "Product category"
+                      rating: 4.5
+                      created_at: "2024-01-01T00:00:00.000000Z"
+                      updated_at: "2024-01-01T00:00:00.000000Z"
+                      pivot:
+                        cart_id: 1
+                        product_id: 1
+                        quantity: 10
+                        created_at: "2024-01-01T00:00:00.000000Z"
+                        updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Cart not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No cart found."            
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - carts
+      summary: Delete cart
+      parameters:
+        - name: id
+          in: path
+          description: ID of the cart to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cart deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  eooo:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        price:
+                          type: number
+                          format: float
+                        quantity:
+                          type: integer
+                example:
+                  status: "Success"
+                  message: "Cart deleted successfully."
+                  cart:
+                    - id: 1
+                      name: "Product"
+                      description: "Product description"
+                      price: 19.99
+                      in_stock: true
+                      quantity: 10
+                      cart_quantity: 1
+                      category: "Product category"
+                      rating: 4.5
+                      created_at: "2024-01-01T00:00:00.000000Z"
+                      updated_at: "2024-01-01T00:00:00.000000Z"
+                      pivot:
+                        cart_id: 1
+                        product_id: 1
+                        quantity: 10
+                        created_at: "2024-01-01T00:00:00.000000Z"
+                        updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Cart not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No cart found."            
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+        
+  /cart/{id}/products/{productId}:
+    post:
+      tags:
+        - carts
+      summary: Add product to the cart
+      parameters:
+        - name: id
+          in: path
+          description: ID of the product to add to the cart
+          required: true
+          schema:
+            type: integer
+        - name: productId
+          in: path
+          description: ID of the product to remove
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product added to the cart
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  cart:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        description:
+                          type: string
+                        price:
+                          type: number
+                          format: float
+                        in_stock:
+                          type: boolean
+                        quantity:
+                          type: integer
+                        cart_quantity:
+                          type: integer
+                        category:
+                          type: string
+                        rating:
+                          type: number
+                          format: float
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        pivot:
+                          type: object
+                          properties:
+                            cart_id:
+                              type: integer
+                            product_id:
+                              type: integer
+                            quantity:
+                              type: integer
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                example:
+                  status: "Success"
+                  message: "Product successfully added to cart"
+                  cart:
+                    - id: 1
+                      name: "Product 1"
+                      description: "Product 1 description."
+                      price: 19.99
+                      in_stock: true
+                      quantity: 10
+                      cart_quantity: 1
+                      category: "Category 1"
+                      rating: 4.5
+                      created_at: "2024-01-01T00:00:00.000000Z"
+                      updated_at: "2024-01-01T00:00:00.000000Z"
+                      pivot:
+                        cart_id: 1
+                        product_id: 1
+                        quantity: 1
+                        created_at: "2024-01-01T00:00:00.000000Z"
+                        updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "Error"
+                  message: "No product found."
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - carts
+      summary: Remove product from the cart
+      parameters:
+        - name: id
+          in: path
+          description: ID of the cart
+          required: true
+          schema:
+            type: integer
+        - name: productId
+          in: path
+          description: ID of the product to remove
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product removed from the cart
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  cart:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        description:
+                          type: string
+                        price:
+                          type: number
+                          format: float
+                        in_stock:
+                          type: boolean
+                        quantity:
+                          type: integer
+                        cart_quantity:
+                          type: integer
+                        category:
+                          type: string
+                        rating:
+                          type: number
+                          format: float
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        pivot:
+                          type: object
+                          properties:
+                            cart_id:
+                              type: integer
+                            product_id:
+                              type: integer
+                            quantity:
+                              type: integer
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                example:
+                  status: "Success"
+                  message: "Product removed from cart."
+                  cart:
+                    - id: 1
+                      name: "Product 1"
+                      description: "Product 1 description."
+                      price: 19.99
+                      in_stock: true
+                      quantity: 10
+                      cart_quantity: 1
+                      category: "Category 1"
+                      rating: 4.5
+                      created_at: "2024-01-01T00:00:00.000000Z"
+                      updated_at: "2024-01-01T00:00:00.000000Z"
+                      pivot:
+                        cart_id: 1
+                        product_id: 1
+                        quantity: 1
+                        created_at: "2024-01-01T00:00:00.000000Z"
+                        updated_at: "2024-01-01T00:00:00.000000Z"
+        '401':
+            description: Unauthenticated
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                  example:
+                    error: "Unauthenticated"
+        '404':
+          description: Cart or product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: 
+                      - "No cart found."
+                      - "No product found."
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "Method Not Allowed"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                example:
+                  status: "error"
+                  message: "Internal server error"          
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

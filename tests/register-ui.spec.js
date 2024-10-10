@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage, RegisterPage, Dashboard } from '../POM/modules/ui';
+import { LoginPage, RegisterPage, Dashboard, Common } from '../POM/modules/ui';
 import { generateUserCredentials, URLS, INVALID_USER } from '../fixtures';
 
 test.describe('Register user successfully', () => {
-  let registerPage, loginPage, dashboard;
+  let registerPage, loginPage, dashboard, common;
 
   test.beforeEach('Visit Home Page and instantiate class', async ({ page }) => {
     await page.goto(`${URLS['REGISTER']}`);
@@ -30,7 +30,7 @@ test.describe('Register user successfully', () => {
     await expect(registerPage['successRegisterMessage']).toBeHidden();
   });
 
-  test('Should"t be able to register with invalid email format provided', async ({
+  test('Shouldn"t be able to register with invalid email format provided', async ({
     page,
   }) => {
     //Register user with an empty email input field
@@ -43,7 +43,7 @@ test.describe('Register user successfully', () => {
     await expect(registerPage['successRegisterMessage']).toBeHidden();
   });
 
-  test('Should"t be able to register with password less than 3 characters', async ({
+  test('Shouldn"t be able to register with password less than 3 characters', async ({
     page,
   }) => {
     //Register user with an empty email input field

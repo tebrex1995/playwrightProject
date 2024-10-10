@@ -1,93 +1,89 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, chromium } from '@playwright/test';
 import { URLS, EXISTING_USER } from '../fixtures';
 import { LoginPage, Dashboard } from '../POM/modules/ui';
 
 test.describe('Dashboard tests', () => {
   //Declare class Variables
-  let loginPage, dashboard;
+  let dashboard, loginPage, allProducts, page, allPages, context;
 
-  test.beforeEach(
-    'Instantiate classes and login successfuly',
-    async ({ page }) => {
-      //Instantiate class and Visit page
-      dashboard = new Dashboard(page);
-      loginPage = new LoginPage(page);
-      //Visit login page
-      await page.goto(URLS['LOGIN']);
-      await expect(page).toHaveURL(URLS['LOGIN']);
-      //Login user with valid credentials
-      await loginPage.loginValidUser(
-        EXISTING_USER['email'],
-        EXISTING_USER['password']
-      );
-      await expect(page).toHaveURL(URLS['DASHBOARD']);
+  test.beforeAll(async ({ browser }) => {
+    page = await browser.newPage();
+    context = await browser.newContext(page);
+    browser = await chromium.launch();
+    //Instantiate class and Visit page
+    dashboard = new Dashboard(page);
+    loginPage = new LoginPage(page);
+    await page.goto(URLS['LOGIN']);
+    await expect(page).toHaveURL(URLS['LOGIN']);
+    //Login user with valid credentials
+    await loginPage.loginValidUser(
+      EXISTING_USER['login']['email'],
+      EXISTING_USER['login']['password']
+    );
+    await expect(page).toHaveURL(URLS['DASHBOARD']);
+    allPages = await dashboard.getAllPages(page);
+    allProducts = await dashboard.loopProductsOnAllPages(page);
+  });
+
+  test.afterAll(async () => {
+    //Logout user
+    await loginPage.logoutUser(page);
+    //Close context
+    await context.close(page);
+  });
+
+  test('All products in total should be on dashboard', async () => {
+    await expect(allProducts.length).toBeGreaterThan(
+      dashboard['averageSumOfProducts']
+    );
+  });
+  test('There should be new products loaded on next page', async () => {
+    //Initialize first product variable and get common locator for products
+    const productOnPage = await dashboard.getAllProductsLocator(page);
+    let firstProduct = productOnPage
+      .first()
+      .locator(dashboard['productTitle']['partialLocator']);
+
+    for (let i = 1; i < (await allPages.length) - 1; i++) {
+      await dashboard.navigateToPage(page, i + 1);
+      const currentProduct = productOnPage
+        .first()
+        .locator(dashboard['productTitle']['partialLocator']);
+      expect(currentProduct).not.toBe(firstProduct);
+      firstProduct = currentProduct;
     }
-  );
-  /**
-   * TODO:
-   *1. test out of stock
-   2. test if button is clickable if not out of stick
-   
-    1. VERIFY NUMBER OF PRODUCTS PER PAGE
-    2.Verify that the total product count across pages matches the total number of products.
-    3. Add product to cart? MAYBE?
-    4. Verify product image 
-    5. verify modals
-   */
-
-  test('Products on dashboard should be on provided number of pages', async ({
-    page,
-  }) => {
-    const pages = await dashboard.getAllPages(page);
-    await expect(await pages.length).toBe(dashboard['NumberOfPages']);
   });
 
-  test('Should be able to navigate to last page', async ({ page }) => {
-    //Loop throught all pages and get last page
-    const getAllPages = await dashboard.getAllPages(page);
-    const lastPage = await getAllPages.length;
-    //Navigate to last page
-    await dashboard.navigateToPage(page, await lastPage);
-    await expect(
-      page.locator(`${dashboard['paginationElements'].specificPage(lastPage)}`)
-    ).toHaveCSS('background-color', dashboard['activeBtnBgColor']);
-  });
+  test('All elements on products on dashboard should be visible', async () => {
+    //Get all products with their data in one array
+    const allPages = await dashboard.getAllPages(page);
+    //Define iterator for allProducts products array
+    let productIndex = 0;
+    // Loop through each page
+    for (const pageNum of allPages) {
+      // Navigate to the current page
+      await dashboard.navigateToPage(page, await pageNum);
+      //Count all products on page
+      const countProductsOnPage = await dashboard.getAllProductsLocator(page);
+      const productsOnCurrentPage = countProductsOnPage.count();
 
-  test('First page should have max number of products', async ({ page }) => {
-    await dashboard.navigateToPage(page, 1);
-    await expect(
-      dashboard['productsContainer']['productsContainerToCount']
-    ).toHaveCount(dashboard['productsPerPage']);
-  });
-
-  test('First product should be visible', async ({ page }) => {
-    const product = await dashboard.getProductData(page, 1);
-    await expect(product['productElements']['image']).toBeVisible();
-    await expect(product['productElements']['image']).toHaveRole('img');
-    await expect(product['productElements']['image']).toHaveAttribute('src');
-    await expect(product['productElements']['title']).toBeVisible();
-    await expect(product['productElements']['description']).toBeVisible();
-    await expect(product['productElements']['price']).toBeVisible();
-    await expect(product['productElements']['button']).toBeVisible();
-  });
-
-  test.only('All products on dashboard should be visible', async ({ page }) => {
-    await dashboard.loopProductsOnAllPages(page);
-    // for (let i = 0; i < products.length; i++) {
-    //   console.log(products[i]);
-    // }
-
-    expect(true).toBe(true);
-
-    // for (const product of products) {
-    //   await expect(product['productElements']['title']).toBeVisible();
-    //   await expect(product['productElements']['image']).toBeVisible();
-    //   await expect(product['productElements']['image']).toHaveRole('img');
-    //   await expect(product['productElements']['image']).toHaveAttribute('src');
-    //   await expect(product['productElements']['description']).toBeVisible();
-    //   await expect(product['productElements']['price']).toBeVisible();
-    //   await expect(product['productElements']['button']).toBeVisible();
-    // }
+      // Loop through products on currentPage
+      for (let i = 0; i < productsOnCurrentPage; i++) {
+        // Compare the current product title with the title from the allProducts array
+        //Assert Each product
+        const product = allProducts[i];
+        await expect(product['productElements']['title']).toBeVisible();
+        await expect(product['productElements']['image']).toBeVisible();
+        await expect(product['productElements']['image']).toHaveRole('img');
+        await expect(product['productElements']['image']).toHaveAttribute(
+          'src'
+        );
+        await expect(product['productElements']['description']).toBeVisible();
+        await expect(product['productElements']['price']).toBeVisible();
+        await expect(product['productElements']['button']).toBeVisible();
+        productIndex++;
+      }
+    }
   });
 
   test.afterEach('Logout', async ({ page }) => {
