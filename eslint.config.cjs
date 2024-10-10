@@ -4,8 +4,18 @@ const babelParser = require('@babel/eslint-parser');
 module.exports = [
   {
     ...configs['flat/recommended'],
-    parser: babelParser,
     files: ['tests/**'],
+    languageOptions: {
+      parser: babelParser,
+      parserOptions: {
+        requireConfigFile: false,
+        babelOptions: {
+          presets: ['@babel/preset-env'],
+        },
+        ecmaVersion: 2021,
+        sourceType: 'module',
+      },
+    },
   },
   {
     files: ['tests/**'],
