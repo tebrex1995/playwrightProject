@@ -15,8 +15,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run linter
-        run: npx eslint 'POM/**/*.js' 'tests/**/*.js' --max-warnings 0
-
+        run: npx eslint
   audit:
     needs: lint
     runs-on: ubuntu-latest
