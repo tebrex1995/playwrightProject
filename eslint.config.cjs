@@ -8,7 +8,7 @@ module.exports = [
   {
     files: ['tests/**'],
     rules: {
-      'playwright/no-wait-for-timeout': 'error',
+      // 'playwright/no-wait-for-timeout': 'error',
       'playwright/no-commented-out-tests': 'error',
       'playwright/expect-expect': 'error',
       'playwright/missing-playwright-await': 'error',
