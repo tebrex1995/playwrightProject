@@ -57,7 +57,6 @@ test.describe('Register via Api', () => {
   });
 
   test("Shouldn't be able to register with short password", async () => {
-    ['api'];
     //Send register request
 
     const responseJson = await registerApi.register(
