@@ -130,7 +130,6 @@ test.describe('Login UI tests', () => {
     );
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);
-    await page.waitForLoadState('networkidle');
     //Login assertions
     await expect(dashboard['heading']).toBeVisible();
     await expect(dashboard['iframeHeading']).toBeVisible();
