@@ -4,6 +4,7 @@ module.exports = [
   {
     ...configs['flat/recommended'],
     files: ['tests/**'],
+    parser: 'babel-eslint',
   },
   {
     files: ['tests/**'],
