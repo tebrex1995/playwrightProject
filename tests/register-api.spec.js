@@ -8,9 +8,9 @@ import {
   ERRORS,
 } from '../fixtures';
 
-let registerApi;
-
 test.describe('Register via Api', () => {
+  let registerApi;
+
   test.beforeEach('Instantiate class', async ({ page }) => {
     registerApi = new RegisterApi(page);
   });
