@@ -1,4 +1,4 @@
-const { configs } = require('eslint-plugin-playwright');
+import { configs } from 'eslint-plugin-playwright';
 
 module.exports = [
   {
