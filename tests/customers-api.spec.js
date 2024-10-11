@@ -34,7 +34,6 @@ test.describe('Customers API tests', () => {
     const randomId = utils.generateRandomNumber(numberOfCustomers);
 
     const response = await customersApi.getCustomer(randomId);
-    console.log(response);
     expect(response.status).toBe(STATUS['STATUS_SUCCESS']);
   });
 

@@ -14,18 +14,29 @@ export class Cart {
     );
     this.button = 'button';
     this.clearButton = 'span.pi-trash';
-    this.removeProductButton = 'button .pi-times';
+    this.removeProductButton = 'span.pi-times';
     this.plusQuantity = '.pi-plus';
     this.minusQuantity = '.pi-minus';
+    // Items in cart
+    this.emptyCart = '0';
+    this.oneItem = '1';
+    this.twoItems = '2';
   }
 
-  async addToCart(page) {
-    const product = await this.product;
-    const cartButton = product.locator(this.button);
-    if (await cartButton.isEnabled()) {
-      cartButton.click();
+  async addToCart(page, numberOfProducts) {
+    const numberOfProductsToAdd = await utils.getproductsIndex(
+      numberOfProducts
+    );
+    for (let i = 0; i < numberOfProductsToAdd.length; i++) {
+      const product = await this.product;
+      const cartButton = product.locator(this.button);
+      if (await cartButton.isEnabled()) {
+        await cartButton.click();
+        await page.waitForTimeout(3000);
+      }
     }
   }
+
   // No items in cart. Add some!
   async clearCart() {
     await this.header.cartButton.click();

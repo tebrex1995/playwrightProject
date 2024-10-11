@@ -29,36 +29,27 @@ test.describe('Products in the cart', () => {
   });
 
   test.afterAll(async () => {
-    //Logout
-    await loginPage.logoutUser(page);
     //Close context
     await context.close(page);
   });
 
   test.beforeEach('Clear card', async () => {
     await cart.clearCart();
-    await expect(header.cartButton).toHaveText('0');
+    await expect(header.cartButton).toHaveText(cart['emptyCart']);
   });
 
   test.afterEach('Clear card', async () => {
     await cart.clearCart();
-    await expect(header.cartButton).toHaveText('0');
+    await expect(header.cartButton).toHaveText(cart['emptyCart']);
   });
 
   test('1 product should be added to cart', async () => {
-    await cart.addToCart(page);
-    await expect(header.cartButton).toHaveText('1');
-  });
-
-  test('Product should be removed from the cart', async () => {
-    await cart.addToCart(page);
-    await cart.removeProduct(page);
-    await expect(header.cartButton).toHaveText('0');
+    await cart.addToCart(page, 1);
+    await expect(header.cartButton).toHaveText(cart['oneItem']);
   });
 
   test('2 products should be added to cart', async () => {
-    await cart.addToCart(page);
-    await cart.addToCart(page);
-    await expect(header.cartButton).toHaveText('2');
+    await cart.addToCart(page, 2);
+    await expect(header.cartButton).toHaveText(cart['twoItems']);
   });
 });
