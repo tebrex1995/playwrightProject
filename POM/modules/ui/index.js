@@ -5,3 +5,4 @@ export { LoginPage } from './loginPage';
 export { RegisterPage } from './registerPage';
 export { Common } from './Common';
 export { Dashboard } from './dashboard';
+export { Cart } from './cart';
