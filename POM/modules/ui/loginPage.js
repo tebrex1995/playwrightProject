@@ -18,11 +18,12 @@ export class LoginPage {
     this.loginInputs = ['#email', '#password'];
   }
 
-  async loginValidUser(email, password) {
+  async loginValidUser(page, email, password) {
     //Page locators
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.submitButton.click();
+    await page.waitForLoadState('networkidle');
   }
 
   async logoutUser(page) {

@@ -125,6 +125,7 @@ test.describe('Login UI tests', () => {
   test('User should be successfully logged in', async ({ page }) => {
     //Login user
     await loginPage.loginValidUser(
+      page,
       EXISTING_USER['login']['email'],
       EXISTING_USER['login']['password']
     );

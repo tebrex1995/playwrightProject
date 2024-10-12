@@ -20,10 +20,10 @@ test.describe('Products in the cart', () => {
     await expect(page).toHaveURL(URLS['LOGIN']);
     //Login user with valid credentials
     await loginPage.loginValidUser(
+      page,
       EXISTING_USER['login']['email'],
       EXISTING_USER['login']['password']
     );
-    await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(URLS['DASHBOARD']);
     allPages = await dashboard.getAllPages(page);
     allProducts = await dashboard.loopProductsOnAllPages(page);
