@@ -14,7 +14,6 @@ test.describe('Products tests', () => {
   test('Product should be added successfully on dashboard', async () => {
     const product = randomProduct;
     const response = await productsApi.addProduct(product);
-    console.log(response);
     expect(response['status']).toBe(STATUS['STATUS_SUCCESS']);
     expect(response['message']).toBe(STATUS['PRODUCT_CREATED']);
     expect(response['product']['name']).toBe(product['name']);

@@ -12,6 +12,9 @@ export class Cart {
       page,
       utils.generateRandomNumber(this.dashboard['productsOnFullPage'])
     );
+    this.productTitle = '.my-1';
+    this.productPrice = '.w-44 >> text=Price';
+    this.productQuantity = '.w-44 >> text=Quantity: ';
     this.button = 'button';
     this.clearButton = 'span.pi-trash';
     this.removeProductButton = 'span.pi-times';
@@ -23,21 +26,19 @@ export class Cart {
     this.twoItems = '2';
   }
 
-  async addToCart(page, numberOfProducts) {
-    const numberOfProductsToAdd = await utils.getproductsIndex(
-      numberOfProducts
-    );
-    for (let i = 0; i < numberOfProductsToAdd.length; i++) {
-      const product = await this.product;
-      const cartButton = product.locator(this.button);
-      if (await cartButton.isEnabled()) {
-        await cartButton.click();
-        await page.waitForTimeout(3000);
-      }
+  async addToCart(page) {
+    const product = await this.product;
+    const price = await product.locator('.py-1 span.font-semibold');
+    const priceText = await price.textContent();
+    const priceWihoutEuroSign = await priceText.split('€')[0];
+    const cartButton = await product.locator(this.button);
+    if (await cartButton.isEnabled()) {
+      await cartButton.click();
+      await page.waitForTimeout(3000);
     }
+    return `Price: ${await priceWihoutEuroSign}`;
   }
 
-  // No items in cart. Add some!
   async clearCart() {
     await this.header.cartButton.click();
     const clearButton = await this.page.locator(this.clearButton);
@@ -50,5 +51,13 @@ export class Cart {
   async removeProduct() {
     const removeBtn = await this.page.locator(this.removeProductButton);
     await removeBtn.click();
+  }
+
+  async addQuantity(page) {
+    await page.locator(this.plusQuantity).click();
+  }
+
+  async subtractQuantity(page) {
+    await page.locator(this.minusQuantity).click();
   }
 }

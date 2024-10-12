@@ -20,6 +20,7 @@ test.describe('Dashboard tests', () => {
       EXISTING_USER['login']['email'],
       EXISTING_USER['login']['password']
     );
+    await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(URLS['DASHBOARD']);
     allPages = await dashboard.getAllPages(page);
     allProducts = await dashboard.loopProductsOnAllPages(page);

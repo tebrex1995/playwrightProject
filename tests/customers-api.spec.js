@@ -47,7 +47,7 @@ test.describe('Customers API tests', () => {
     const response = await customersApi.updateCustomer(randomId, {
       first_name: newFirstName,
     });
-    expect(response['customer']['first_name']).toBe(newFirstName);
+    expect(await response['customer']['first_name']).toBe(newFirstName);
   });
 
   test('Last customer should be deleted successfully', async ({ page }) => {
