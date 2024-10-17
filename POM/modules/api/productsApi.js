@@ -7,6 +7,10 @@ export class ProductsApi extends BaseApi {
     this.endpoint = ENDPOINTS['PRODUCTS_API'];
   }
 
+  async listAllProducts() {
+    return await this.get(this.endpoint);
+  }
+
   async addProduct(payload) {
     return await this.post(this.endpoint, payload);
   }

@@ -11,6 +11,11 @@ test.describe('Products tests', () => {
     productsApi = new ProductsApi(page, loginResponse.auth.token);
   });
 
+  test('All products should be in response', async () => {
+    const response = await productsApi.listAllProducts();
+    console.log(response);
+  });
+
   test('Product should be added successfully on dashboard', async () => {
     const product = randomProduct;
     const response = await productsApi.addProduct(product);
