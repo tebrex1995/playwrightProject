@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-      - name: CHeck for vulnerabilities
+      - name: Check for vulnerabilities
         run: npm audit
   e2e-tests:
     needs: audit

@@ -31,9 +31,14 @@ const getproductsIndex = async numberOfProducts => {
   return productsIndex;
 };
 
+const generateRandomNumber = max => {
+  return Math.floor(Math.random() * (max - 1) + 1);
+};
+
 export {
   generateRandomString,
   fillAndSubmitForm,
   countDivElements,
   getproductsIndex,
+  generateRandomNumber,
 };
