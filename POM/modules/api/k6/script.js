@@ -8,6 +8,7 @@ export const options = {
     { duration: '20s', target: 300 },
   ],
 };
+
 export default function () {
   const url = 'https://automaticityacademy.ngrok.app/api/v1/auth/login';
   const payload = JSON.stringify({
@@ -25,9 +26,3 @@ export default function () {
   let res = http.post(url, payload, params);
   check(res, { 'status was 200': r => r.status === 200 });
 }
-
-// export function handleSummary(data) {
-//   return {
-//     'summary.json': JSON.stringify(data), //the default data object
-//   };
-// }
