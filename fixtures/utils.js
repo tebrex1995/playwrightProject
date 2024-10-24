@@ -31,6 +31,8 @@ const getproductsIndex = async numberOfProducts => {
   return productsIndex;
 };
 
+const writeToFIle = 'fs.writeFileSync(path,JSON.stringify.content))';
+
 const generateRandomNumber = max => {
   return Math.floor(Math.random() * (max - 1) + 1);
 };
