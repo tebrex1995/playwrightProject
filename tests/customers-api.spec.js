@@ -34,7 +34,6 @@ test.describe('Customers API tests', () => {
     const randomId = utils.generateRandomNumber(numberOfCustomers);
 
     const response = await customersApi.getCustomer(randomId);
-    console.log(response);
     expect(response.status).toBe(STATUS['STATUS_SUCCESS']);
   });
 
@@ -48,7 +47,7 @@ test.describe('Customers API tests', () => {
     const response = await customersApi.updateCustomer(randomId, {
       first_name: newFirstName,
     });
-    expect(response['customer']['first_name']).toBe(newFirstName);
+    expect(await response['customer']['first_name']).toBe(newFirstName);
   });
 
   test('Last customer should be deleted successfully', async ({ page }) => {

@@ -17,6 +17,7 @@ test.describe('Dashboard tests', () => {
     await expect(page).toHaveURL(URLS['LOGIN']);
     //Login user with valid credentials
     await loginPage.loginValidUser(
+      page,
       EXISTING_USER['login']['email'],
       EXISTING_USER['login']['password']
     );
