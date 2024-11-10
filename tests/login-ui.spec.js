@@ -122,13 +122,11 @@ test.describe('Login UI tests', () => {
     await expect(loginPage['heading']).toHaveText(HEADINGS['LOGIN']);
   });
 
-
   test('User should be successfully logged in', async ({ page }) => {
-
     //Login user
     await loginPage.loginValidUser(
-      EXISTING_USER['email'],
-      EXISTING_USER['password']
+      EXISTING_USER['login']['email'],
+      EXISTING_USER['login']['password']
     );
     //Wait for url to load
     await page.waitForURL(URLS['DASHBOARD']);
